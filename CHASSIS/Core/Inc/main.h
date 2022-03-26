@@ -134,7 +134,9 @@ extern int time_3_times;
 extern float Vision_RawData_Yaw_Angle;
 extern float Vision_RawData_Pitch_Angle;
 extern bool send_to_C;
-extern bool send_to_C_JS;
+extern bool send_to_C_JS_SHOOT;
+extern bool send_to_C_JS_HURT;//裁判系统_伤害数据_是否发送给C板
+
 extern int JS_SEND_times;
 
 extern int send_to_C_times;

@@ -310,11 +310,16 @@ void DeBug(void const * argument)
 			send_to_C_times++;
 			send_to_C = 0;
 		}	
-		if (send_to_C_JS == 1)
+		if(send_to_C_JS_HURT==1)
 		{
-JS_send_control();
+			send_to_C_JS_HURT=0;
+			JS_send_HURT_control();
+		}
+		if (send_to_C_JS_SHOOT == 1)
+		{
+JS_send_SHOOT_control();
 			JS_SEND_times++;
-			send_to_C_JS=0;
+			send_to_C_JS_SHOOT=0;
 		}
 		
 		if (DR16.rc.s_right == 3) //是否上位机

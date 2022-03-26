@@ -1633,6 +1633,7 @@ void Judge_GetMessage(uint16_t Data_Length)
 					memcpy(&ext_robot_hurt.data.dataBuff, &JudgeSystem_rxBuff[n + 7], sizeof(uint8_t[1]));
 					n += JudgeLength_Injury_State;
 					ext_robot_hurt.InfoUpdataFlag = 1;
+					send_to_C_JS_HURT=1;
 				}
 				else
 					n++;
@@ -1643,7 +1644,7 @@ void Judge_GetMessage(uint16_t Data_Length)
 					memcpy(&ext_shoot_data.data.dataBuff, &JudgeSystem_rxBuff[n + 7], sizeof(uint8_t[7]));
 					n += JudgeLength_RealTime_Shoot;
 					ext_shoot_data.InfoUpdataFlag = 1;
-					send_to_C_JS=1;//发送给C板
+					send_to_C_JS_SHOOT=1;//发送给C板
 				}
 				else
 					n++;

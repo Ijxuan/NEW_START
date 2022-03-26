@@ -199,8 +199,9 @@ int time_3_times=0;
 float Vision_RawData_Yaw_Angle=0;
 float Vision_RawData_Pitch_Angle=0;
 
-bool send_to_C;
-bool send_to_C_JS;
+bool send_to_C;//DR16_遥控器_是否发送给C板
+bool send_to_C_JS_SHOOT;//裁判系统_发射数据_是否发送给C板
+bool send_to_C_JS_HURT;//裁判系统_伤害数据_是否发送给C板
 
 int send_to_C_times;
 
@@ -212,7 +213,7 @@ int stop_CH_OP_BC_END_times=0;
 bool stop_CH_OP_BC_LESS=0;
 int stop_CH_OP_BC_LESS_times=0;
 int CHASSIS_trage_speed_temp;
-int JS_SEND_times=0;
+int JS_SEND_times=0;//裁判系统发送次数
 
 //driver  plate
 /* USER CODE END 0 */
