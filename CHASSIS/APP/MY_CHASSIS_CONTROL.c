@@ -47,7 +47,7 @@ void CHASSIS_CONTROUL(void)
 				if(Random_CHASSIS_CHOOSE==1)//是选择巡航模式
 				Random_CHASSIS();//随机模式
 				
-				CHASSIS_trage_speed=0;//锁死//弹道测试后取消注释
+//				CHASSIS_trage_speed=0;//锁死//弹道测试后取消注释
 					
 				}
 //				else
@@ -80,7 +80,7 @@ CHASSIS.Target_Value=CHASSIS_trage_speed;
 CHASSIS_trage_speed_temp=Ramp_Function(&CHASSIS);
 					//		yaw_trage_speed=(DR16.rc.ch3*1.0/660.0)*22;
 	
-	CHASSIS_trage_speed_temp=0;//始终锁死在轨道上//弹道测试后取消注释
+//	CHASSIS_trage_speed_temp=0;//始终锁死在轨道上//弹道测试后取消注释
 					P_PID_bate(&CHASSIS_MOTOR_SPEED_pid, CHASSIS_trage_speed_temp,M3508s[3].realSpeed);
 	send_to_chassis=CHASSIS_MOTOR_SPEED_pid.result;
 }
@@ -111,9 +111,9 @@ const uint16_t Random_CHANGE_speed = 1500;      //再次变向要达到这个速度以上
 //随机模式
 void Random_CHASSIS(void)
 {
-    if (abs(CHASSIS_trage_speed) != 4500*Chassis_PowerLimit)
+    if (abs(CHASSIS_trage_speed) != 6000*Chassis_PowerLimit)
     {
-        CHASSIS_trage_speed = 4500*Chassis_PowerLimit;//随机运动的基础速度
+        CHASSIS_trage_speed = 6000*Chassis_PowerLimit;//随机运动的基础速度
     }//随机运动   初始化速度   以Random_Velocity做变向运动
     RANDOM_CHASSIS.number = Get_RandomNumbers_Range(0, 100);
 //					if(M3508s[3].totalAngle>(CHASSIS_R_MIN+100000)&&M3508s[3].totalAngle<(CHASSIS_L_MAX-100000))//做实验确定多远变向 负十万到正十万
@@ -138,13 +138,13 @@ void Random_CHASSIS(void)
 
 					if(HWswitch_R==0&&M3508s[3].totalAngle<(CHASSIS_R_MIN+30000))
 				{
-			CHASSIS_trage_speed=4500*Chassis_PowerLimit;
+			CHASSIS_trage_speed=6000*Chassis_PowerLimit;
 			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
 				}
 			
 			if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-30000))//轨道边界变向 负十万到正十万
 			{
-				CHASSIS_trage_speed=-4500*Chassis_PowerLimit;
+				CHASSIS_trage_speed=-6000*Chassis_PowerLimit;
 			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
 			}
 	

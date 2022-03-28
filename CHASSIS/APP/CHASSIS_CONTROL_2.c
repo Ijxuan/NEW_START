@@ -72,7 +72,7 @@ xunen_percent=0.7;
 	}
 	else 
 	{
-xunen_percent=1.5;
+xunen_percent=2;
 	}	
 		
 }
@@ -89,7 +89,7 @@ else
 			}
 			else//不在两个柱子之间
 			{
-				xunen_percent=0.94;
+				xunen_percent=2;
 
 				stop_CH_OP_BC_END_times++;
 				if(stop_CH_OP_BC_END_times>200)//避免蓄能没到时间就出了轨道边界判断

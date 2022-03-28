@@ -5,7 +5,7 @@
 #include "CHASSIS_CONTROL_2.h"
 
 
-#define HW_SWITCH_JR 2000
+#define HW_SWITCH_JR 500//光电的检测距离  2000  500
 #define GD_LONG 999999
 
 bool CHASSIS_L_MAX_new=0;//左右边界值是否更新

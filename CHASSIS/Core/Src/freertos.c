@@ -546,7 +546,7 @@ void init_task(void const * argument)
 	task_init_times++;
 	CHASSIS_trage_angle = 9990000;
 
-	EM_Ramp->Rate = 0.1;
+	EM_Ramp->Rate = 2;
 	EM_Ramp->Absolute_Max = 50;
 ext_power_heat_data.data.chassis_power_buffer=200;
 	osThreadDef(Control, Robot_Control, RobotCtrl_Priority, 0, RobotCtrl_Size);
@@ -637,45 +637,45 @@ void Robot_Control(void const *argument)
 		// 6430  软限位           只允许输出正值
 		// 6400  小的是下边界	 负值向下运动
 
-		cloud_control();
+//		cloud_control();
 
-		if (GM6020s[1].totalAngle <= 6430 && send_to_pitch < 0)
-			send_to_pitch = 0;
-		if (GM6020s[1].totalAngle >= 7130 && send_to_pitch > 0)
-			send_to_pitch = 0;
-		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
-		{
-			send_to_pitch = 0;
-			send_to_yaw = 0;
+//		if (GM6020s[1].totalAngle <= 6430 && send_to_pitch < 0)
+//			send_to_pitch = 0;
+//		if (GM6020s[1].totalAngle >= 7130 && send_to_pitch > 0)
+//			send_to_pitch = 0;
+//		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
+//		{
+//			send_to_pitch = 0;
+//			send_to_yaw = 0;
 
-			yaw_trage_angle = DJIC_IMU.total_yaw;
-			//还不够，使能瞬间会抖一下，应该还要清楚I的累加，以后有时间再写
-		}
+//			yaw_trage_angle = DJIC_IMU.total_yaw;
+//			//还不够，使能瞬间会抖一下，应该还要清楚I的累加，以后有时间再写
+//		}
 
-		GM6020_SetVoltage(send_to_yaw, send_to_pitch, 0, 0); //云台  send_to_pitch
+//		GM6020_SetVoltage(send_to_yaw, send_to_pitch, 0, 0); //云台  send_to_pitch
 		Get_Encoder_Value(&Chassis_Encoder, &htim5);
 		switch_change();
-//		star_and_new();//弹道测试后取消注释
+		star_and_new();//弹道测试后取消注释
 		CHASSIS_CONTROUL();
 
-		shoot_control();
+//		shoot_control();
 
-		driver_plate_control();
+//		driver_plate_control();
 	
 if(stop_CH_OP_BC_LESS==1)
 {
-//			send_to_chassis = 0;//弹道测试后取消注释
+			send_to_chassis = 0;//弹道测试后取消注释
 
 }
 
 if(stop_CH_OP_BC_END==1)
 {
-//			send_to_chassis = 0;//弹道测试后取消注释
+			send_to_chassis = 0;//弹道测试后取消注释
 
 }
 if(stop_chassic_output==1)
 {
-//			send_to_chassis = 0;//弹道测试后取消注释
+			send_to_chassis = 0;//弹道测试后取消注释
 
 }
 		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
