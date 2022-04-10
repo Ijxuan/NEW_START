@@ -20,7 +20,7 @@ void CHASSIS_CONTROUL(void)
 {
 	#if PID_CHASSIS_MOTOR
 			#if 1	//底盘随机与巡航运动
-					if(DR16.rc.s_left==3)//自动控制
+					if(DR16.rc.s_left==1)//自动控制
 					{
 						
 
@@ -44,36 +44,20 @@ void CHASSIS_CONTROUL(void)
 				if(Cruise_CHASSIS_CHOOSE==1)//是选择巡航模式
 //				Cruise_CHASSIS();//巡航模式
 				CHASSIS_CONTROUL_2();
-				if(Random_CHASSIS_CHOOSE==1)//是选择巡航模式
+				if(Random_CHASSIS_CHOOSE==1)//是选择随机模式
 				Random_CHASSIS();//随机模式
 				
 //				CHASSIS_trage_speed=0;//锁死//弹道测试后取消注释
 					
 				}
-//				else
-//				{
-////					if( HWswitch_L==0)// 左光电感应到了，向右运动
-////					CHASSIS_trage_angle=-9990000;
-////					else if(HWswitch_R==0)//	右光电感应到了，向左运动
-////					CHASSIS_trage_angle=9990000;
-////				
-////					P_PID_bate(&CHASSIS_MOTOR_ANGLE_pid, CHASSIS_trage_angle,M3508s[3].totalAngle);//GM6020s[EMID].totalAngle readAngle
-
-////					CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result;//双环
-//////					else 				//默认向左运动
-//////					CHASSIS_trage_angle=990000;		
-////				CHASSIS_trage_speed=0;//锁死
-//					
-//				}
 
 					}
-//			CHASSIS_MOTOR_ANGLE_pid.Max_result=1200;
 			#endif
-					if(DR16.rc.s_left==1)//遥控器控制  左上
-					{
-					CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*(-1)*CHASSIS_MAX_SPEED;//遥控器给速度目标值 二选一		
-					}
-if(1)
+	if(DR16.rc.s_left==3)//遥控器控制  左中间
+	{
+	CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*(-1)*CHASSIS_MAX_SPEED;//遥控器给速度目标值 二选一		
+	}
+if(0)//加上速度的斜坡
 {	
 CHASSIS.Current_Value=M3508s[3].realSpeed;					
 CHASSIS.Target_Value=CHASSIS_trage_speed;
@@ -84,7 +68,7 @@ CHASSIS_trage_speed_temp=Ramp_Function(&CHASSIS);
 					P_PID_bate(&CHASSIS_MOTOR_SPEED_pid, CHASSIS_trage_speed_temp,M3508s[3].realSpeed);
 	send_to_chassis=CHASSIS_MOTOR_SPEED_pid.result;
 }
-if(0)
+if(1)//速度没有斜坡
 {
 
 					//		yaw_trage_speed=(DR16.rc.ch3*1.0/660.0)*22;
@@ -104,17 +88,17 @@ if(0)
 
 Random_t RANDOM_CHASSIS;
 
-const uint16_t Random_CHANGE_times = 500; //500ms间隔采样
-const uint8_t Random_Proportion = 10;      //随机概率(100-Random_Proportion)
-const uint16_t Random_CHANGE_speed = 1500;      //再次变向要达到这个速度以上
+ uint16_t Random_CHANGE_times = 600; //500ms间隔采样
+const uint8_t Random_Proportion = 15;      //随机概率(100-Random_Proportion)
+const uint16_t Random_CHANGE_speed = 1000;      //再次变向要达到这个速度以上
 
 //随机模式
 void Random_CHASSIS(void)
 {
-    if (abs(CHASSIS_trage_speed) != 6000*Chassis_PowerLimit)
-    {
-        CHASSIS_trage_speed = 6000*Chassis_PowerLimit;//随机运动的基础速度
-    }//随机运动   初始化速度   以Random_Velocity做变向运动
+//    if (abs(CHASSIS_trage_speed) != 6000*Chassis_PowerLimit)
+//    {
+//        CHASSIS_trage_speed = 3000*Chassis_PowerLimit;//随机运动的基础速度
+//    }//随机运动   初始化速度   以Random_Velocity做变向运动
     RANDOM_CHASSIS.number = Get_RandomNumbers_Range(0, 100);
 //					if(M3508s[3].totalAngle>(CHASSIS_R_MIN+100000)&&M3508s[3].totalAngle<(CHASSIS_L_MAX-100000))//做实验确定多远变向 负十万到正十万
 
@@ -123,7 +107,7 @@ void Random_CHASSIS(void)
 	#if 1
 	if(	abs(M3508s[3].realSpeed) >Random_CHANGE_speed	)
 	    RANDOM_CHASSIS.sampling++;
-	if(DO_NOT_STOP.This_area_stay_times>1000)//在同一区域停留超过3s,开始跑图
+	if(DO_NOT_STOP.This_area_stay_times>1000)//在同一区域停留超过3s,开始跑图  失能时这个值太大了,切换成自动_随机运动
 	{
 		RANDOM_CHASSIS.sampling=0;
 		arrive_speed_times=0;
@@ -134,17 +118,17 @@ void Random_CHASSIS(void)
 //		if(	arrive_targe_angle==1	)
 //	    RANDOM_CHASSIS.sampling++;
 	#endif
-						Power_Calculate();
+//						Power_Calculate();
 
-					if(HWswitch_R==0&&M3508s[3].totalAngle<(CHASSIS_R_MIN+30000))
+					if(HWswitch_R==0&&M3508s[3].totalAngle<(CHASSIS_R_MIN+9999999))
 				{
-			CHASSIS_trage_speed=6000*Chassis_PowerLimit;
+			CHASSIS_trage_speed=4000*Chassis_PowerLimit;
 			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
 				}
 			
-			if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-30000))//轨道边界变向 负十万到正十万
+			if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-9999999))//轨道边界变向 负十万到正十万
 			{
-				CHASSIS_trage_speed=-6000*Chassis_PowerLimit;
+				CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
 			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
 			}
 	
@@ -159,6 +143,14 @@ void Random_CHASSIS(void)
         }
         RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
     }
+				if(CHASSIS_trage_speed>0)
+			{
+				CHASSIS_trage_speed=4000*Chassis_PowerLimit;
+			}
+			if(CHASSIS_trage_speed<0)
+			{
+				CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
+			}
 	
 						if(abs(CHASSIS_trage_speed)>1500)
 					{
@@ -169,7 +161,7 @@ void Random_CHASSIS(void)
 						}
 						
 					}
-					if(arrive_speed_times>150)//有规律失能
+					if(arrive_speed_times>200)//有规律失能
 					{
 						if(abs(M3508s[3].realSpeed)<(abs(CHASSIS_trage_speed)-2000))
 						{
@@ -178,7 +170,7 @@ void Random_CHASSIS(void)
 						}
 						stop_CH_OP_BC_LESS=1;
 //						CHASSIS_trage_speed=0;
-						if(disable_times>80)
+						if(disable_times>20)//每次失能时长:
 						{
 							arrive_speed_times=0;
 							disable_times=0;
@@ -281,12 +273,42 @@ void Get_Encoder_Value(Encoder_t* Chassis_Encoder,TIM_HandleTypeDef* htim_ab)
 void Power_Calculate()
 {
 	static uint8_t flag=0;
+	static bool flag_kb=0;//保证进入狂暴模式时,不是在恢复功率
+
+	if(ext_power_heat_data.data.chassis_power_buffer < 150)flag = 1;  
+	//缓冲功率小于 50  开始限制功率
+	if(flag==1 && ext_power_heat_data.data.chassis_power_buffer > 180)flag=0;
+	//缓冲功率增加到  150  不再限制功率
 	
-	if(ext_power_heat_data.data.chassis_power_buffer < 50)flag = 1;
-	if(flag==1 && ext_power_heat_data.data.chassis_power_buffer > 150)flag=0;
+	if(flag==1)Chassis_PowerLimit = 1.00f;  //限制功率 在发给电机前 乘以0.65
+	else Chassis_PowerLimit = 1.150f;         //不再限制功率 在发给电机前 乘以1.0
 	
-	if(flag==1)Chassis_PowerLimit = 0.65f;
-	else Chassis_PowerLimit = 1.0f;
+	if(hurt_times_ago<1000)//被击中后3s内
+	{
+		if(flag_kb==0)
+		{
+			flag=0;//保证进入狂暴模式时,不是在恢复功率
+			flag_kb=1;
+		}
+//						Chassis_PowerLimit=KB_add_speed;//狂暴加速度
+
+	if(ext_power_heat_data.data.chassis_power_buffer < KB_low_JB)flag = 1;  
+	//缓冲功率小于 50  开始限制功率
+	if(flag==1 && ext_power_heat_data.data.chassis_power_buffer > KB_high_JB)flag=0;
+	//缓冲功率增加到  150  不再限制功率
+	
+	if(flag==1)Chassis_PowerLimit = 1.17f;  //限制功率 在发给电机前 乘以0.65
+	else Chassis_PowerLimit = KB_add_speed;         //不再限制功率 在发给电机前 乘以1.0
+		
+		
+		Random_CHANGE_times=250;//随机变向频率
+	}
+	else
+	{
+		flag_kb=0;
+				Random_CHANGE_times=500;//随机变向频率变高
+
+	}
 	
 }
 

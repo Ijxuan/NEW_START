@@ -5,12 +5,20 @@
 int speed_has_change=0;
 int last_Speed=0;
 int xunen_times=0;
-float xunen_percent=1.0;
+float xunen_percent=1.5;
 void CHASSIS_CONTROUL_2()
 {
-				stop_CH_OP_BC_LESS=0;	
+				stop_CH_OP_BC_LESS=0;//这个模式用不到	
 
-			if(HWswitch_R==0&&M3508s[3].totalAngle<(CHASSIS_R_MIN+40000))
+				if(M3508s[3].totalAngle<(CHASSIS_R_MIN+200000))
+				{
+				CHASSIS_trage_angle=9900000;		
+				}
+			else if(M3508s[3].totalAngle>(CHASSIS_L_MAX-200000))//
+			{
+	CHASSIS_trage_angle=-9900000;			
+			}
+			if(HWswitch_R==0&&M3508s[3].totalAngle<(CHASSIS_R_MIN+30000))
 			{
 				stop_CH_OP_BC_END_times=0;
 								xunen_times++;
@@ -29,11 +37,11 @@ if(speed_has_change==0)
 	if(	xunen_times>4)//弹簧冲能前加速的时间
 	{
 stop_CH_OP_BC_END=1;
-xunen_percent=0.7;		
+//xunen_percent=0.7;		
 	}
 	else 
 	{
-xunen_percent=1.5;
+//xunen_percent=1.0;
 	}
 }	
 else
@@ -48,7 +56,7 @@ else
 	}
 
 			}
-			else if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-40000))//
+			else if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-30000))//
 //			else if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-3000))//
 			{
 				stop_CH_OP_BC_END_times=0;
@@ -68,11 +76,11 @@ if(speed_has_change==0)
 	if(	xunen_times>4)//弹簧冲能前加速的时间
 	{
 stop_CH_OP_BC_END=1;
-xunen_percent=0.7;		
+//xunen_percent=0.7;		
 	}
 	else 
 	{
-xunen_percent=2;
+//xunen_percent=1.0;
 	}	
 		
 }
@@ -89,7 +97,7 @@ else
 			}
 			else//不在两个柱子之间
 			{
-				xunen_percent=2;
+//				xunen_percent=1.5;
 
 				stop_CH_OP_BC_END_times++;
 				if(stop_CH_OP_BC_END_times>200)//避免蓄能没到时间就出了轨道边界判断

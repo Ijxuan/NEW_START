@@ -117,6 +117,13 @@ int CH3_TOTAL=0;
 int JS_RC_TIMES=0;
 bool run_JS_jiema;
 
+int STATUS_PART_ONE_TIMES=0;
+int STATUS_PART_TWO_TIMES=0;
+int STATUS_PART_THREE_TIMES=0;
+int STATUS_PART_FOUR_TIMES=0;
+int STATUS_complete_update_TIMES=0;
+
+
 int DDR16_PART_ONE_TIMES=0;
 int DDR16_PART_TWO_TIMES=0;
 int DDR16_PART_THREE_TIMES=0;
@@ -135,6 +142,9 @@ float CLOUD_enable_imu=0;
 bool cloud_text_add=1;
 bool cloud_enable=0;
 int VISION_FROM_USART1=0;
+int VISION_Disconnect_test=0;
+int lose_time=0;
+int vision_shoot_times;
 
 /* USER CODE END 0 */
 

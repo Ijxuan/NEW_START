@@ -189,7 +189,7 @@ void MX_FREERTOS_Init(void) {
 						 5000, -5000, //积分限幅，也就是积分的输出范围
 						 28000, -28000);
 						 
-	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 8, 0, 0,//越大越陡峭10
+	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 11.25, 0, 0,//越大越陡峭10
 						 0,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
@@ -212,13 +212,13 @@ void MX_FREERTOS_Init(void) {
 #endif
 
 #if PID_PITCH_IMU
-	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 150,1,0,//100, 1.5, 0,
+	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 200,1.43,50,//100, 1.5, 0,
 						 240, //误差大于这个值就积分分离  550 1.9 0   -20000
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
 						 28000, -28000);
-	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,21 //0.7  12
+	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,16.5 //0.7  12
 	, 0, 0,
 						 0,
 						 //						  float max_error, float min_error,
@@ -382,7 +382,7 @@ void Debug(void const * argument)
 		
 		
 //BEEP_TEXT();		
-		osDelay(1);
+		osDelay(5);
 	}
   /* USER CODE END Debug */
 }
@@ -423,6 +423,22 @@ void IMU_Send(void const * argument)
 
 #endif
 Update_Vision_SendData();
+		VISION_Disconnect_test++;
+		if(VISION_Disconnect_test==1000)//一秒检测一次
+		{
+			if(VisionData.Offline_Detec>10)//一秒接受10次不过分吧
+				VisionData.Offline_Detec=0;
+			else
+			{
+				VisionData.Offline_Detec=0;
+				VisionData.DataUpdate_Flag=0;//标志位置零
+				VisionData.RawData.Beat=0;//击打置零
+				VisionData.RawData.Armour=0;//识别置零
+				VisionData.RawData.Pitch_Angle=0;
+				VisionData.RawData.Yaw_Angle=0;
+			}
+			VISION_Disconnect_test=0;
+		}
 		vTaskDelayUntil(&xLastWakeTime, TimeIncrement);
 	}
   /* USER CODE END IMU_Send */
@@ -470,12 +486,56 @@ int i=0;
 				JS_RC_TIMES++;
 run_JS_jiema=1;
 			}
-				if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_RC_HURT_ID)
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_RC_HURT_ID)
 			{
 				//解包
 				ext_robot_hurt.data.dataBuff[0]=CAN2_Rx_Structure.CAN_RxMessageData[0];
 				ext_robot_hurt.InfoUpdataFlag++;
 			}		
+			
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_STATUS_ID_ONE)
+			{
+				//状态数据解包1
+				for(i=0;i<8;i++)
+				{
+				ext_game_robot_state.data.dataBuff[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+				STATUS_PART_ONE_TIMES++;
+
+			}
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_STATUS_ID_TWO)
+			{
+				//状态数据解包2
+				for(i=0;i<8;i++)
+				{
+				ext_game_robot_state.data.dataBuff[i+8]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+
+				}
+				STATUS_PART_TWO_TIMES++;
+
+			}
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_STATUS_ID_THREE)
+			{
+				//状态数据解包3
+				for(i=0;i<8;i++)
+				{
+				ext_game_robot_state.data.dataBuff[i+16]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+				STATUS_PART_THREE_TIMES++;
+			}	
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_STATUS_ID_FOUR)
+			{
+				//状态数据解包4
+				for(i=0;i<8;i++)
+				{
+				ext_game_robot_state.data.dataBuff[i+24]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+				STATUS_PART_FOUR_TIMES++;
+STATUS_complete_update_TIMES++;
+				}			
+			
+			
+			
 			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == DR16_R_PART_ONE)
 			{
 				//解包1
@@ -506,8 +566,6 @@ run_JS_jiema=1;
 				}
 				DDR16_PART_THREE_TIMES++;
 				run_DR16_jiema=1;
-
-				
 			}
 			
 		}
@@ -615,8 +673,15 @@ void Robot_Control(void const *argument)
 
 			run_JS_jiema=0;
 		}
-		
-		controul_times++;
+				if(VisionData.RawData.Armour==0)//控制挡位-扫描开始
+				{
+		lose_time++;
+				}
+			if(VisionData.RawData.Armour==1)//控制挡位-扫描开始
+				{
+		lose_time=0;
+				}
+				controul_times++;
 		cloud_control();
 
 		if (GM6020s[3].totalAngle <= 6800 && send_to_pitch < 0)
@@ -636,8 +701,8 @@ void Robot_Control(void const *argument)
 			yaw_trage_angle=DJIC_IMU.total_yaw;
 			//还不够，使能瞬间会抖一下，应该还要清楚I的累加，以后有时间再写
 		}
-//		GM6020_SetVoltage(send_to_yaw,0 , 0, send_to_pitch); //云台  send_to_pitch
-		GM6020_SetVoltage(0,0 , 0, 0); //云台  send_to_pitch
+		GM6020_SetVoltage(send_to_yaw,0 , 0, send_to_pitch); //云台  send_to_pitch
+//		GM6020_SetVoltage(0,0 , 0, 0); //云台  send_to_pitch
 
 		//	if(DR16.rc.s_left==1)//遥控器控制  左上
 		// SHOOT_L_speed=500;

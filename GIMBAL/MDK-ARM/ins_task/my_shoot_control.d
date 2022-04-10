@@ -59,3 +59,7 @@ ins_task\my_shoot_control.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/
 ins_task\my_shoot_control.o: ..\Arithmetic\my_positionPID_bate.h
 ins_task\my_shoot_control.o: ..\application\INS_task.h
 ins_task\my_shoot_control.o: ..\application\struct_typedef.h
+ins_task\my_shoot_control.o: ..\ADD\Vision.h
+ins_task\my_shoot_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+ins_task\my_shoot_control.o: ../Inc/usart.h
+ins_task\my_shoot_control.o: ..\Arithmetic\CRC.h

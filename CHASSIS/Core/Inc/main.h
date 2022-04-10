@@ -136,6 +136,8 @@ extern float Vision_RawData_Pitch_Angle;
 extern bool send_to_C;
 extern bool send_to_C_JS_SHOOT;
 extern bool send_to_C_JS_HURT;//裁判系统_伤害数据_是否发送给C板
+extern bool send_to_C_JS_STATUS;//裁判系统_状态数据_是否发送给C板
+extern int send_to_C_STATUS_times;//因为状态数据分4段发送,所以计数保险一点
 
 extern int JS_SEND_times;
 
@@ -154,6 +156,14 @@ extern int CHASSIS_trage_speed_temp;
 
 extern int uart_3_times;
 
+extern int M3508_acceleration_cycle;//加速度计算周期(每次计算的间隔)(ms)
+extern int M3508_last_speed;//上一时刻的速度,用于加速度计算
+extern float M3508_acceleration; //加速度
+
+extern int hurt_times_ago;//多久前被击打
+extern float KB_add_speed;//狂暴模式加速
+extern float KB_low_JB;//狂暴模式缓冲功率下限
+extern float KB_high_JB;//狂暴模式缓冲功率回复目标
 typedef struct
 {
 	bool step_1;

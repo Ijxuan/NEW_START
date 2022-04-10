@@ -9,6 +9,7 @@
 #include "M3508.h"
 //#include "MY_CHASSIS_CONTROL.h"
 #include "my_IncrementPID_bate.h"
+#include "Vision.h"
 
 //#include "GM6020_Motor.h"
 //#include "control.h"
@@ -16,6 +17,7 @@
 static int USART_Receive_DMA_NO_IT(UART_HandleTypeDef* huart, uint8_t* pData, uint32_t Size);
 ext_shoot_data_t ext_shoot_data;
 ext_robot_hurt_t ext_robot_hurt;
+ext_game_robot_status_t ext_game_robot_state;
 
 uint8_t JSBuffer[8];
 
@@ -322,7 +324,7 @@ void NM_swj(void)
 			send_d_16[p++]=0;//输出电压		10
 														//保留到小数点后四位
 #endif
-	#if 0//发送云台数据
+	#if 1//发送云台数据
 	p=0;
 			send_d_32[p++]=DJIC_IMU.total_yaw*1000;//目标角度		1
 			send_d_32[p++]=yaw_trage_angle*1000;//当前角度		2
@@ -332,17 +334,17 @@ void NM_swj(void)
 
 			//DJIC_IMU.Gyro_y*1000000
 //DJIC_IMU.pitch
-			send_d_32[p++]= (CLOUD_enable_imu-70)*1000;//I_OUT 4		4PID_YES
+			send_d_32[p++]= DJIC_IMU.total_pitch*1000;//I_OUT 4		4PID_YES
 
-			send_d_32[p++]=(CLOUD_enable_imu+70)*1000;//P_OUT		5
-			send_d_32[p++]=Yaw_IMU_Speed_pid.I_Output;//I_OUT		6
-			send_d_32[p++]=Yaw_IMU_Speed_pid.Differential;//D_OUT  	7
+			send_d_32[p++]=Vision_RawData_Pitch_Angle*1000;//P_OUT		5
+			send_d_32[p++]=PITCH_trage_angle*1000;//I_OUT		6
+			send_d_32[p++]=Vision_RawData_Yaw_Angle*1000;//D_OUT  	7
 	p=0;
 			send_d_16[p++]=send_to_yaw;//输出电压      8
 
 			send_d_16[p++]=yaw_trage_speed*100000;//目标角度       	9
-			send_d_16[p++]=DJIC_IMU.Gyro_z*100000;//输出电压		10
-														//保留到小数点后四位
+			send_d_16[p++]=VisionData.RawData.Armour*1111;//输出电压		10
+														//保留到小数点后四位558 320 660   bjTlta
 #endif
 	#if 0//发送云台数据
 //先确定哪个轴是PITCH轴(陀螺仪有三个轴)
@@ -606,9 +608,9 @@ send_data10=M3508s[2].realSpeed;
 
 #endif
 }
-if(1)
+if(0)
 {
-#if 1//发送摩擦轮数据  中
+#if 0//发送摩擦轮数据  中
 	p=0;
 
 //			send_d_32[p++]=Yaw_Angle_pid.Target;//目标角度		1
@@ -692,9 +694,9 @@ addcheck += sumcheck; //每一字节的求和操作，进行一次sumcheck的累加
 	testdatatosend[_cnt++]=sumcheck;	
 	testdatatosend[_cnt++]=addcheck;	
 
-//	HAL_UART_Transmit_DMA(&huart1,&testdatatosend[0],_cnt);//4pin
+	HAL_UART_Transmit_DMA(&huart1,&testdatatosend[0],_cnt);//4pin
 
-	CDC_Transmit_FS(&testdatatosend[0],_cnt);
+//	CDC_Transmit_FS(&testdatatosend[0],_cnt);
 
 
 }

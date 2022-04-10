@@ -63,3 +63,4 @@ ins_task\vision.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ins_task\vision.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h
 ins_task\vision.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
 ins_task\vision.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
+ins_task\vision.o: ..\ADD\DR16_RECIVE.h

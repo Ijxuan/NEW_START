@@ -5,7 +5,7 @@
 #include "CHASSIS_CONTROL_2.h"
 
 
-#define HW_SWITCH_JR 500//光电的检测距离  2000  500
+#define HW_SWITCH_JR 2000//光电的检测距离  2000  500
 #define GD_LONG 999999
 
 bool CHASSIS_L_MAX_new=0;//左右边界值是否更新
@@ -89,33 +89,17 @@ void star_and_new()
 
 		if(CHASSIS_R_MIN_new==0||CHASSIS_L_MAX_new==0	)	//只有当边界值更新完了才会  真正开始巡航	
 		{
-			
 					if( HWswitch_L==0)// 左光电感应到了，向右运动
 					CHASSIS_trage_angle=-9990000;
 					else if(HWswitch_R==0)//	右光电感应到了，向左运动
 					CHASSIS_trage_angle=9990000;
-							if(DR16.rc.s_left==3)//自动控制
-						{			
-					P_PID_bate(&CHASSIS_MOTOR_ANGLE_pid, CHASSIS_trage_angle,M3508s[3].totalAngle);//GM6020s[EMID].totalAngle readAngle
-
-					CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result;//双环	
-						}
-
-//					else 				//默认向左运动
-//					CHASSIS_trage_angle=990000;		
-//				CHASSIS_trage_speed=0;//锁死	
-	
-	
-	
+	if(DR16.rc.s_left==1)//光电没检测到用的是这套PID,改变的是目标角度
+	{			
+	P_PID_bate(&CHASSIS_MOTOR_ANGLE_pid, CHASSIS_trage_angle,M3508s[3].totalAngle);
+	CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*0.5;//双环	
+	}
 		}
-//		else
-//		{
-//					just_arrive_targe_speed(4500);
-//if(arrive_targe_angle==1)
-//{
-//			stop_CH_OP_BC_LESS = 1;
-//}
-//		}
+
 		
 }
 

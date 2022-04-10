@@ -16,8 +16,16 @@
 //陀螺仪校准 接收ID 
 #define IMU_CAL_REIID 0x096
 
+#define JS_SEND_STATUS_ID_ONE 0x138
+#define JS_SEND_STATUS_ID_TWO 0x139
+#define JS_SEND_STATUS_ID_THREE 0x140
+#define JS_SEND_STATUS_ID_FOUR 0x141
+
 #define JS_RC_SHOOT_ID 0x136
 #define JS_RC_HURT_ID 0x137
+
+
+
 
 #define DR16_R_PART_ONE 0x135
 #define DR16_R_PART_TWO 0x134

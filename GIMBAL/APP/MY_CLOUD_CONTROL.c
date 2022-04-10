@@ -25,7 +25,7 @@ void cloud_control(void)
 //*/
 //	
 //
-// scan_cloud();
+ scan_cloud();
 
 							YAW_PID();//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //	
@@ -108,7 +108,7 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 					#if PID_YAW_IMU//YAW轴陀螺仪
 									if(DR16.rc.s_left==3)//YAW轴控制挡位
 							{
-							yaw_trage_angle+=(DR16.rc.ch0/660.0)/10.0;//YAW轴遥控器控制
+							yaw_trage_angle-=(DR16.rc.ch0/660.0)/10.0;//YAW轴遥控器控制
 							CH0_TOTAL_in_con+=	DR16.rc.ch0;
 								if(DR16.rc.ch0!=0)
 								dr16_controul_times++;
@@ -117,6 +117,8 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 							{
 								if(VisionData.RawData.Armour==1)
 							yaw_trage_angle=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;//YAW轴遥控器控制
+								else
+								yaw_trage_angle-=(DR16.rc.ch0/660.0)/10.0;//YAW轴遥控器控制
 
 							}							
 //					Yaw_IMU_Angle_pid.Kp=-YAW_IMU_Kp;//调试过程中这个值要不断更新
@@ -166,7 +168,8 @@ void PITCH_PID()
 							{
 								if(VisionData.RawData.Armour==1)
 							PITCH_trage_angle=DJIC_IMU.total_pitch-Vision_RawData_Pitch_Angle;//YAW轴遥控器控制
-
+								else
+								PITCH_trage_angle+=(DR16.rc.ch0/660.0)*0.4;//YAW轴遥控器控制
 							
 							}
 
@@ -256,7 +259,7 @@ void scan_cloud(void)
 			if(DR16.rc.s_left==1)//控制挡位-扫描
 	{
 //		if(DR16.rc.s_right==3)//控制挡位-扫描开始
-		if(VisionData.RawData.Armour==0)//控制挡位-扫描开始
+		if(VisionData.RawData.Armour==0&&lose_time>2000)//控制挡位-扫描开始
 		{
 		 int scan_speed_PITCH=1;//PITCH轴扫描速度,最小为1
 		int scan_speed_YWA=4;//YAW轴扫描速度,最小为1
@@ -316,13 +319,15 @@ if(scan_time%scan_speed_YWA==0)//是扫描速度的整数倍
 	
 }	
 			
-			PITCH_trage_angle=PITCH_MIN_angle+allow_angle*(scan_percent_PITCH/1000.0);//PITCH
-yaw_trage_angle=YAW_START_ANGLE+432*(scan_percent_YAW/1000.0);//YAW轴转一圈多一点
+//			PITCH_trage_angle=PITCH_MIN_angle+(allow_angle-22)*(scan_percent_PITCH/1000.0);//PITCH
+//yaw_trage_angle=YAW_START_ANGLE+400*(scan_percent_YAW/1000.0);//YAW轴转一圈多一点
 		}
 		else //控制挡位-扫描结束
 		{
 			scan_time=0;
+							if(lose_time>4000)//控制挡位-扫描开始
 YAW_START_ANGLE=DJIC_IMU.total_yaw;//丝滑开始扫描
+							
 scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	;	
 scan_percent_YAW=0;			
 			

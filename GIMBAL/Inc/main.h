@@ -147,6 +147,12 @@ extern int CH3_TOTAL;
 extern int JS_RC_TIMES;
 extern bool run_JS_jiema;
 
+extern int STATUS_PART_ONE_TIMES;
+extern int STATUS_PART_TWO_TIMES;
+extern int STATUS_PART_THREE_TIMES;
+extern int STATUS_PART_FOUR_TIMES;
+extern int STATUS_complete_update_TIMES;
+
 extern int DDR16_PART_ONE_TIMES;
 extern int DDR16_PART_TWO_TIMES;
 extern int DDR16_PART_THREE_TIMES;
@@ -165,6 +171,10 @@ extern float CLOUD_enable_imu;
 extern bool cloud_text_add;
 extern bool cloud_enable;
 extern int VISION_FROM_USART1;
+extern int VISION_Disconnect_test;
+
+extern int lose_time;
+extern int vision_shoot_times;
 
 /* USER CODE END Private defines */
 

@@ -383,9 +383,9 @@
           <GroupName>APP</GroupName>
           <Files>
             <File>
-              <FileName>MY_CLOUD_CONTROL.c</FileName>
+              <FileName>CHASSIS_CONTROL_basic.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\APP\MY_CLOUD_CONTROL.c</FilePath>
+              <FilePath>..\APP\CHASSIS_CONTROL_basic.c</FilePath>
             </File>
             <File>
               <FileName>MY_CHASSIS_CONTROL.c</FileName>
@@ -393,19 +393,19 @@
               <FilePath>..\APP\MY_CHASSIS_CONTROL.c</FilePath>
             </File>
             <File>
-              <FileName>MY_SHOOT_CONTROL.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\APP\MY_SHOOT_CONTROL.c</FilePath>
-            </File>
-            <File>
               <FileName>CHASSIS_CONTROL_2.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\APP\CHASSIS_CONTROL_2.c</FilePath>
             </File>
             <File>
-              <FileName>CHASSIS_CONTROL_basic.c</FileName>
+              <FileName>MY_CLOUD_CONTROL.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\APP\CHASSIS_CONTROL_basic.c</FilePath>
+              <FilePath>..\APP\MY_CLOUD_CONTROL.c</FilePath>
+            </File>
+            <File>
+              <FileName>MY_SHOOT_CONTROL.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\APP\MY_SHOOT_CONTROL.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -696,6 +696,11 @@
               <FileName>DR16_CAN2_SEND.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\DR16_CAN2_SEND.c</FilePath>
+            </File>
+            <File>
+              <FileName>CAN2_SEND.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\CAN2_SEND.c</FilePath>
             </File>
           </Files>
         </Group>

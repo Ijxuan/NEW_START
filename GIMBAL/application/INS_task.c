@@ -666,8 +666,8 @@ void Updata_Hand_Euler_Gyro_Data(void)
 	DJIC_IMU.total_pitch = DJIC_IMU.pitch + DJIC_IMU.pitch_turnCounts * 360.0f;
 	DJIC_IMU.last_pitch = DJIC_IMU.pitch;
 	
-		Vision_Cloud.VisionSend_t.YawAngle_Error=DJIC_IMU.total_yaw;
-	Vision_Cloud.VisionSend_t.PitchAngle_Error=DJIC_IMU.total_pitch;
+		Vision_Cloud.VisionSend_t.YawAngle_Error=DJIC_IMU.yaw;
+	Vision_Cloud.VisionSend_t.PitchAngle_Error=DJIC_IMU.pitch;
 }
 
 

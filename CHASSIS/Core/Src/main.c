@@ -200,10 +200,18 @@ float Vision_RawData_Yaw_Angle=0;
 float Vision_RawData_Pitch_Angle=0;
 
 bool send_to_C;//DR16_遥控器_是否发送给C板
-bool send_to_C_JS_SHOOT;//裁判系统_发射数据_是否发送给C板
+/*
+机器人状态数据，10Hz 周期发送                              27(15)
+实时功率热量数据，50Hz 周期发送                            16(14)
+伤害状态数据，伤害发生后发送                               1
+实时射击数据，子弹发射后发送                               6
+子弹剩余发送数，空中机器人以及哨兵机器人发送，1Hz 周期发送   2
+*/
+bool send_to_C_JS_SHOOT;//裁判系统_发射数据_是否发送给C板  
 bool send_to_C_JS_HURT;//裁判系统_伤害数据_是否发送给C板
-
+bool send_to_C_JS_STATUS;//裁判系统_状态数据_是否发送给C板
 int send_to_C_times;
+int send_to_C_STATUS_times=0;//因为状态数据分4段发送,所以计数保险一点
 
 int CH_TOTAL=0;
 float Chassis_PowerLimit=1;
@@ -214,6 +222,15 @@ bool stop_CH_OP_BC_LESS=0;
 int stop_CH_OP_BC_LESS_times=0;
 int CHASSIS_trage_speed_temp;
 int JS_SEND_times=0;//裁判系统发送次数
+
+int M3508_acceleration_cycle=10;//加速度计算周期(每次计算的间隔)(ms)
+int M3508_last_speed;//上一时刻的速度,用于加速度计算
+float M3508_acceleration; //加速度
+
+int hurt_times_ago=9999;//多久前被击打,初始化不会触发
+float KB_add_speed=1.4;//狂暴模式加速
+float KB_low_JB=30;//狂暴模式缓冲功率下限
+float KB_high_JB=80;//狂暴模式缓冲功率回复目标
 
 //driver  plate
 /* USER CODE END 0 */

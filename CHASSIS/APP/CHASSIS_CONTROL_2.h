@@ -6,6 +6,7 @@
 #include "M3508.h"
 #include "my_positionPID_bate.h"
 #include "MY_CHASSIS_CONTROL.h"
+extern float xunen_percent;
 
 #if chassis_radom_mode_two ==1
 

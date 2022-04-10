@@ -20,8 +20,53 @@ extern uint8_t Vision_DataBuff[Vision_BuffSize];
 #define VisionPage_Width 1280
 #define VisionPage_Height 800
 
+#define Vision_TX_NEW 1
+
+#if Vision_TX_NEW  //
+//视觉发送数据结构体
+typedef struct
+{
+	union
+	{
+		struct
+		{
+			float YawAngle_Error;	//陀螺仪YAW角度差
+			float PitchAngle_Error; //陀螺仪Pitch角度差
+		};
+		uint8_t Angle_Error_Data[8];
+	} VisionSend_t;
 
 
+
+} VisionSend_Cloud_t_NEW;
+typedef struct
+{
+	uint8_t start_tag;
+	uint8_t robot_id;
+	/*
+	机器人 ID：
+1，英雄(红)；
+2，工程(红)；
+3/4/5，步兵(红)；
+6，空中(红)；
+7，哨兵(红)；
+9，雷达站（红）；
+
+101，英雄(蓝)；
+102，工程(蓝)；
+103/104/105，步兵(蓝)；
+106，空中(蓝)；
+107，哨兵(蓝)；
+109，雷达站（蓝）。*/
+	uint8_t mode;
+	float yaw_angle;
+	float pit_angle;
+	uint8_t shoot_speed;
+	uint8_t end_tag;
+
+}VisionSend_Pack_t;
+
+#endif  //
 
 
 
@@ -112,5 +157,7 @@ void Vision_Handler(UART_HandleTypeDef *huart);
 void Vision_ID_Type_Init(void);
 void Update_Vision_SendData(void);
 int USART_RX_DMA_ENABLE(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+
+
 
 #endif

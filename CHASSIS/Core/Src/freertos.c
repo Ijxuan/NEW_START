@@ -47,6 +47,7 @@
 #include "DR16_CAN2_SEND.h"
 #include "CHASSIS_CONTROL_basic.h"
 #include "CHASSIS_CONTROL_2.h"
+#include "CAN2_SEND.h"
 
 //#include "task.h"
 
@@ -302,25 +303,36 @@ void DeBug(void const * argument)
 	{
 
 		task_debug_times++;
-
+ if(task_debug_times%M3508_acceleration_cycle==0)//加速度计算周期(每次计算的间隔)(ms)
+ {
+ M3508_acceleration=M3508s[3].realSpeed-M3508_last_speed;//加速度计算
+ M3508_last_speed=M3508s[3].realSpeed;
+ }
 //		Update_Vision_SendData();
-		if (send_to_C == 1)
+		if (send_to_C == 1)//遥控器数据
 		{
 			DR16_send_master_control();
 			send_to_C_times++;
 			send_to_C = 0;
 		}	
-		if(send_to_C_JS_HURT==1)
+		if(send_to_C_JS_HURT==1)//伤害状态数据，伤害发生后发送
 		{
 			send_to_C_JS_HURT=0;
 			JS_send_HURT_control();
 		}
-		if (send_to_C_JS_SHOOT == 1)
+		if (send_to_C_JS_SHOOT == 1)//实时射击数据，子弹发射后发送
 		{
 JS_send_SHOOT_control();
 			JS_SEND_times++;
 			send_to_C_JS_SHOOT=0;
 		}
+		if (send_to_C_JS_STATUS == 1)//裁判系统_状态数据_10Hz 周期发送
+		{
+			send_to_C_STATUS_times++;
+JS_send_STATUS_control();
+			send_to_C_JS_STATUS=0;
+		}
+		
 		
 		if (DR16.rc.s_right == 3) //是否上位机
 		{
@@ -332,7 +344,16 @@ JS_send_SHOOT_control();
 				times_i = 0;
 			}
 		}
-		/*
+		if(ext_robot_hurt.data.hurt_type==0)
+		{
+			if(ext_robot_hurt.data.armor_id==0||ext_robot_hurt.data.armor_id==1)
+			{
+				hurt_times_ago=0;//被击中了
+				ext_robot_hurt.data.hurt_type=10;
+			}
+			
+		}
+			/*
 	  //memset(RunTimeInfo,0,400);				//信息缓冲区清零
 
 
@@ -472,8 +493,8 @@ void init_task(void const * argument)
 						 500,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
-						 16000, -16000,
-						 16000, -16000); // Yaw_IMU_Angle_pid
+						 10000, -10000,
+						 10000, -10000); // Yaw_IMU_Angle_pid
 
 #endif
 
@@ -546,7 +567,7 @@ void init_task(void const * argument)
 	task_init_times++;
 	CHASSIS_trage_angle = 9990000;
 
-	EM_Ramp->Rate = 2;
+	EM_Ramp->Rate = 0.2;//视觉自瞄的斜坡函数增加值
 	EM_Ramp->Absolute_Max = 50;
 ext_power_heat_data.data.chassis_power_buffer=200;
 	osThreadDef(Control, Robot_Control, RobotCtrl_Priority, 0, RobotCtrl_Size);
@@ -624,71 +645,43 @@ void Robot_Control(void const *argument)
 	xLastWakeTime = xTaskGetTickCount();
 	const TickType_t TimeIncrement = pdMS_TO_TICKS(3); //每1毫秒强制进入总控制
 	CHASSIS.Absolute_Max=4000;
-	CHASSIS.Rate=25;
+	CHASSIS.Rate=25;//底盘速度的斜坡函数增加值
+
 	/* Infinite loop */
 	for (;;)
 	{
 		task_controul_times++;
-		// 7175  机械限位
-		// 7160	大的是上边界     正值向上运动
-		// 7130  软限位           只允许输出负值
+		hurt_times_ago++;//伤害计时
 
-		//目标角度只允许在6435-7125之间
-		// 6430  软限位           只允许输出正值
-		// 6400  小的是下边界	 负值向下运动
 
-//		cloud_control();
 
-//		if (GM6020s[1].totalAngle <= 6430 && send_to_pitch < 0)
-//			send_to_pitch = 0;
-//		if (GM6020s[1].totalAngle >= 7130 && send_to_pitch > 0)
-//			send_to_pitch = 0;
-//		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
-//		{
-//			send_to_pitch = 0;
-//			send_to_yaw = 0;
 
-//			yaw_trage_angle = DJIC_IMU.total_yaw;
-//			//还不够，使能瞬间会抖一下，应该还要清楚I的累加，以后有时间再写
-//		}
-
-//		GM6020_SetVoltage(send_to_yaw, send_to_pitch, 0, 0); //云台  send_to_pitch
 		Get_Encoder_Value(&Chassis_Encoder, &htim5);
+		
 		switch_change();
 		star_and_new();//弹道测试后取消注释
 		CHASSIS_CONTROUL();
-
-//		shoot_control();
-
-//		driver_plate_control();
-	
+		
 if(stop_CH_OP_BC_LESS==1)
 {
-			send_to_chassis = 0;//弹道测试后取消注释
-
+			send_to_chassis = 0;//弹道测试后取消注释//到达指定速度后随机的失能
 }
-
 if(stop_CH_OP_BC_END==1)
 {
-			send_to_chassis = 0;//弹道测试后取消注释
-
+			send_to_chassis = 0;//弹道测试后取消注释//撞柱前,加速,然后失能一段时间
 }
-if(stop_chassic_output==1)
-{
-			send_to_chassis = 0;//弹道测试后取消注释
 
-}
+		if(CHASSIS_trage_speed>0&&send_to_chassis<0)
+			send_to_chassis=0;
+		if(CHASSIS_trage_speed<0&&send_to_chassis>0)
+			send_to_chassis=0;
 		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
 		{
 			CHASSIS_MOTOR_SPEED_pid.Integral=0;
 			send_to_chassis = 0;
-			send_to_SHOOT_R = 0;
-			send_to_SHOOT_L = 0;
-			send_to_driver = 0;
-//			 cloud_enable=0;
-
 		}
 		M3508s1_setCurrent(0, 0, 0, send_to_chassis);
+//		M3508s1_setCurrent(0, 0, 0, 0);		
 		vTaskDelayUntil(&xLastWakeTime, TimeIncrement);
 
 		//			  	  HAL_Delay(100);

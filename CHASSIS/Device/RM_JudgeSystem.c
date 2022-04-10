@@ -1583,6 +1583,7 @@ void Judge_GetMessage(uint16_t Data_Length)
 					memcpy(&ext_game_robot_state.data.dataBuff, &JudgeSystem_rxBuff[n + 7], sizeof(uint8_t[27]));
 					n += JudgeLength_Robot_State;
 					ext_game_robot_state.InfoUpdataFlag = 1;
+					send_to_C_JS_STATUS=1;
 				}
 				else
 					n++;

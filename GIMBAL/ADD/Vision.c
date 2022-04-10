@@ -1,6 +1,7 @@
 #include "Vision.h"
 #include "FPS_Calculate.h"
 #include "usbd_cdc_if.h"
+#include "DR16_RECIVE.h"
 
 
 //#include "usb_device.h"
@@ -16,6 +17,11 @@ uint8_t Vision_DataBuff[Vision_BuffSize];
 VisionData_t VisionData;
 //视觉的发送数据结构体
 VisionSend_Cloud_t Vision_Cloud;
+
+#if Vision_TX_NEW  //
+//视觉发送数据结构体
+VisionSend_Cloud_t_NEW Vision_Send_new;
+#endif  //
 
 //JC EM_R;
 //#include "user_UART.h"
@@ -75,6 +81,7 @@ uint8_t Vision_SendBuff[5][18] = {'S', '0', '7', '0', '0', '0', '0', '0', '0', '
 //									1	2	 3    4    5    6    7    8    9   10    11   12   13   14   15  16   17   18
 
 //视觉接收函数
+bool shoot_last=0;
 void Vision_DataReceive(uint8_t *data)
 {
 	//进行CRC校验
@@ -105,7 +112,12 @@ void Vision_DataReceive(uint8_t *data)
 //			//Pitch轴：
 			Vision_RawData_Pitch_Angle = (float)VisionData.RawData.Pitch_Angle / 100.0f;
 
+	if(VisionData.RawData.Beat==1&&shoot_last==1)
+	vision_shoot_times++;
+	else
+	vision_shoot_times=0;
 	
+	shoot_last=VisionData.RawData.Beat;
 //EM_R.step_2=1;	
 	//接收到错误的信息，则相当于无接收到消息，则无视觉作用
 	//脱离视野范围，是接收到正确的消息
@@ -153,91 +165,7 @@ void Vision_ID_Type_Init(void)
 //		Robots_Control.TeamColor = TeamColor_Red;
 //		Robots_Control.Types = Types_Sentry;
 		Vision_Set_ID_Type('2', '7');
-//		break;
-//	case 1:
-//		Robots_Control.TeamColor = TeamColor_Red;
-//		Robots_Control.Types = Types_Hero;
-//		Vision_Set_ID_Type('1', '1');
-//		break;
 
-//	case 2:
-//		Robots_Control.TeamColor = TeamColor_Red;
-//		Robots_Control.Types = Types_Engineer;
-//		Vision_Set_ID_Type('1', '2');
-//		break;
-
-//	case 3:
-//		Robots_Control.TeamColor = TeamColor_Red;
-//		Robots_Control.Types = Types_Standard;
-//		Vision_Set_ID_Type('1', '3');
-//		break;
-
-//	case 4:
-//		Robots_Control.TeamColor = TeamColor_Red;
-//		Robots_Control.Types = Types_Standard;
-//		Vision_Set_ID_Type('1', '3');
-//		break;
-
-//	case 5:
-//		Robots_Control.TeamColor = TeamColor_Red;
-//		Robots_Control.Types = Types_Standard;
-//		Vision_Set_ID_Type('1', '3');
-//		break;
-
-//	case 6:
-//		Robots_Control.TeamColor = TeamColor_Red;
-//		Robots_Control.Types = Types_Aerial;
-//		Vision_Set_ID_Type('1', '6');
-//		break;
-
-//	case 7:
-//		Robots_Control.TeamColor = TeamColor_Red;
-//		Robots_Control.Types = Types_Sentry;
-//		Vision_Set_ID_Type('1', '7');
-//		break;
-
-//	case 101:
-//		Robots_Control.TeamColor = TeamColor_Blue;
-//		Robots_Control.Types = Types_Hero;
-//		Vision_Set_ID_Type('2', '1');
-//		break;
-
-//	case 102:
-//		Robots_Control.TeamColor = TeamColor_Blue;
-//		Robots_Control.Types = Types_Engineer;
-//		Vision_Set_ID_Type('2', '2');
-//		break;
-
-//	case 103:
-//		Robots_Control.TeamColor = TeamColor_Blue;
-//		Robots_Control.Types = Types_Standard;
-//		Vision_Set_ID_Type('2', '3');
-//		break;
-
-//	case 104:
-//		Robots_Control.TeamColor = TeamColor_Blue;
-//		Robots_Control.Types = Types_Standard;
-//		Vision_Set_ID_Type('2', '3');
-//		break;
-
-//	case 105:
-//		Robots_Control.TeamColor = TeamColor_Blue;
-//		Robots_Control.Types = Types_Standard;
-//		Vision_Set_ID_Type('2', '3');
-//		break;
-
-//	case 106:
-//		Robots_Control.TeamColor = TeamColor_Blue;
-//		Robots_Control.Types = Types_Aerial;
-//		Vision_Set_ID_Type('2', '6');
-//		break;
-
-//	case 107:
-//		Robots_Control.TeamColor = TeamColor_Blue;
-//		Robots_Control.Types = Types_Sentry;
-//		Vision_Set_ID_Type('2', '7');
-//		break;
-//	}
 }
 
 //向视觉发送数据
@@ -249,11 +177,23 @@ static void Vision_DataSend(uint8_t *data)
 //	CDC_Transmit_FS(data,18);
 //	    CDC_Transmit_FS(Buf, *Len);
 
-	for (uint8_t i = 0; i < 18; i++)
+//	for (uint8_t i = 0; i < 18; i++)
+//	{
+//		while ((USART6->SR & 0X40) == 0);
+//		USART6->DR = data[i];
+//	}
+		for (uint8_t i = 0; i < 13; i++)
 	{
 		while ((USART6->SR & 0X40) == 0);
 		USART6->DR = data[i];
 	}
+//		for (uint8_t i = 0; i < 13; i++)
+//	{
+//		while ((USART6->SR & 0X40) == 0);
+//		USART6->DR = data[i];
+//	}
+	
+	
 //		HAL_UART_Transmit_DMA(&huart1,&data[0],18);
 
 //	CDC_Transmit_FS(data,18);
@@ -264,10 +204,14 @@ static void Vision_DataSend(uint8_t *data)
 void Update_Vision_SendData(void)
 {
 	
+	if(0)
+{	
 	Vision_ID_Type_Init();
-	
+
 	for (uint8_t i = 0; i < 5; i++)
 	{
+
+
 		//云台Yaw轴的角度偏差 float -> uint8_t
 		Vision_SendBuff[i][4] = Vision_Cloud.VisionSend_t.Angle_Error_Data[0];
 		Vision_SendBuff[i][5] = Vision_Cloud.VisionSend_t.Angle_Error_Data[1];
@@ -288,7 +232,41 @@ void Update_Vision_SendData(void)
 		Vision_SendBuff[i][16] = 30;
 
 	}
+}	
+	if(1)
+{
+	for (uint8_t i = 0; i < 5; i++)
+	{
+						Vision_SendBuff[i][0] = 'S';
+		if(STATUS_complete_update_TIMES>1)
+		Vision_SendBuff[i][1] = ext_game_robot_state.data.robot_id;
+		else
+		Vision_SendBuff[i][1] = 107;//107红色哨兵
+			
+		Vision_SendBuff[i][2] = '7';//?
+		//模式：0默认 1自瞄 2大神符 3哨兵 4基地
+
+		//云台Yaw轴的角度偏差 float -> uint8_t
+		Vision_SendBuff[i][3] = Vision_Cloud.VisionSend_t.Angle_Error_Data[0];
+		Vision_SendBuff[i][4] = Vision_Cloud.VisionSend_t.Angle_Error_Data[1];
+		Vision_SendBuff[i][5] = Vision_Cloud.VisionSend_t.Angle_Error_Data[2];
+		Vision_SendBuff[i][6] = Vision_Cloud.VisionSend_t.Angle_Error_Data[3];
+		//云台Pitch轴的角度偏差
+		Vision_SendBuff[i][8] = Vision_Cloud.VisionSend_t.Angle_Error_Data[4];
+		Vision_SendBuff[i][9] = Vision_Cloud.VisionSend_t.Angle_Error_Data[5];
+		Vision_SendBuff[i][10] = Vision_Cloud.VisionSend_t.Angle_Error_Data[6];
+		Vision_SendBuff[i][11] = Vision_Cloud.VisionSend_t.Angle_Error_Data[7];
+
+		//首支枪管的速度限制
+		if(STATUS_complete_update_TIMES>1)
+		Vision_SendBuff[i][12] = ext_game_robot_state.data.shooter_id1_17mm_speed_limit;
+		else
+		Vision_SendBuff[i][12] = 30;
 		
+		Vision_SendBuff[i][13] = 'E';
+
+	}
+}	
 		//根据攻击的模式，发给视觉
 //		switch (Robots_Control.AttackTarget)
 //		{

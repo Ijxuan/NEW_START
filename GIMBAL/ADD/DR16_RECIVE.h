@@ -132,6 +132,41 @@ typedef struct
 }ext_robot_hurt_t;
 extern ext_robot_hurt_t ext_robot_hurt;
 
+/* ID: 0X0201          Byte: 27      机器人状态数据 */
+typedef struct
+{
+	union
+	{
+		uint8_t dataBuff[27];
+		__packed struct
+		{
+		  uint8_t robot_id;
+      uint8_t robot_level;
+      uint16_t remain_HP;//机器人剩余血量
+      uint16_t max_HP;//机器人上限血量
+      uint16_t shooter_id1_17mm_cooling_rate; //机器人 1 号 17mm 枪口每秒冷却值
+      uint16_t shooter_id1_17mm_cooling_limit;//机器人 1 号 17mm 枪口热量上限
+      uint16_t shooter_id1_17mm_speed_limit;  //机器人 1 号 17mm 枪口上限速度 单位 m/s
+      uint16_t shooter_id2_17mm_cooling_rate;
+      uint16_t shooter_id2_17mm_cooling_limit;
+      uint16_t shooter_id2_17mm_speed_limit;
+      uint16_t shooter_id1_42mm_cooling_rate;
+      uint16_t shooter_id1_42mm_cooling_limit;
+      uint16_t shooter_id1_42mm_speed_limit;
+      uint16_t chassis_power_limit;           //机器人底盘功率限制上限
+			/*主控电源输出情况：
+       0 bit：gimbal 口输出： 1 为有 24V 输出，0 为无 24v 输出；
+       1 bit：chassis 口输出：1 为有 24V 输出，0 为无 24v 输出；
+       2 bit：shooter 口输出：1 为有 24V 输出，0 为无 24v 输出；*/
+      uint8_t mains_power_gimbal_output : 1;
+      uint8_t mains_power_chassis_output : 1;
+      uint8_t mains_power_shooter_output : 1;	
+		};
+	}data;
+	uint8_t InfoUpdataFlag;
+}ext_game_robot_status_t;
+
+extern ext_game_robot_status_t ext_game_robot_state;
 
 /**********为了匿名四轴上位机的协议定义的变量****************************/
 //cup为小端模式存储，也就是在存储的时候，低位被存在0字节，高位在1字节

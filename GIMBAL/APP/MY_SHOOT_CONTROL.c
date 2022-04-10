@@ -4,11 +4,16 @@
 #include "DR16_RECIVE.h"
 #include "M3508.h"
 #include "my_positionPID_bate.h"
+#include "Vision.h"
 
 
 #define SHOOT_SPEED_HIGH 6700//射速 高
 
 int SHOOT=0;
+int SHOOT_from_V=0;
+bool vision_soot_last_is_same=0;
+bool SHOOT_from_v_last=1;
+
 
 int DW_FREE=0;
 int DW_DOWN=0;
@@ -43,18 +48,31 @@ void shoot_control(void)
 					if(DR16.rc.ch4_DW==0)//松手
 					{
 						DW_FREE++;
-						DW_UP=0;
+						DW_UP=0;DW_DOWN=0;
 							M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除
 
 					}
 									if(DR16.rc.ch4_DW<=-100)//拨上
 			{		
 				DW_UP++;//没用到了
-				if(DW_UP==20)
-			M2006_targe_angle+=Driver_add;//8*3=24
-				if(DW_UP%100==0&&DW_UP>800)
-				M2006_targe_angle+=Driver_add*3;//8*3=24
-
+//				if(DW_UP==20)
+//			M2006_targe_angle+=Driver_add;//8*3=24
+//				if(DW_UP%100==0&&DW_UP>800)
+					if(VisionData.RawData.Beat==1)
+						SHOOT_from_V++;
+					if(SHOOT_from_v_last==VisionData.RawData.Beat)
+						vision_soot_last_is_same=1;
+					else
+					{
+						vision_soot_last_is_same=0;
+					SHOOT_from_V=0;
+					}SHOOT_from_v_last=VisionData.RawData.Beat;
+					if(vision_shoot_times>2)
+					{
+				M2006_targe_angle+=Driver_add;//8*3=24
+					SHOOT_from_V=0;
+						vision_shoot_times=0;
+					}
 				DW_FREE=0;
 					SHOOT++;				
 
@@ -76,13 +94,17 @@ void shoot_control(void)
 ////				}
 //			}
 			if(DR16.rc.ch4_DW>=200)//拨下
-			{		
+			{	
+DW_DOWN++;				
+if(DW_DOWN%100==0)		
+	M2006_targe_angle+=Driver_add;//8*3=24
+
 //				DW_FREE++;
 				if(DW_FREE>20)
 				{
-					DW_DOWN=0;
-					
-				M2006_targe_angle-=Driver_add;//8*3=24
+//					DW_DOWN=0;
+		
+//				M2006_targe_angle-=Driver_add;//8*3=24
 						SHOOT++;
 					DW_FREE=0;
 
@@ -118,26 +140,32 @@ send_to_2006=I_PID_Regulation(&Driver_I_PID,M2006_targe_speed,M3508s[1].realSpee
 //					{
 //SHOOT_L_speed=(DR16.rc.ch3*1.0/660.0)*(-1)*8000;//遥控器给速度目标值 二选一	
 //if(DR16.rc.ch3<-600)	
-					
-//	if (DR16.rc.s_right == 3) //是否上位机  中间档位 
+			if(DR16.rc.s_left==3)//遥控器控制  左中
+     	{				
+			if (DR16.rc.s_right == 3) //中间档位 
 
-//			SHOOT_L_speed=7000;
-//		else 
-			if(DR16.rc.s_right ==1)
-							SHOOT_L_speed=500;//右上
+			SHOOT_L_speed=6900;
+			else if(DR16.rc.s_right ==1)
+			SHOOT_L_speed=500;//右上
+			else if(DR16.rc.s_right ==2)
+			SHOOT_L_speed=0;
+		}
+		
+					if(DR16.rc.s_left==1)//遥控器控制  左上
+     	{				
 
-else if(DR16.rc.s_right ==2)
-				SHOOT_L_speed=0;
+			SHOOT_L_speed=6900;//自瞄摩擦轮速度
 
+		}
 //						}
 				SHOOT_R_speed=SHOOT_L_speed;					
 		if(	SHOOT_L_speed<0)
 		SHOOT_L_speed=-SHOOT_L_speed;//左摩擦轮速度目标值应该是负值
 		if(	SHOOT_R_speed>0)
 		SHOOT_R_speed=-SHOOT_R_speed;//右摩擦轮速度目标值应该是正值
-send_to_SHOOT_L=I_PID_Regulation(&SHOOT_L_I_PID,SHOOT_R_speed,M3508s[3].realSpeed);//gai
+send_to_SHOOT_L=I_PID_Regulation(&SHOOT_L_I_PID,SHOOT_R_speed,M3508s[3].realSpeed);//gai//蓝线
 
-send_to_SHOOT_R=I_PID_Regulation(&SHOOT_R_I_PID,SHOOT_L_speed,M3508s[2].realSpeed);
+send_to_SHOOT_R=I_PID_Regulation(&SHOOT_R_I_PID,SHOOT_L_speed,M3508s[2].realSpeed);   //红线
 	
 	
 	
