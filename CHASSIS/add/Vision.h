@@ -11,7 +11,6 @@
 //#include "User_typedef.h"
 #include "CRC.h" 
 
-#pragma anon_unions
 
 
 #define Vision_BuffSize (13 + 2) //视觉接收数据缓冲区长度
@@ -25,6 +24,7 @@ extern uint8_t Vision_DataBuff[Vision_BuffSize];
 
 
 
+#pragma anon_unions
 
 
 typedef struct

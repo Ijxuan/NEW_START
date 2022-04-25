@@ -67,3 +67,4 @@ freertos1\stm32f4xx_it.o: ../Core/Inc/gpio.h
 freertos1\stm32f4xx_it.o: ..\Arithmetic\my_positionPID_bate.h
 freertos1\stm32f4xx_it.o: ..\Arithmetic\FPS_Calculate.h
 freertos1\stm32f4xx_it.o: ..\Device\M3508.h
+freertos1\stm32f4xx_it.o: ..\add\Sensor.h

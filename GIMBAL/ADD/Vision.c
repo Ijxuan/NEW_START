@@ -241,29 +241,29 @@ void Update_Vision_SendData(void)
 		if(STATUS_complete_update_TIMES>1)
 		Vision_SendBuff[i][1] = ext_game_robot_state.data.robot_id;
 		else
-		Vision_SendBuff[i][1] = 107;//107红色哨兵
+		Vision_SendBuff[i][1] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
 			
-		Vision_SendBuff[i][2] = '7';//?
+		Vision_SendBuff[i][2] = 5;//?
 		//模式：0默认 1自瞄 2大神符 3哨兵 4基地
-
+        //'5'哨兵专用  视频录制
 		//云台Yaw轴的角度偏差 float -> uint8_t
 		Vision_SendBuff[i][3] = Vision_Cloud.VisionSend_t.Angle_Error_Data[0];
 		Vision_SendBuff[i][4] = Vision_Cloud.VisionSend_t.Angle_Error_Data[1];
 		Vision_SendBuff[i][5] = Vision_Cloud.VisionSend_t.Angle_Error_Data[2];
 		Vision_SendBuff[i][6] = Vision_Cloud.VisionSend_t.Angle_Error_Data[3];
 		//云台Pitch轴的角度偏差
-		Vision_SendBuff[i][8] = Vision_Cloud.VisionSend_t.Angle_Error_Data[4];
-		Vision_SendBuff[i][9] = Vision_Cloud.VisionSend_t.Angle_Error_Data[5];
-		Vision_SendBuff[i][10] = Vision_Cloud.VisionSend_t.Angle_Error_Data[6];
-		Vision_SendBuff[i][11] = Vision_Cloud.VisionSend_t.Angle_Error_Data[7];
+		Vision_SendBuff[i][7] = Vision_Cloud.VisionSend_t.Angle_Error_Data[4];
+		Vision_SendBuff[i][8] = Vision_Cloud.VisionSend_t.Angle_Error_Data[5];
+		Vision_SendBuff[i][9] = Vision_Cloud.VisionSend_t.Angle_Error_Data[6];
+		Vision_SendBuff[i][10] = Vision_Cloud.VisionSend_t.Angle_Error_Data[7];
 
 		//首支枪管的速度限制
 		if(STATUS_complete_update_TIMES>1)
-		Vision_SendBuff[i][12] = ext_game_robot_state.data.shooter_id1_17mm_speed_limit;
+		Vision_SendBuff[i][11] = ext_game_robot_state.data.shooter_id1_17mm_speed_limit;
 		else
-		Vision_SendBuff[i][12] = 30;
+		Vision_SendBuff[i][11] = 30;
 		
-		Vision_SendBuff[i][13] = 'E';
+		Vision_SendBuff[i][12] = 'E';
 
 	}
 }	

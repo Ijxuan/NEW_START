@@ -72,3 +72,5 @@ ins_task\dr16_recive.o: ..\Arithmetic\my_IncrementPID_bate.h
 ins_task\dr16_recive.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\Math.h
 ins_task\dr16_recive.o: ..\ADD\Vision.h
 ins_task\dr16_recive.o: ..\Arithmetic\CRC.h
+ins_task\dr16_recive.o: ..\APP\MY_CLOUD_CONTROL.h
+ins_task\dr16_recive.o: ..\ADD\GM6020.h

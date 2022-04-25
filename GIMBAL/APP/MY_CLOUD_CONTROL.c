@@ -3,20 +3,23 @@
 
 void cloud_control(void)
 {
-	
+//	
 //								if(DR16.rc.s_left==1)//YAW轴控制挡位
 //							{
 //							yaw_trage_angle+=(DR16.rc.ch0/660.0)/-3;//YAW轴遥控器控制
 //							if(DR16.rc.ch4_DW<=-400)//拨上
-//							yaw_trage_angle=yaw_trage_angle2;//陀螺仪角速度最大为140
+//							yaw_trage_angle=(CLOUD_enable_imu+200.0);//陀螺仪角速度最大为140?
+//							if(DR16.rc.ch4_DW>=400)//拨下
+//							yaw_trage_angle=(CLOUD_enable_imu-200.0);
+//							
 //							/*
 //							所以目标阶跃要大于140/0.03   4666
 //							//还要考虑29000的输出多久才能到140这个最大速度
 //							//先给10000的阶跃吧
 //							现在是800
-//*/
-////							if(DR16.rc.ch4_DW>=400)//拨下
-////							yaw_trage_angle=0;
+//							*/
+//							
+
 //							}
 ///*					else
 //					从-10000到30000，最开始20000是上升加速段，然后是10000的220，最后是10000的减速		
@@ -43,50 +46,50 @@ void cloud_control(void)
 }
 bool YAW_TARGE_ANGLE_ADD=1;
 int arrive_targe_angle=0;
-int TEXT_targe_SPEED=0;
+int TEXT_targe_SPEED=400;
 
 void YAW_PID()
 {
 	
-									if(DR16.rc.s_left==1)//YAW轴控制挡位
-							{
-	if(DJIC_IMU.total_yaw>CLOUD_enable_imu+70.0)	
-	{
-		
-//TEXT_targe_SPEED		
-//		arrive_targe_angle++;
-//		if(arrive_targe_angle>20)
-//		{
-cloud_text_add=0;
-			arrive_targe_angle=0;
-//		}
-	}	
-	
-	if(DJIC_IMU.total_yaw<CLOUD_enable_imu-70.0)	
-	{
-		
-		
-//		arrive_targe_angle++;
-//		if(arrive_targe_angle>20)
-//		{
-cloud_text_add=1;
-			arrive_targe_angle=0;
-//	}
-	}	
-	
-	if(cloud_text_add==1)//增加
-	{
+//									if(DR16.rc.s_left==1)//YAW轴控制挡位
+//							{
+//	if(DJIC_IMU.total_yaw>(CLOUD_enable_imu+360.0))	
+//	{
+//		
+////TEXT_targe_SPEED		
+////		arrive_targe_angle++;
+////		if(arrive_targe_angle>20)
+////		{
+//cloud_text_add=0;
+////			arrive_targe_angle=0;
+////		}
+//	}	
+//	
+//	if(DJIC_IMU.total_yaw<(CLOUD_enable_imu-360.0))	
+//	{
+//		
+//		
+////		arrive_targe_angle++;
+////		if(arrive_targe_angle>20)
+////		{
+//cloud_text_add=1;
+////			arrive_targe_angle=0;
+////		}
+//	}	
+//	
+//	if(cloud_text_add==1)//增加
+//	{
 //yaw_trage_speed=TEXT_targe_SPEED;
-	}	
-	if(cloud_text_add==0)//增加
-	{
+//	}	
+//	if(cloud_text_add==0)//角度减小,速度为负
+//	{
 //yaw_trage_speed=-TEXT_targe_SPEED;
-	}	
-	
-//if(cloud_enable==0)
-//{
-//}
-							}	
+//	}	
+//	
+////if(cloud_enable==0)
+////{
+////}
+//							}	
 		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
 		{
 CLOUD_enable_moto=GM6020s[0].totalAngle;
@@ -109,9 +112,9 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 									if(DR16.rc.s_left==3)//YAW轴控制挡位
 							{
 							yaw_trage_angle-=(DR16.rc.ch0/660.0)/10.0;//YAW轴遥控器控制
-							CH0_TOTAL_in_con+=	DR16.rc.ch0;
-								if(DR16.rc.ch0!=0)
-								dr16_controul_times++;
+//							CH0_TOTAL_in_con+=	DR16.rc.ch0;
+//								if(DR16.rc.ch0!=0)
+//								dr16_controul_times++;
 							}
 									if(DR16.rc.s_left==1)//YAW轴控制挡位
 							{
@@ -158,18 +161,18 @@ void PITCH_PID()
 							{
 							PITCH_trage_angle+=(DR16.rc.ch1*1.0/660.0)*0.4;//遥控器给速度目标值 二选一
 
-//							if(DR16.rc.ch4_DW<=-400)//拨上
-//							PITCH_trage_angle=PITCH_MAX_angle-10;
-//							if(DR16.rc.ch4_DW>=400)//拨下
-//							PITCH_trage_angle=PITCH_MIN_angle+10;
-							
+////							if(DR16.rc.ch4_DW<=-400)//拨上
+////							PITCH_trage_angle=PITCH_MAX_angle-10;
+////							if(DR16.rc.ch4_DW>=400)//拨下
+////							PITCH_trage_angle=PITCH_MIN_angle+10;
+//							
 							}
 														if(DR16.rc.s_left==1)//PITCH轴控制挡位
 							{
 								if(VisionData.RawData.Armour==1)
 							PITCH_trage_angle=DJIC_IMU.total_pitch-Vision_RawData_Pitch_Angle;//YAW轴遥控器控制
 								else
-								PITCH_trage_angle+=(DR16.rc.ch0/660.0)*0.4;//YAW轴遥控器控制
+								PITCH_trage_angle+=(DR16.rc.ch1/660.0)*0.4;//YAW轴遥控器控制
 							
 							}
 
@@ -193,11 +196,23 @@ void imu_angle()
 //	PITCH_MAX_angle=DJIC_IMU.total_pitch+(7990-GM6020s[3].totalAngle)/8196.0*360.0;
 //	PITCH_MIN_angle=DJIC_IMU.total_pitch+(7450-GM6020s[3].totalAngle)/8196.0*360.0;
 	
-	PITCH_MAX_angle=DJIC_IMU.total_pitch+(7950-GM6020s[3].totalAngle)/8191.0*360.0;
-	PITCH_MIN_angle=DJIC_IMU.total_pitch+(6850-GM6020s[3].totalAngle)/8191.0*360.0;
+	PITCH_MAX_angle=DJIC_IMU.total_pitch+(5080-GM6020s[3].totalAngle)/8191.0*360.0;
+	PITCH_MIN_angle=DJIC_IMU.total_pitch+(3900-GM6020s[3].totalAngle)/8191.0*360.0;
 			allow_angle=	PITCH_MAX_angle-PITCH_MIN_angle;
 
 }
+
+//2022-4-14:
+//
+//上边界-下边界
+
+//
+//使劲抬头:陀螺仪值为15    6020值为4408      5170
+//从
+//   速度为负           
+//到
+//使劲低头:陀螺仪值为-39.5      6020值为3154    3820
+
 //2022-3-27:
 //
 //上边界-下边界
@@ -259,9 +274,9 @@ void scan_cloud(void)
 			if(DR16.rc.s_left==1)//控制挡位-扫描
 	{
 //		if(DR16.rc.s_right==3)//控制挡位-扫描开始
-		if(VisionData.RawData.Armour==0&&lose_time>2000)//控制挡位-扫描开始
+		if(VisionData.RawData.Armour==0&&lose_time>2000)//视觉2秒没锁到装甲板-扫描开始
 		{
-		 int scan_speed_PITCH=1;//PITCH轴扫描速度,最小为1
+		 int scan_speed_PITCH=4;//PITCH轴扫描速度,最小为1
 		int scan_speed_YWA=4;//YAW轴扫描速度,最小为1
 
 
@@ -293,7 +308,7 @@ if(scan_time%scan_speed_PITCH==0)//是扫描速度的整数倍
 	}
 	
 }
-if(scan_time%scan_speed_YWA==0)//是扫描速度的整数倍
+if(scan_time%scan_speed_YWA==0)//是扫描速度的整数倍  scan_percent_YAW在0到1000之间波动
 {
 	if(scan_percent_YAW>0&&scan_percent_YAW<1000)
 	{
@@ -319,29 +334,21 @@ if(scan_time%scan_speed_YWA==0)//是扫描速度的整数倍
 	
 }	
 			
-//			PITCH_trage_angle=PITCH_MIN_angle+(allow_angle-22)*(scan_percent_PITCH/1000.0);//PITCH
-//yaw_trage_angle=YAW_START_ANGLE+400*(scan_percent_YAW/1000.0);//YAW轴转一圈多一点
+PITCH_trage_angle=PITCH_MIN_angle+(allow_angle)*0.8*(scan_percent_PITCH/1000.0);//PITCH
+yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0);//YAW轴转一圈多一点
 		}
-		else //控制挡位-扫描结束
+		else //视觉锁到装甲板-扫描结束
 		{
 			scan_time=0;
-							if(lose_time>4000)//控制挡位-扫描开始
-YAW_START_ANGLE=DJIC_IMU.total_yaw;//丝滑开始扫描
-							
-scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	;	
-scan_percent_YAW=0;			
-			
-			
-			
+		if(lose_time>4000)//控制挡位-扫描开始
+YAW_START_ANGLE=DJIC_IMU.total_yaw;//丝滑开始扫描						
+scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	*0.8;	
+scan_percent_YAW=0;	
+		
 		}
-			
 
-		
-		
-		
-		
 	}
-	else
+	else//视觉锁到装甲板-扫描结束
 	{
 		scan_time=0;
 		YAW_START_ANGLE=DJIC_IMU.total_yaw;//丝滑开始扫描

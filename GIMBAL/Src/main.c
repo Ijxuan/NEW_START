@@ -145,7 +145,15 @@ int VISION_FROM_USART1=0;
 int VISION_Disconnect_test=0;
 int lose_time=0;
 int vision_shoot_times;
+int shoot_times_for_limit=0;//发射周期(为了热量限制)
+bool whether_shoot_in__this_period=0;//这个周期是否发射
+bool this_period_has_shoot=0;//这个周期是否发射
 
+int this_period_has_shoot_number=0;//这个周期发射shu
+int every_shoot_number=600;//一次三十发
+int targe_shoot_number=0;//一次三十发
+
+bool disable_for_test=0;//为了调试
 /* USER CODE END 0 */
 
 /**
@@ -166,6 +174,7 @@ int main(void)
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
+	
 
   /* Configure the system clock */
   SystemClock_Config();

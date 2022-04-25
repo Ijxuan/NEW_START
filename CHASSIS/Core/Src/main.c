@@ -164,9 +164,9 @@ bool HWswitch_L_last=1;
 int CHASSIS_L_MAX=510000;
 int CHASSIS_R_MIN=0;
 
-int ENCODER_L_MAX=510000;//编码器通过光电更新的最大值
-int ENCODER_R_MIN=0;	//编码器通过光电更新的最小值
-int ENCODER_M_MID=250000;//编码器通过光电更新的中间值
+int ENCODER_L_MAX=0;//编码器通过光电更新的最大值
+int ENCODER_R_MIN=1000;	//编码器通过光电更新的最小值
+int ENCODER_M_MID=0;//编码器通过光电更新的中间值
 int ENCODER_LONG=250000;//编码器通过光电更新的轨道长度
 int ENCODER_SPEED=250000;//这次的值
 int M3508_3ms_ago;//3毫秒以前的值
@@ -181,6 +181,9 @@ int ENCODER_ADD=0;//编码器这次的值减上次的值得到加速度
 int ENCODER_ARRIVE_MAX=0;//编码器抵达的最大值
 int ENCODER_ARRIVE_MIN=0;//编码器抵达的最小值
 
+int32_t CHASSIS_L_MAX_by_ENCODER;//变向用的左边界值
+int32_t CHASSIS_R_MIN_by_ENCODER;//变向用的右边界值
+int reverse_by_ENCODER=1500; //变向提前值
 int speed_change=0;
 int CHASSIS_MID=250000;
 
@@ -232,6 +235,13 @@ float KB_add_speed=1.4;//狂暴模式加速
 float KB_low_JB=30;//狂暴模式缓冲功率下限
 float KB_high_JB=80;//狂暴模式缓冲功率回复目标
 
+int usart_7_times=0;
+
+bool disable_for_test=1;///为了调试///为了调试///为了调试///为了调试///为了调试///为了调试
+bool state_Infrared_R_is_ok=1;//右边红外传感器运转正常
+bool state_Infrared_L_is_ok=1;//左边红外传感器运转正常
+
+
 //driver  plate
 /* USER CODE END 0 */
 
@@ -274,6 +284,7 @@ int main(void)
   MX_UART8_Init();
   MX_TIM3_Init();
   MX_USART3_UART_Init();
+  MX_UART7_Init();
   /* USER CODE BEGIN 2 */
    usart1_dr16_init();
 

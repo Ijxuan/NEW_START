@@ -42,9 +42,10 @@
 #include "GM6020.h"
 #include "MY_CLOUD_CONTROL.h"
 #include "MY_SHOOT_CONTROL.h"
-#include"BEEP_MY.h"
+#include "BEEP_MY.h"
 #include "bsp_buzzer.h"
 #include "Vision.h"
+#include "string.h"
 
 /* USER CODE END Includes */
 
@@ -159,11 +160,13 @@ void MX_FREERTOS_Init(void) {
 						 16000, -16000); //摩擦轮电机
 
 	//
-	I_PID_Parameter_Init(&SHOOT_R_I_PID, 26, 0.5, 3.1,
+	I_PID_Parameter_Init(&SHOOT_R_I_PID, 22, 0.35, 19,
 						 8700, 7000, -7000,
 						 0.5,
 						 14000, -14000,
 						 16000, -16000); //摩擦轮电机
+						 //23 0.5 19
+						 //22 0.35 19
 
 #if PID_MOTOR //是否开启电机的PID
 	P_PID_Parameter_Init(&Yaw_Speed_pid, 550, 10, 0,
@@ -182,14 +185,14 @@ void MX_FREERTOS_Init(void) {
 #endif
 
 #if PID_YAW_IMU
-	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -600, -8, 0,//
-						 120, //误差大于这个值就积分分离
+	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -1000, -6.5, 1100,//
+						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 5000, -5000, //积分限幅，也就是积分的输出范围
-						 28000, -28000);
+						 29990, -29990);
 						 
-	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 11.25, 0, 0,//越大越陡峭10
+	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 13, 0, 10,//10 0 16//越大越陡峭10
 						 0,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
@@ -212,13 +215,13 @@ void MX_FREERTOS_Init(void) {
 #endif
 
 #if PID_PITCH_IMU
-	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 200,1.43,50,//100, 1.5, 0,
+	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 170,1.43,50,//100, 1.5, 0,
 						 240, //误差大于这个值就积分分离  550 1.9 0   -20000
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
 						 28000, -28000);
-	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,16.5 //0.7  12
+	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,18 //15  //0.7  12
 	, 0, 0,
 						 0,
 						 //						  float max_error, float min_error,
@@ -329,7 +332,7 @@ void MX_FREERTOS_Init(void) {
 __weak void test_task(void const * argument)
 {
   /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
+//  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN test_task */
 	/* Infinite loop */
 	for (;;)
@@ -345,12 +348,28 @@ __weak void test_task(void const * argument)
  * @param argument: Not used
  * @retval None
  */
+
 /* USER CODE END Header_Debug */
 void Debug(void const * argument)
 {
   /* USER CODE BEGIN Debug */
+	
+/* 
+char RunTimeInfo[400];		//保存任务运行时间信息
+任务名\t\t\t运行时间\t运行所占百分比
+Debug_Task     	427		<1%     反馈给上位机
+led            	5866		<1%      led
+IDLE           	398036		58%  空闲 
+IMU_Send_Task  	117005		17%  发给视觉
+cali           	63268		9%    校准 
+test           	455		<1%       什么都没做
+Task_Robot_Cont	31306		4%    总控制
+Can2_Rei_Task  	463		<1%       CAN2接收
+imuTask        	13982		2%    陀螺仪任务
+CAN1           	49718		7%    CAN1接收
+Tmr Svc        	0		<1%
+		*/
 //		buzzer_control.work = TRUE; 
-
 	/* Infinite loop */
 	for (;;)
 	{
@@ -368,21 +387,22 @@ void Debug(void const * argument)
 					}
 		
 		}
-	
-				  /*  */
-		//memset(RunTimeInfo,0,400);				//信息缓冲区清零
+
+
   
 		  
 
 		  
    #ifdef FREERTOS_TASK_TIME
+				memset(RunTimeInfo,0,400);				//信息缓冲区清零
+
 			vTaskGetRunTimeStats(RunTimeInfo);		//获取任务运行时间信息
 		  HAL_UART_Transmit_DMA(&huart1, (uint8_t *)&RunTimeInfo, 400);	
 #endif	  
 		
 		
 //BEEP_TEXT();		
-		osDelay(5);
+		osDelay(10);
 	}
   /* USER CODE END Debug */
 }
@@ -405,16 +425,16 @@ void IMU_Send(void const * argument)
 	{
 #if send_way == 0
 		//欧拉角
-		if (cali_sensor[0].cali_done == CALIED_FLAG && cali_sensor[0].cali_cmd == 0)
-		{
-			Euler_Send.yaw = INS_angle[0];
-			Euler_Send.pitch = INS_angle[1];
-			Euler_Send_Fun(Euler_Send);
-			//角速度
-			Gyro_Send.Gyro_z = INS_gyro[2];
-			Gyro_Send.Gyro_y = INS_gyro[1];
-			Gyro_Send_Fun(Gyro_Send);
-		}
+//		if (cali_sensor[0].cali_done == CALIED_FLAG && cali_sensor[0].cali_cmd == 0)
+//		{
+//			Euler_Send.yaw = INS_angle[0];
+//			Euler_Send.pitch = INS_angle[1];
+//			Euler_Send_Fun(Euler_Send);
+//			//角速度
+//			Gyro_Send.Gyro_z = INS_gyro[2];
+//			Gyro_Send.Gyro_y = INS_gyro[1];
+//			Gyro_Send_Fun(Gyro_Send);
+//		}
 //			DR16_T.DR16_CH0=DR16.rc.ch0=-100;
 //			DR16_T.DR16_CH1=DR16.rc.ch1=-200;
 //			DR16_T.DR16_CH2=DR16.rc.ch2=-300;
@@ -439,6 +459,8 @@ Update_Vision_SendData();
 			}
 			VISION_Disconnect_test=0;
 		}
+		
+		
 		vTaskDelayUntil(&xLastWakeTime, TimeIncrement);
 	}
   /* USER CODE END IMU_Send */
@@ -484,7 +506,7 @@ int i=0;
 				ext_shoot_data.data.dataBuff[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
 				}
 				JS_RC_TIMES++;
-run_JS_jiema=1;
+//run_JS_jiema=1;
 			}
 			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_RC_HURT_ID)
 			{
@@ -567,6 +589,13 @@ STATUS_complete_update_TIMES++;
 				DDR16_PART_THREE_TIMES++;
 				run_DR16_jiema=1;
 			}
+			
+		if(run_DR16_jiema==1)
+		{
+							DR16.DR16_Process(DR16Buffer);
+
+			run_DR16_jiema=0;
+		}
 			
 		}
 	}
@@ -661,22 +690,23 @@ void Robot_Control(void const *argument)
 	/* Infinite loop */
 	for (;;)
 	{
-		if(run_DR16_jiema==1)
-		{
-							DR16.DR16_Process(DR16Buffer);
+				if (DR16.rc.s_left == 2&&DR16.rc.ch1<-600) //失能保护
+				{
+					disable_for_test=1;
+				}
+				if (DR16.rc.s_left == 2&&DR16.rc.ch1>600) //失能保护
+				{
+					disable_for_test=0;
+				}					
 
-			run_DR16_jiema=0;
-		}
-		if(run_JS_jiema==1)
-		{
-							DR16.DR16_Process(DR16Buffer);
+		
 
-			run_JS_jiema=0;
-		}
+
 				if(VisionData.RawData.Armour==0)//控制挡位-扫描开始
 				{
 		lose_time++;
 				}
+
 			if(VisionData.RawData.Armour==1)//控制挡位-扫描开始
 				{
 		lose_time=0;
@@ -684,9 +714,9 @@ void Robot_Control(void const *argument)
 				controul_times++;
 		cloud_control();
 
-		if (GM6020s[3].totalAngle <= 6800 && send_to_pitch < 0)
+		if (GM6020s[3].totalAngle <= 3860 && send_to_pitch < 0)
 			send_to_pitch = 0;
-		if (GM6020s[3].totalAngle >= 8000 && send_to_pitch > 0)
+		if (GM6020s[3].totalAngle >= 5130 && send_to_pitch > 0)
 			send_to_pitch = 0;
 		//云台的pitch轴正直是往上的
 		////8017-7044
@@ -701,6 +731,14 @@ void Robot_Control(void const *argument)
 			yaw_trage_angle=DJIC_IMU.total_yaw;
 			//还不够，使能瞬间会抖一下，应该还要清楚I的累加，以后有时间再写
 		}
+		if(disable_for_test==1)
+		{
+			send_to_yaw = 0;
+
+			send_to_pitch = 0;			
+			
+		}
+		
 		GM6020_SetVoltage(send_to_yaw,0 , 0, send_to_pitch); //云台  send_to_pitch
 //		GM6020_SetVoltage(0,0 , 0, 0); //云台  send_to_pitch
 
@@ -726,16 +764,23 @@ void Robot_Control(void const *argument)
 		//
 
 		shoot_control();
-
+		
 		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
 		{
 			//						send_to_chassis=0;
-			send_to_SHOOT_L = 0;
-			send_to_SHOOT_R = 0;
 
+	send_to_SHOOT_L = 0;
+			send_to_SHOOT_R = 0;
 			send_to_2006 = 0;
 			//						send_to_yaw=0;
 			//						M2006_targe_angle=M3508s[1].totalAngle;//摩擦轮误差消除
+		}
+				if(disable_for_test==1)
+		{
+			send_to_SHOOT_L = 0;
+			send_to_SHOOT_R = 0;		
+						send_to_2006 = 0;
+
 		}
 		M3508s1_setCurrent(0, send_to_2006, send_to_SHOOT_R, send_to_SHOOT_L);//send_to_SHOOT_L阻力大
 //		M3508s1_setCurrent(0, 0,TEST_Current_R ,TEST_Current_L );  //end_to_SHOOT_R给正降得慢

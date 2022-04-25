@@ -48,6 +48,7 @@
 #include "CHASSIS_CONTROL_basic.h"
 #include "CHASSIS_CONTROL_2.h"
 #include "CAN2_SEND.h"
+#include "Sensor.h"
 
 //#include "task.h"
 
@@ -76,6 +77,12 @@ osMessageQId CAN2_Queue;
 osThreadId RobotCtrl_Handle;
 //任务入口函数
 void Robot_Control(void const *argument);
+
+//控制任务句柄
+osThreadId RobotSensor_Handle;
+//任务入口函数
+void Robot_Sensor(void const *argument);
+
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 osThreadId MYTask03Handle;
@@ -164,11 +171,11 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ...
   defaultTask    	245		<1%
-  Task_Robot_Cont	1580		1%
-  Task_Can2_Reive	4325		4%   CAN2
-  MYTask03       	7604		7%   CAN1
-  myTask04       	1385		1%   DEBUG
-  IDLE           	80866		81%  */
+  Task_Robot_Cont	1580		1%            //主控电机
+  Task_Can2_Reive	4325		4%   CAN2     //CAN2接收
+  MYTask03       	7604		7%   CAN1     //CAN1接收
+  myTask04       	1385		1%   DEBUG    //CAN2发送
+  IDLE           	80866		81%  */       //空闲
   /* USER CODE END RTOS_THREADS */
 
 }
@@ -293,7 +300,6 @@ void CAN1_recive(void const * argument)
  * @retval None
  */
 char RunTimeInfo[400]; //保存任务运行时间信息
-uint16_t times_i;
 /* USER CODE END Header_DeBug */
 void DeBug(void const * argument)
 {
@@ -302,12 +308,7 @@ void DeBug(void const * argument)
 	for (;;)
 	{
 
-		task_debug_times++;
- if(task_debug_times%M3508_acceleration_cycle==0)//加速度计算周期(每次计算的间隔)(ms)
- {
- M3508_acceleration=M3508s[3].realSpeed-M3508_last_speed;//加速度计算
- M3508_last_speed=M3508s[3].realSpeed;
- }
+
 //		Update_Vision_SendData();
 		if (send_to_C == 1)//遥控器数据
 		{
@@ -334,25 +335,8 @@ JS_send_STATUS_control();
 		}
 		
 		
-		if (DR16.rc.s_right == 3) //是否上位机
-		{
 
-			times_i++;
-			if (times_i > 4) // 5ms发一次
-			{
-					  	   NM_swj();
-				times_i = 0;
-			}
-		}
-		if(ext_robot_hurt.data.hurt_type==0)
-		{
-			if(ext_robot_hurt.data.armor_id==0||ext_robot_hurt.data.armor_id==1)
-			{
-				hurt_times_ago=0;//被击中了
-				ext_robot_hurt.data.hurt_type=10;
-			}
-			
-		}
+
 			/*
 	  //memset(RunTimeInfo,0,400);				//信息缓冲区清零
 
@@ -400,12 +384,28 @@ void init_task(void const * argument)
 	HAL_TIM_Encoder_Start(&htim5, TIM_CHANNEL_ALL);
 	//	HAL_Delay(1000);
 
-	//视觉
+//	//视觉
+//	__HAL_UART_CLEAR_IDLEFLAG(&huart8);
+
+//	__HAL_UART_ENABLE_IT(&huart8, UART_IT_IDLE);
+
+//	USART_RX_DMA_ENABLE(&huart8, Vision_DataBuff, Vision_BuffSize);
+	//传感器1
 	__HAL_UART_CLEAR_IDLEFLAG(&huart8);
 
 	__HAL_UART_ENABLE_IT(&huart8, UART_IT_IDLE);
 
-	USART_RX_DMA_ENABLE(&huart8, Vision_DataBuff, Vision_BuffSize);
+	USART_RX_DMA_ENABLE(&huart8, SENSOR_L_DataBuff, SENSOR_BuffSize);
+		//传感器2
+		
+		
+//	__HAL_UART_CLEAR_IDLEFLAG(&huart7);
+////	__HAL_UART_ENABLE(&huart7);
+
+//	__HAL_UART_ENABLE_IT(&huart7, UART_IT_IDLE);
+
+//	USART_RX_DMA_ENABLE(&huart7, SENSOR_R_DataBuff, SENSOR_BuffSize);
+
 
 	//裁判系统
 	__HAL_UART_CLEAR_IDLEFLAG(&huart3);
@@ -494,7 +494,7 @@ void init_task(void const * argument)
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
 						 10000, -10000,
-						 10000, -10000); // Yaw_IMU_Angle_pid
+						 4000, -4000); // Yaw_IMU_Angle_pid
 
 #endif
 
@@ -548,32 +548,25 @@ void init_task(void const * argument)
 						 80, -80); // Yaw_IMU_Angle_pid
 
 	HAL_Delay(100);
-	//			HWswitch_L			 = HAL_GPIO_ReadPin(GPIOA,HWswitch_1_Pin);
-	//			HWswitch_R   		 = HAL_GPIO_ReadPin(GPIOA,HWswitch_2_Pin);
-	HWswitch_L_last = HWswitch_L;
-	HWswitch_R_last = HWswitch_R;
-	//	yaw_trage_angle=GM6020s[0].readAngle;//上电角度初始化
 
-	yaw_trage_angle = DJIC_IMU.total_yaw;
-	PITCH_trage_angle = GM6020s[1].readAngle; //上电角度初始化
-											  // pitch轴陀螺仪上电过零处理
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	HAL_Delay(100);
-	if (DJIC_IMU.pitch > 50 && DJIC_IMU.pitch_turnCounts == 0)
-		DJIC_IMU.pitch_turnCounts = -1;
 
-	imu_angle(); //去仿真做测试！！！  已做
-	PITCH_trage_angle = PITCH_MIN_angle + 30;
+
 	task_init_times++;
 	CHASSIS_trage_angle = 9990000;
 
 	EM_Ramp->Rate = 0.2;//视觉自瞄的斜坡函数增加值
 	EM_Ramp->Absolute_Max = 50;
 ext_power_heat_data.data.chassis_power_buffer=200;
+	
+		osThreadDef(Sensor, Robot_Sensor, Sensor_Priority, 0, Sensor_Size);
+	RobotSensor_Handle = osThreadCreate(osThread(Sensor), NULL);
+	
 	osThreadDef(Control, Robot_Control, RobotCtrl_Priority, 0, RobotCtrl_Size);
 	RobotCtrl_Handle = osThreadCreate(osThread(Control), NULL);
 
-	//	taskEXIT_CRITICAL(); //退出临界区
+	//	taskEXIT_CRITICAL(); //退出临界区   Sensor传感器
 
 	vTaskDelete(NULL);
 
@@ -638,6 +631,66 @@ void Can2_Reive(void const * argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+uint16_t times_i;
+uint16_t times_x;
+
+void Robot_Sensor(void const *argument)
+{
+	/* USER CODE BEGIN RobotControl */
+	portTickType xLastWakeTime_2;
+	xLastWakeTime_2 = xTaskGetTickCount();
+	const TickType_t TimeIncrement_2 = pdMS_TO_TICKS(1); //每1毫秒强制进入
+
+
+	/* Infinite loop */
+	for (;;)
+	{
+				task_debug_times++;
+ if(task_debug_times%M3508_acceleration_cycle==0)//加速度计算周期(每次计算的间隔)(ms)
+ {
+ M3508_acceleration=M3508s[3].realSpeed-M3508_last_speed;//加速度计算
+ M3508_last_speed=M3508s[3].realSpeed;
+ }
+ 
+ times_x++;
+ if(times_x>2)
+ {
+				Get_Encoder_Value(&Chassis_Encoder, &htim5);
+	 if(Chassis_Encoder.totalLine>ENCODER_L_MAX)
+		 ENCODER_L_MAX=Chassis_Encoder.totalLine;
+	 
+	 if(Chassis_Encoder.totalLine<ENCODER_R_MIN)
+		 ENCODER_R_MIN=Chassis_Encoder.totalLine;	 
+	 //ENCODER_L_MAX
+	 times_x=0;
+ }
+ 
+		if (DR16.rc.s_right != 3) //是否上位机
+		{
+			times_i++;
+			if (times_i > 20) // 5ms发一次
+			{
+					  	   NM_swj();
+				times_i = 0;
+			}
+		}
+		
+		if(ext_robot_hurt.data.hurt_type==0)
+		{
+			if(ext_robot_hurt.data.armor_id==0||ext_robot_hurt.data.armor_id==1)
+			{
+				hurt_times_ago=0;//被击中了
+				ext_robot_hurt.data.hurt_type=10;
+			}
+			
+		}
+		vTaskDelayUntil(&xLastWakeTime_2, TimeIncrement_2);
+
+	}
+
+	/* USER CODE END RobotControl */
+}
+
 void Robot_Control(void const *argument)
 {
 	/* USER CODE BEGIN RobotControl */
@@ -650,14 +703,19 @@ void Robot_Control(void const *argument)
 	/* Infinite loop */
 	for (;;)
 	{
+		
+						if (DR16.rc.s_left == 2&&DR16.rc.ch3<-600) //失能保护
+				{
+					disable_for_test=1;
+				}
+				if (DR16.rc.s_left == 2&&DR16.rc.ch3>600) //失能保护
+				{
+					disable_for_test=0;
+				}		
+				
 		task_controul_times++;
 		hurt_times_ago++;//伤害计时
 
-
-
-
-		Get_Encoder_Value(&Chassis_Encoder, &htim5);
-		
 		switch_change();
 		star_and_new();//弹道测试后取消注释
 		CHASSIS_CONTROUL();
@@ -679,6 +737,11 @@ if(stop_CH_OP_BC_END==1)
 		{
 			CHASSIS_MOTOR_SPEED_pid.Integral=0;
 			send_to_chassis = 0;
+		}
+		if(disable_for_test==1)
+		{
+				send_to_chassis = 0;
+		
 		}
 		M3508s1_setCurrent(0, 0, 0, send_to_chassis);
 //		M3508s1_setCurrent(0, 0, 0, 0);		

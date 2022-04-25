@@ -79,3 +79,4 @@ freertos1\freertos.o: ..\BSP\DR16_CAN2_SEND.h
 freertos1\freertos.o: ..\APP\CHASSIS_CONTROL_basic.h
 freertos1\freertos.o: ..\APP\CHASSIS_CONTROL_2.h
 freertos1\freertos.o: ..\BSP\CAN2_SEND.h
+freertos1\freertos.o: ..\add\Sensor.h

@@ -124,6 +124,10 @@ extern float M3508_speed_angle_kp;//角度与速度的关系
 extern int ENCODER_ARRIVE_MAX;//编码器抵达的最大值
 extern int ENCODER_ARRIVE_MIN;//编码器抵达的最小值
 
+extern int32_t CHASSIS_L_MAX_by_ENCODER;//变向用的左边界值
+extern int32_t CHASSIS_R_MIN_by_ENCODER;//变向用的右边界值
+extern int reverse_by_ENCODER; //变向提前值
+
 extern int driver_targe_speed;//拨盘的目标速度
 
 
@@ -164,6 +168,13 @@ extern int hurt_times_ago;//多久前被击打
 extern float KB_add_speed;//狂暴模式加速
 extern float KB_low_JB;//狂暴模式缓冲功率下限
 extern float KB_high_JB;//狂暴模式缓冲功率回复目标
+
+extern int usart_7_times;
+
+extern bool disable_for_test;//为了调试
+
+extern bool state_Infrared_R_is_ok;//右边红外传感器运转正常
+extern bool state_Infrared_L_is_ok;//左边红外传感器运转正常
 typedef struct
 {
 	bool step_1;
@@ -187,6 +198,11 @@ typedef struct
 #define RobotCtrl_Size 512
 //优先级
 #define RobotCtrl_Priority osPriorityRealtime
+
+#define Sensor_Size 128
+
+#define Sensor_Priority osPriorityHigh
+
 //任务句柄
 //extern TaskHandle_t RobotCtrl_Handle;
 ////控制任务入口

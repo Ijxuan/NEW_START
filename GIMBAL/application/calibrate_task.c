@@ -103,12 +103,13 @@ void *cali_hook_fun[CALI_LIST_LENGHT] = {cali_gyro_hook};
   * @retval         none
   */
 //若之前未进行校准，那么就需要执行此校准任务
+		uint8_t key_level;				//key的电平信号	
+
 void calibrate_task(void const *pvParameters)
 {
     static uint8_t i = 0;
 		static uint8_t key_last_level;		//key上次的电平
 	
-		uint8_t key_level;				//key的电平信号	
 		key_last_level = key_up;	//初始化为未按下
 		//初始化key电平
 		key_level = HAL_GPIO_ReadPin(key_GPIO_Port,key_Pin);

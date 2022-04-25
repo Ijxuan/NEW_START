@@ -176,6 +176,15 @@ extern int VISION_Disconnect_test;
 extern int lose_time;
 extern int vision_shoot_times;
 
+extern bool disable_for_test;
+extern int shoot_times_for_limit;
+extern bool whether_shoot_in__this_period;//这个周期是否发射
+extern bool this_period_has_shoot;//这个周期是否发射
+extern int this_period_has_shoot_number;//这个周期发射shu
+extern int every_shoot_number;//一次三十发
+extern int targe_shoot_number;//一次三十发
+extern int shoot_speed_text;
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

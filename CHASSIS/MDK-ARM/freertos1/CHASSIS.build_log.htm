@@ -22,12 +22,42 @@ Dialog DLL:      TCM.DLL V1.36.2.0
  
 <h2>Project:</h2>
 D:\001\New_start\CHASSIS\MDK-ARM\CHASSIS.uvprojx
-Project File Date:  04/07/2022
+Project File Date:  04/14/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'CHASSIS'
-"freertos1\CHASSIS.axf" - 0 Error(s), 0 Warning(s).
+compiling stm32f4xx_hal_timebase_tim.c...
+compiling freertos.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(18): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\MY_SHOOT_CONTROL.h(8): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\BSP\DR16_CAN2_SEND.h(37): warning:  #1295-D: Deprecated declaration DR16_send_master_control - give arg types
+  void DR16_send_master_control();//鎬绘帶鍒?
+..\APP\CHASSIS_CONTROL_basic.h(21): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\CHASSIS_CONTROL_2.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\add\Sensor.h(69): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/freertos.c(374): warning:  #550-D: variable "xLastWakeTime"  was set but never used
+  	portTickType xLastWakeTime;
+../Core/Src/freertos.c(376): warning:  #177-D: variable "TimeIncrement"  was declared but never referenced
+  	const TickType_t TimeIncrement = pdMS_TO_TICKS(2); //每十毫秒强制进入总控制
+../Core/Src/freertos.c: 11 warnings, 0 errors
+linking...
+freertos1\CHASSIS.axf: Warning: L6304W: Duplicate input file freertos1\stm32f4xx_hal_timebase_tim_1.o ignored.
+Program Size: Code=35200 RO-data=1544 RW-data=808 ZI-data=31840  
+Finished: 0 information, 1 warning and 0 error messages.
+FromELF: creating hex file...
+"freertos1\CHASSIS.axf" - 0 Error(s), 12 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -50,7 +80,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.2.0
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

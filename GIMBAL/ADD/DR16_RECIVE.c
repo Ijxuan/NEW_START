@@ -10,6 +10,7 @@
 //#include "MY_CHASSIS_CONTROL.h"
 #include "my_IncrementPID_bate.h"
 #include "Vision.h"
+#include "MY_CLOUD_CONTROL.h"
 
 //#include "GM6020_Motor.h"
 //#include "control.h"
@@ -229,7 +230,7 @@ void NM_swj(void)
 	testdatatosend[_cnt++]=0xFF;
 	testdatatosend[_cnt++]=0xF1;
 	testdatatosend[_cnt++]=34;
-	if(1)
+	if(0)
 	{
 		#if 0//发送DR16数据
 	p=0;
@@ -324,29 +325,51 @@ void NM_swj(void)
 			send_d_16[p++]=0;//输出电压		10
 														//保留到小数点后四位
 #endif
-	#if 1//发送云台数据
+	#if 0//发送云台数据  YAW 视觉
 	p=0;
-			send_d_32[p++]=DJIC_IMU.total_yaw*1000;//目标角度		1
-			send_d_32[p++]=yaw_trage_angle*1000;//当前角度		2
+			send_d_32[p++]=DJIC_IMU.total_yaw*1000;//当前角度		1
+			send_d_32[p++]=yaw_trage_angle*1000;//最终目标角度		2
 
-			send_d_32[p++]=Yaw_IMU_Angle_pid.Error*1000;//P_OUT		3 
+			send_d_32[p++]=Vision_RawData_Yaw_Angle*1000;//视觉数据		3 
 //				send_d_32[p++]=PID_YES*1000;//P_OUT		3 
 
 			//DJIC_IMU.Gyro_y*1000000
 //DJIC_IMU.pitch
-			send_d_32[p++]= DJIC_IMU.total_pitch*1000;//I_OUT 4		4PID_YES
+			send_d_32[p++]= PITCH_trage_angle*-50000;//I_OUT 4		4PID_YES
 
-			send_d_32[p++]=Vision_RawData_Pitch_Angle*1000;//P_OUT		5
-			send_d_32[p++]=PITCH_trage_angle*1000;//I_OUT		6
-			send_d_32[p++]=Vision_RawData_Yaw_Angle*1000;//D_OUT  	7
+			send_d_32[p++]=VisionData.RawData.Depth*10;//P_OUT		5
+			send_d_32[p++]=DJIC_IMU.total_pitch*-50000;//I_OUT		6
+			send_d_32[p++]=VisionData.RawData.Beat*1111;//D_OUT  	7
 	p=0;
-			send_d_16[p++]=send_to_yaw;//输出电压      8
+			send_d_16[p++]=this_period_has_shoot_number;//输出电压      8
 
 			send_d_16[p++]=yaw_trage_speed*100000;//目标角度       	9
 			send_d_16[p++]=VisionData.RawData.Armour*1111;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
-	#if 0//发送云台数据
+	#if 0//发送云台数据 YAW 陀螺仪
+	p=0;
+			send_d_32[p++]=(CLOUD_enable_imu+200.0)*1000;//当前角度		1
+			send_d_32[p++]=DJIC_IMU.total_yaw*1000;//最终目标角度		2
+
+			send_d_32[p++]=(CLOUD_enable_imu-200.0)*1000;//视觉数据		3 
+//				send_d_32[p++]=PID_YES*1000;//P_OUT		3 
+
+			//DJIC_IMU.Gyro_y*1000000
+//DJIC_IMU.pitch
+			send_d_32[p++]= Yaw_IMU_Speed_pid.Error*1000;//I_OUT 4		4PID_YES
+
+			send_d_32[p++]=Yaw_IMU_Speed_pid.Proportion;//P_OUT		5
+			send_d_32[p++]=Yaw_IMU_Speed_pid.I_Output;//I_OUT		6
+			send_d_32[p++]=Yaw_IMU_Speed_pid.Differential;//D_OUT  	7
+	p=0;
+			send_d_16[p++]=send_to_yaw;//输出电压      8
+
+			send_d_16[p++]=yaw_trage_speed*10;//目标角度       	9
+			send_d_16[p++]=DJIC_IMU.Gyro_z*10;//输出电压		10
+														//保留到小数点后四位558 320 660   bjTlta
+#endif
+	#if 0//发送云台数据  PITCH 陀螺仪
 //先确定哪个轴是PITCH轴(陀螺仪有三个轴)
 //保证水平时值为0；向上为正，抬头为负
 //
@@ -362,13 +385,13 @@ p=0;
 
 //			send_d_32[p++]=Yaw_Angle_pid.Target;//目标角度		1
 //			send_d_32[p++]=Yaw_Angle_pid.Measure;//当前角度		2
-			send_d_32[p++]=DJIC_IMU.total_pitch*1000;//目标角度		1
-			send_d_32[p++]=PITCH_trage_angle*1000;//当前角度		2
+			send_d_32[p++]=DJIC_IMU.total_pitch*10000;//目标角度		1
+			send_d_32[p++]=PITCH_trage_angle*10000;//当前角度		2
 
 			send_d_32[p++]=PITCH_IMU_Angle_pid.Error*10000;//P_OUT		3 
 			//DJIC_IMU.Gyro_y*1000000
 //DJIC_IMU.pitch
-			send_d_32[p++]= PITCH_IMU_Angle_pid.result;//I_OUT 4		4PID_YES
+			send_d_32[p++]= Vision_RawData_Pitch_Angle*-10000;//I_OUT 4		4PID_YES
 //			send_d_32[p++]=Yaw_Angle_pid.Integral;//I_OUT 4		4
 //			send_d_32[4]=Yaw_Angle_pid.Differential;//D_OUT		
 
@@ -608,25 +631,25 @@ send_data10=M3508s[2].realSpeed;
 
 #endif
 }
-if(0)
+if(1)
 {
-#if 0//发送摩擦轮数据  中
+#if 1//发送摩擦轮数据  中
 	p=0;
 
 //			send_d_32[p++]=Yaw_Angle_pid.Target;//目标角度		1
 //			send_d_32[p++]=Yaw_Angle_pid.Measure;//当前角度		2
-			send_d_32[p++]=TEST_Current_R;//目标角度		1
+			send_d_32[p++]=SHOOT_L_speed;//目标角度		1
 			send_d_32[p++]=M3508s[2].realSpeed;//当前角度		2
 
-			send_d_32[p++]=TEST_Current_L;//目标速度		3 
+			send_d_32[p++]=-SHOOT_R_speed;//目标速度		3 
 			send_d_32[p++]= -M3508s[3].realSpeed;//左摩擦轮 4		4PID_YES
 			send_d_32[p++]=Driver_ANGLE_pid.Target;//拨盘目标角度		5
-			send_d_32[p++]=Driver_ANGLE_pid.Measure;//拨盘当前角度		6
-			send_d_32[p++]=0;//D_OUT  	7
+			send_d_32[p++]=ext_game_robot_state.data.shooter_id1_17mm_cooling_rate;//拨盘当前角度		6
+			send_d_32[p++]=ext_shoot_data.data.bullet_speed*100;//D_OUT  	7
 	p=0;
-			send_d_16[p++]=0;//输出电压      8
+			send_d_16[p++]=JS_RC_TIMES;//输出电压      8
 			send_d_16[p++]=send_to_SHOOT_L;//目标角度       	9
-			send_d_16[p++]=send_to_SHOOT_R;//当前角度		10
+			send_d_16[p++]=3000;//当前角度		10
 
 #endif
 #if 0//发送左摩擦轮数据  

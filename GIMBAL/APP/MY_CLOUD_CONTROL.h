@@ -24,6 +24,7 @@ extern		 int scan_time;
 
 extern		 int scan_percent_YAW;//0到1000,百分比
 extern	 float YAW_START_ANGLE;//S扫描开始时YAW轴角度
+extern int arrive_targe_angle;
 
 #endif
 //MY_CLOUD_COUNTROUL

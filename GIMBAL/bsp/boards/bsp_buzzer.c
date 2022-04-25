@@ -72,6 +72,6 @@ void Buzzer_Processing(void)
 		}
     break;
   }
-//  __HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_3, Buzzer.buzzer_value); 
+  __HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_3, Buzzer.buzzer_value); 
 //  __HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_3, beep_Val);  
 }
