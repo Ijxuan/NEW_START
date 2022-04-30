@@ -63,3 +63,6 @@ ins_task\my_shoot_control.o: ..\ADD\Vision.h
 ins_task\my_shoot_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ins_task\my_shoot_control.o: ../Inc/usart.h
 ins_task\my_shoot_control.o: ..\Arithmetic\CRC.h
+ins_task\my_shoot_control.o: ..\application\calibrate_task.h
+ins_task\my_shoot_control.o: ..\bsp\boards\bsp_buzzer.h
+ins_task\my_shoot_control.o: ../Inc/tim.h

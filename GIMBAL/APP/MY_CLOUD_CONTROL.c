@@ -274,7 +274,7 @@ void scan_cloud(void)
 			if(DR16.rc.s_left==1)//¿ØÖÆµ²Î»-É¨Ãè
 	{
 //		if(DR16.rc.s_right==3)//¿ØÖÆµ²Î»-É¨Ãè¿ªÊ¼
-		if(VisionData.RawData.Armour==0&&lose_time>2000)//ÊÓ¾õ2ÃëÃ»Ëøµ½×°¼×°å-É¨Ãè¿ªÊ¼
+		if(Armour_lose_time>2500)//ÊÓ¾õ2.5ÃëÃ»Ëøµ½×°¼×°å-É¨Ãè¿ªÊ¼
 		{
 		 int scan_speed_PITCH=4;//PITCHÖáÉ¨ÃèËÙ¶È,×îÐ¡Îª1
 		int scan_speed_YWA=4;//YAWÖáÉ¨ÃèËÙ¶È,×îÐ¡Îª1
@@ -340,18 +340,19 @@ yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0);//YAWÖá×ªÒ»È¦¶àÒ»µ
 		else //ÊÓ¾õËøµ½×°¼×°å-É¨Ãè½áÊø
 		{
 			scan_time=0;
-		if(lose_time>4000)//¿ØÖÆµ²Î»-É¨Ãè¿ªÊ¼
-YAW_START_ANGLE=DJIC_IMU.total_yaw;//Ë¿»¬¿ªÊ¼É¨Ãè						
+		if(Armour_lose_time>1000)//¿ØÖÆµ²Î»-É¨Ãè¿ªÊ¼
+YAW_START_ANGLE=DJIC_IMU.total_yaw;//Ë¿»¬¿ªÊ¼É¨Ãè
 scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	*0.8;	
 scan_percent_YAW=0;	
 		
 		}
 
 	}
-	else//ÊÓ¾õËøµ½×°¼×°å-É¨Ãè½áÊø
+	else//²»ÔÚÉ¨ÃèµµÎ»
 	{
 		scan_time=0;
 		YAW_START_ANGLE=DJIC_IMU.total_yaw;//Ë¿»¬¿ªÊ¼É¨Ãè
+		scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	*0.8;	
 scan_percent_YAW=0;
 	}
 		

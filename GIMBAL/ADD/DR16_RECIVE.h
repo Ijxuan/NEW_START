@@ -168,6 +168,29 @@ typedef struct
 
 extern ext_game_robot_status_t ext_game_robot_state;
 
+
+/* ID: 0X0202          Byte: 16      实时功率热量数据 */
+typedef struct
+{
+  union
+	{
+		uint8_t dataBuff[16];
+		__packed struct
+		{
+			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
+      uint16_t chassis_current; //底盘输出电流 单位 毫安
+      float chassis_power;//底盘输出功率 单位 W 瓦
+      uint16_t chassis_power_buffer;//底盘功率缓冲 单位 J 焦耳 备注：飞坡根据规则增加至 250J
+      uint16_t shooter_id1_17mm_cooling_heat;//枪口热量
+      uint16_t shooter_id2_17mm_cooling_heat;
+      uint16_t shooter_id1_42mm_cooling_heat;	
+		};
+	}data;
+	uint8_t InfoUpdataFlag;
+}ext_power_heat_data_t;
+
+extern ext_power_heat_data_t ext_power_heat_data;
+
 /**********为了匿名四轴上位机的协议定义的变量****************************/
 //cup为小端模式存储，也就是在存储的时候，低位被存在0字节，高位在1字节
 #define BYTE0(dwTemp)       (*(char *)(&dwTemp))     //取出int型变量的低字节

@@ -6,7 +6,7 @@
 
 #define Buzzer_Continue_Times 300
 #define Buzzer_Val 135
-#define Low_Buzzer_Val 5
+#define Low_Buzzer_Val 1
 typedef enum
 {
     Zero_times = 0,

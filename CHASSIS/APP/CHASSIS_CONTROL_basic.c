@@ -7,7 +7,7 @@
 
 #define HW_SWITCH_JR 2000//¹âµçµÄ¼ì²â¾àÀë  2000  500
 #define GD_LONG 999999
-
+#define track_long 84500//31000Îª¶Ì¹ìµÀ  84500Îª³¤¹ìµÀ   -4548 80741
 bool CHASSIS_L_MAX_new=0;//×óÓÒ±ß½çÖµÊÇ·ñ¸üĞÂ
 bool CHASSIS_R_MIN_new=0;
 void switch_change(void)
@@ -52,8 +52,8 @@ else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==1)  //Á½¸ö¹âµç´«¸ĞÆ÷×
 			if(HWswitch_L_last==1)//		0<--1
 			{
 				
-				CHASSIS_L_MAX_by_ENCODER=Chassis_Encoder.totalLine       +reverse_by_ENCODER;
-				CHASSIS_R_MIN_by_ENCODER=Chassis_Encoder.totalLine-200000-reverse_by_ENCODER;//200000Õâ¸öÖµ»¹Òª¸Ä,¸Ä³É¹ìµÀ³¤¶ÈÖµ
+				CHASSIS_L_MAX_by_ENCODER=Chassis_Encoder.totalLine       -reverse_by_ENCODER;
+				CHASSIS_R_MIN_by_ENCODER=Chassis_Encoder.totalLine-track_long-reverse_by_ENCODER;//200000Õâ¸öÖµ»¹Òª¸Ä,¸Ä³É¹ìµÀ³¤¶ÈÖµ
 				CHASSIS_L_MAX_new=1;//±ß½çÖµÒÑ¸üĞÂ
 			}
 		
@@ -69,7 +69,7 @@ else if(state_Infrared_R_is_ok==1&&state_Infrared_L_is_ok==0)  //Á½¸ö¹âµç´«¸ĞÆ÷×
 	{
 			if(HWswitch_R_last==1)////ÉÏÒ»´ÎÊÇ1,ÄÇ¾ÍÊÇ¸Õ¸Õ½øÈë´«¸ĞÆ÷¼ì²â¾àÀë		1-->0
 			{
-				CHASSIS_L_MAX_by_ENCODER=Chassis_Encoder.totalLine+20000+reverse_by_ENCODER;//200000Õâ¸öÖµ»¹Òª¸Ä,¸Ä³É¹ìµÀ³¤¶ÈÖµ(±àÂëÆ÷²âµÃ)
+				CHASSIS_L_MAX_by_ENCODER=Chassis_Encoder.totalLine+track_long-reverse_by_ENCODER;//200000Õâ¸öÖµ»¹Òª¸Ä,¸Ä³É¹ìµÀ³¤¶ÈÖµ(±àÂëÆ÷²âµÃ)
 				CHASSIS_R_MIN_by_ENCODER=Chassis_Encoder.totalLine      -reverse_by_ENCODER;
 
 				CHASSIS_R_MIN_new=1;//±ß½çÖµÒÑ¸üĞÂ
@@ -147,6 +147,7 @@ void star_and_new()
 	else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==1)  //Á½¸ö¹âµç´«¸ĞÆ÷×ó±ßºÃÓÒ±ß»µÊ±µÄ³õÊ¼»¯Âß¼­
 	{
 		if(CHASSIS_L_MAX_new==0)//×ó±ßµÄµÄ´«¸ĞÆ÷»¹Ã»¼ì²âµ½
+		{
 		CHASSIS_trage_angle=9990000;//Ö»ÓĞ×ó±ßµÄ´«¸ĞÆ÷ÊÇºÃµÄ,ËùÒÔÏò×óÔË¶¯
 		
 				if(DR16.rc.s_left==1)//×óÉÏµµÎ»      //¹âµçÃ»¼ì²âµ½ÓÃµÄÊÇÕâÌ×PID,¸Ä±äµÄÊÇÄ¿±ê½Ç¶È
@@ -154,12 +155,13 @@ void star_and_new()
 				P_PID_bate(&CHASSIS_MOTOR_ANGLE_pid, CHASSIS_trage_angle,M3508s[3].totalAngle);
 				CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*0.5;//Ë«»·	//Ö»ÓĞÒ»¸ö´«¸ĞÆ÷¶¼ÊÇºÃµÄ,ËÙ¶È¿ÉÒÔÂıÒ»µã
 				}
-		
+		}
 	}
 	
 	else if(state_Infrared_R_is_ok==1&&state_Infrared_L_is_ok==0)  //Á½¸ö¹âµç´«¸ĞÆ÷×ó±ß»µÓÒ±ßºÃÊ±µÄ³õÊ¼»¯Âß¼­
 	{
 		if(CHASSIS_R_MIN_new==0)//ÓÒ±ßµÄµÄ´«¸ĞÆ÷»¹Ã»¼ì²âµ½
+		{
 		CHASSIS_trage_angle=-9990000;//Ö»ÓĞÓÒ±ßµÄ´«¸ĞÆ÷ÊÇºÃµÄ,ËùÒÔÏòÓÒÔË¶¯
 		
 				if(DR16.rc.s_left==1)//×óÉÏµµÎ»      //¹âµçÃ»¼ì²âµ½ÓÃµÄÊÇÕâÌ×PID,¸Ä±äµÄÊÇÄ¿±ê½Ç¶È
@@ -167,6 +169,7 @@ void star_and_new()
 				P_PID_bate(&CHASSIS_MOTOR_ANGLE_pid, CHASSIS_trage_angle,M3508s[3].totalAngle);
 				CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*0.5;//Ë«»·	//Ö»ÓĞÒ»¸ö´«¸ĞÆ÷¶¼ÊÇºÃµÄ,ËÙ¶È¿ÉÒÔÂıÒ»µã
 				}
+		}
 		
 	}
 }

@@ -29,16 +29,16 @@ void CHASSIS_CONTROUL(void)
 				if(CHASSIS_R_MIN_new==1&&CHASSIS_L_MAX_new==1	)	//只有当边界值更新完了才会  真正开始巡航	
 				{
 					
-//				if(DR16.rc.ch4_DW<=-400)//拨上
-//				{
-//				Random_CHASSIS_CHOOSE=1;//是选择随机模式
-//				Cruise_CHASSIS_CHOOSE=0;
-//				}
-//				if(DR16.rc.ch4_DW>=400)//拨下
-//				{
-//				Cruise_CHASSIS_CHOOSE=1;//是选择巡航模式
-//				Random_CHASSIS_CHOOSE=0;	
-//				}  //正式比赛不需要切换巡航模式,就一直随机就好了
+				if(DR16.rc.ch4_DW<=-400)//拨上
+				{
+				Random_CHASSIS_CHOOSE=1;//是选择随机模式
+				Cruise_CHASSIS_CHOOSE=0;
+				}
+				if(DR16.rc.ch4_DW>=400)//拨下
+				{
+				Cruise_CHASSIS_CHOOSE=1;//是选择巡航模式
+				Random_CHASSIS_CHOOSE=0;	
+				}  //正式比赛不需要切换巡航模式,就一直随机就好了
 				
 				if(Cruise_CHASSIS_CHOOSE==1)//是选择巡航模式
 //				Cruise_CHASSIS();//巡航模式
@@ -180,23 +180,23 @@ if(state_Infrared_R_is_ok==1&&state_Infrared_L_is_ok==1)  //两个光电传感器都正常
 				RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
 			}//只要传感器检测到了就反向
 			
-						if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER))
-				//融合编码器,reverse_by_ENCODER是变向提前值
-			{
-				CHASSIS_trage_speed=4000*Chassis_PowerLimit;
-			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
-			}
-						if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
-				//融合编码器,reverse_by_ENCODER是变向提前值
-			{
-				CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
-			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
-			}
+//						if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER))
+//				//融合编码器,reverse_by_ENCODER是变向提前值
+//			{
+//				CHASSIS_trage_speed=4000*Chassis_PowerLimit;
+//			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
+//			}
+//						if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
+//				//融合编码器,reverse_by_ENCODER是变向提前值
+//			{
+//				CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
+//			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
+//			}
 			
 }	
 else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==1)  //两个光电传感器   左边好 右边坏   时的轨道末变向逻辑
 {
-			if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-9999999))//轨道边界变向 负十万到正十万
+			if(HWswitch_L==0)//轨道边界变向 负十万到正十万
 			{
 				CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
 			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
@@ -254,29 +254,24 @@ else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==1)  //两个光电传感器 
 					{
 						if(abs(M3508s[3].realSpeed)>(abs(CHASSIS_trage_speed)-200))
 						{
-						arrive_speed_times++;	
-							
+						arrive_speed_times++;		
 						}
-						
 					}
 					if(arrive_speed_times>250)//有规律失能
 					{
 						if(abs(M3508s[3].realSpeed)<(abs(CHASSIS_trage_speed)-2000))
 						{
 						disable_times++;	
-							
 						}
 						stop_CH_OP_BC_LESS=1;
 //						CHASSIS_trage_speed=0;
-						if(disable_times>50)//每次失能时长:
+					}	
+					if(disable_times>50)//每次失能时长:
 						{
 							arrive_speed_times=0;
 							disable_times=0;
 							stop_CH_OP_BC_LESS=0;
 						}
-						
-						
-					}
 
 	
 }

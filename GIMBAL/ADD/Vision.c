@@ -2,6 +2,7 @@
 #include "FPS_Calculate.h"
 #include "usbd_cdc_if.h"
 #include "DR16_RECIVE.h"
+#include "my_positionPID_bate.h"
 
 
 //#include "usb_device.h"
@@ -84,6 +85,7 @@ uint8_t Vision_SendBuff[5][18] = {'S', '0', '7', '0', '0', '0', '0', '0', '0', '
 bool shoot_last=0;
 void Vision_DataReceive(uint8_t *data)
 {
+	#if 1
 	//进行CRC校验
 	uint8_t CRCBuffer = Checksum_CRC8(data, 13 - 2);
 
@@ -111,8 +113,12 @@ void Vision_DataReceive(uint8_t *data)
 			Vision_RawData_Yaw_Angle = (float)VisionData.RawData.Yaw_Angle / 100.0f;
 //			//Pitch轴：
 			Vision_RawData_Pitch_Angle = (float)VisionData.RawData.Pitch_Angle / 100.0f;
-
-	if(VisionData.RawData.Beat==1&&shoot_last==1)
+	
+if(abs(Vision_RawData_Pitch_Angle)>30)//PITCH轴接收到的值 绝对值 超过30,判断为错误 归零
+{
+	Vision_RawData_Pitch_Angle=0;
+}
+	if(VisionData.RawData.Beat==1&&shoot_last==1)//连续两帧,从第二帧开始累加
 	vision_shoot_times++;
 	else
 	vision_shoot_times=0;
@@ -144,7 +150,48 @@ void Vision_DataReceive(uint8_t *data)
 	
 	//视觉离线检测位
 	VisionData.Offline_Detec++;
+	#endif
+		#if 0
+			//进行CRC校验
+	uint8_t CRCBuffer = Checksum_CRC8(data, 15 - 2);
+
+	//将视觉发送过来的13个8位数据遍历一遍
+	for (uint8_t i = 0; i < 15; i++)
+	{
+		VisionData.RawData.VisionRawData[i] = data[i];
+	}
+		//				//Yaw轴：单位 角度° 转成 机械角度(码盘值)
+			Vision_RawData_Yaw_Angle = (float)VisionData.RawData.Yaw_Angle / 100.0f;
+//			//Pitch轴：
+			Vision_RawData_Pitch_Angle = (float)VisionData.RawData.Pitch_Angle / 100.0f;
 	
+	if(abs(Vision_RawData_Pitch_Angle)>30)//PITCH轴接收到的值 绝对值 超过30,判断为错误 归零
+{
+	Vision_RawData_Pitch_Angle=0;
+}
+	if(VisionData.RawData.Beat==1&&shoot_last==1)//连续两帧,从第二帧开始累加
+	vision_shoot_times++;
+	else
+	vision_shoot_times=0;
+	
+	if (CRCBuffer == VisionData.RawData.crc)
+	crc_right=1;
+	else 
+	crc_right=0;
+	
+		if (VisionData.RawData.Start_Tag != 'S' || VisionData.RawData.End_Tag != 'E')
+	{
+		vision_rc_error++;
+		//也视为离线
+//EM_R.step_3=0;
+
+	}
+	else
+	{
+		vision_rc_right++;
+	}
+		#endif
+
 }
 
 
@@ -182,11 +229,14 @@ static void Vision_DataSend(uint8_t *data)
 //		while ((USART6->SR & 0X40) == 0);
 //		USART6->DR = data[i];
 //	}
+	
 		for (uint8_t i = 0; i < 13; i++)
 	{
 		while ((USART6->SR & 0X40) == 0);
 		USART6->DR = data[i];
-	}
+	}//三PIN接口
+	
+	
 //		for (uint8_t i = 0; i < 13; i++)
 //	{
 //		while ((USART6->SR & 0X40) == 0);
@@ -262,6 +312,43 @@ void Update_Vision_SendData(void)
 		Vision_SendBuff[i][11] = ext_game_robot_state.data.shooter_id1_17mm_speed_limit;
 		else
 		Vision_SendBuff[i][11] = 30;
+		
+		Vision_SendBuff[i][12] = 'E';
+
+	}
+}	
+	if(0)
+{
+	for (uint8_t i = 0; i < 5; i++)
+	{
+						Vision_SendBuff[i][0] = 'S';
+
+
+		//云台Yaw轴的角度偏差 float -> uint8_t
+		Vision_SendBuff[i][1] = Vision_Cloud.VisionSend_t.Angle_Error_Data[0];
+		Vision_SendBuff[i][2] = Vision_Cloud.VisionSend_t.Angle_Error_Data[1];
+		Vision_SendBuff[i][3] = Vision_Cloud.VisionSend_t.Angle_Error_Data[2];
+		Vision_SendBuff[i][4] = Vision_Cloud.VisionSend_t.Angle_Error_Data[3];
+		//云台Pitch轴的角度偏差
+		Vision_SendBuff[i][5] = Vision_Cloud.VisionSend_t.Angle_Error_Data[4];
+		Vision_SendBuff[i][6] = Vision_Cloud.VisionSend_t.Angle_Error_Data[5];
+		Vision_SendBuff[i][7] = Vision_Cloud.VisionSend_t.Angle_Error_Data[6];
+		Vision_SendBuff[i][8] = Vision_Cloud.VisionSend_t.Angle_Error_Data[7];
+
+		//首支枪管的速度限制
+		if(STATUS_complete_update_TIMES>1)
+		Vision_SendBuff[i][9] = ext_game_robot_state.data.shooter_id1_17mm_speed_limit;
+		else
+		Vision_SendBuff[i][9] = 30;
+		
+				if(STATUS_complete_update_TIMES>1)
+		Vision_SendBuff[i][10] = ext_game_robot_state.data.robot_id;
+		else
+		Vision_SendBuff[i][10] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
+			
+		Vision_SendBuff[i][11] = 5;//?
+				//模式：0默认 1自瞄 2大神符 3哨兵 4基地
+        //'5'哨兵专用  视频录制
 		
 		Vision_SendBuff[i][12] = 'E';
 

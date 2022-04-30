@@ -24,7 +24,8 @@
 #define JS_RC_SHOOT_ID 0x136
 #define JS_RC_HURT_ID 0x137
 
-
+#define JS_SEND_HEAT_ID_ONE 0x142
+#define JS_SEND_HEAT_ID_TWO 0x143 
 
 
 #define DR16_R_PART_ONE 0x135

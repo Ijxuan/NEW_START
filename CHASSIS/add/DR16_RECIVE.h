@@ -26,6 +26,8 @@ extern uint8_t DR16Buffer[DR16BufferNumber];
 {0}, \
 0, \
 0, \
+0, \
+0, \
 &DR16_Process, \
 } \
 
@@ -81,7 +83,8 @@ typedef struct
 
 	uint16_t infoUpdateFrame;	//帧率
 	uint8_t offLineFlag;		//设备离线标志
-
+		uint8_t s_left_last;
+		uint8_t s_right_last;
 	/*指针函数*/
 //	void(*DR16_ReInit)(void);
 	void(*DR16_Process)(uint8_t *pData);

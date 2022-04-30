@@ -213,6 +213,8 @@ bool send_to_C;//DR16_遥控器_是否发送给C板
 bool send_to_C_JS_SHOOT;//裁判系统_发射数据_是否发送给C板  
 bool send_to_C_JS_HURT;//裁判系统_伤害数据_是否发送给C板
 bool send_to_C_JS_STATUS;//裁判系统_状态数据_是否发送给C板
+bool send_to_C_JS_HEAT=0;//裁判系统_状态数据_是否发送给C板
+
 int send_to_C_times;
 int send_to_C_STATUS_times=0;//因为状态数据分4段发送,所以计数保险一点
 
@@ -237,11 +239,11 @@ float KB_high_JB=80;//狂暴模式缓冲功率回复目标
 
 int usart_7_times=0;
 
-bool disable_for_test=1;///为了调试///为了调试///为了调试///为了调试///为了调试///为了调试
+bool disable_for_test=0;///为了调试///为了调试///为了调试///为了调试///为了调试///为了调试
 bool state_Infrared_R_is_ok=1;//右边红外传感器运转正常
 bool state_Infrared_L_is_ok=1;//左边红外传感器运转正常
 
-
+int ch4_DW_total=0;
 //driver  plate
 /* USER CODE END 0 */
 

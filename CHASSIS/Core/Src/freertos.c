@@ -312,6 +312,7 @@ void DeBug(void const * argument)
 //		Update_Vision_SendData();
 		if (send_to_C == 1)//遥控器数据
 		{
+			ch4_DW_total=DR16.rc.ch4_DW;
 			DR16_send_master_control();
 			send_to_C_times++;
 			send_to_C = 0;
@@ -332,6 +333,11 @@ JS_send_SHOOT_control();
 			send_to_C_STATUS_times++;
 JS_send_STATUS_control();
 			send_to_C_JS_STATUS=0;
+		}
+		if(send_to_C_JS_HEAT == 1)
+		{
+			JS_send_HEAT_control();
+			send_to_C_JS_HEAT=0;
 		}
 		
 		
@@ -494,7 +500,7 @@ void init_task(void const * argument)
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
 						 10000, -10000,
-						 4000, -4000); // Yaw_IMU_Angle_pid
+						 14000, -14000); // Yaw_IMU_Angle_pid
 
 #endif
 
@@ -556,8 +562,7 @@ void init_task(void const * argument)
 	task_init_times++;
 	CHASSIS_trage_angle = 9990000;
 
-	EM_Ramp->Rate = 0.2;//视觉自瞄的斜坡函数增加值
-	EM_Ramp->Absolute_Max = 50;
+
 ext_power_heat_data.data.chassis_power_buffer=200;
 	
 		osThreadDef(Sensor, Robot_Sensor, Sensor_Priority, 0, Sensor_Size);
@@ -668,7 +673,7 @@ void Robot_Sensor(void const *argument)
 		if (DR16.rc.s_right != 3) //是否上位机
 		{
 			times_i++;
-			if (times_i > 20) // 5ms发一次
+			if (times_i > 10) // 5ms发一次
 			{
 					  	   NM_swj();
 				times_i = 0;
@@ -720,7 +725,7 @@ void Robot_Control(void const *argument)
 		star_and_new();//弹道测试后取消注释
 		CHASSIS_CONTROUL();
 		
-if(stop_CH_OP_BC_LESS==1)
+if(stop_CH_OP_BC_LESS==1)//!
 {
 			send_to_chassis = 0;//弹道测试后取消注释//到达指定速度后随机的失能
 }
@@ -728,6 +733,19 @@ if(stop_CH_OP_BC_END==1)
 {
 			send_to_chassis = 0;//弹道测试后取消注释//撞柱前,加速,然后失能一段时间
 }
+
+if(DR16.s_left_last!=DR16.rc.s_left)
+{
+	stop_CH_OP_BC_LESS=0;
+	stop_CH_OP_BC_END=0;
+}
+		DR16.s_left_last=DR16.rc.s_left;
+		DR16.s_right_last=DR16.rc.s_right;
+
+		if(disable_for_test==1) //测试用,便于云台底盘分开调试
+		{
+				send_to_chassis = 0;
+		}
 
 		if(CHASSIS_trage_speed>0&&send_to_chassis<0)
 			send_to_chassis=0;
@@ -737,12 +755,9 @@ if(stop_CH_OP_BC_END==1)
 		{
 			CHASSIS_MOTOR_SPEED_pid.Integral=0;
 			send_to_chassis = 0;
+			CHASSIS_trage_speed=0;
 		}
-		if(disable_for_test==1)
-		{
-				send_to_chassis = 0;
-		
-		}
+
 		M3508s1_setCurrent(0, 0, 0, send_to_chassis);
 //		M3508s1_setCurrent(0, 0, 0, 0);		
 		vTaskDelayUntil(&xLastWakeTime, TimeIncrement);

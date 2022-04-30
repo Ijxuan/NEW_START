@@ -218,11 +218,11 @@ void NM_swj(void)
 	uint8_t _cnt=0;
 	
 	
-	testdatatosend[_cnt++]=0xAA;
-	testdatatosend[_cnt++]=0xFF;
-	testdatatosend[_cnt++]=0xF1;
-	testdatatosend[_cnt++]=34;
-if(0)
+	testdatatosend[_cnt++]=0xAA;//0
+	testdatatosend[_cnt++]=0xFF;//1
+	testdatatosend[_cnt++]=0xF1;//2
+	testdatatosend[_cnt++]=34;//3
+if(1)
 {
 	
 		#if 0//发送pitch云台数据
@@ -558,7 +558,7 @@ if(0)
 			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
       uint16_t chassis_current; //底盘输出电流 单位 毫安
       float chassis_power;//底盘输出功率 单位 W 瓦
-      uint16_t chassis_power_buffer;//底盘功率缓冲 单位 J 焦耳 备注：飞坡根据规则增加至 250J
+      uint16_t chassis_power_buffer;//底盘功率缓冲 单位 J 焦耳 
 	  */
 	p=0;
 			send_d_32[p++]=ext_power_heat_data.data.chassis_volt;//底盘输出电压 单位 毫伏
@@ -568,8 +568,8 @@ if(0)
 
 			send_d_32[p++]=ext_power_heat_data.data.chassis_power_buffer;//底盘功率缓冲 4		4PID_YES
 
-			send_d_32[p++]=(220-ext_power_heat_data.data.chassis_power);//P_OUT		5
-			send_d_32[p++]=PITCH_EM_Speed_pid.I_Output;//I_OUT		6
+			send_d_32[p++]=0;//P_OUT		5
+			send_d_32[p++]=M3508s[3].realCurrent;//I_OUT		6
 			send_d_32[p++]=M3508s[3].realSpeed;//D_OUT  	7
 	p=0;
 			send_d_16[p++]=DO_NOT_STOP.This_area_stay_times;//在一个区域停留的时间      8
@@ -606,13 +606,15 @@ if(0)
 			//随机数		发送给yaw轴电机
 
 #endif
-#if 1//3508电机测试
+#if 0//3508电机测试
 /*
 			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
       uint16_t chassis_current; //底盘输出电流 单位 毫安
       float chassis_power;//底盘输出功率 单位 W 瓦
       uint16_t chassis_power_buffer;//底盘功率缓冲 单位 J 焦耳 备注：飞坡根据规则增加至 250J
 	  */
+	  	testdatatosend[_cnt++]=0xF2;//2
+
 	p=0;
 			send_d_32[p++]=M3508s[3].realCurrent;//底盘输出电压 单位 毫伏
 			send_d_32[p++]=M3508s[3].OutputCurrent;//底盘输出电流 单位 W 瓦    2

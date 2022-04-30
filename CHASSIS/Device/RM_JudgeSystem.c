@@ -1594,6 +1594,7 @@ void Judge_GetMessage(uint16_t Data_Length)
 					memcpy(&ext_power_heat_data.data.dataBuff, &JudgeSystem_rxBuff[n + 7], sizeof(uint8_t[16]));
 					n += JudgeLength_Power_Heat;
 					ext_power_heat_data.InfoUpdataFlag = 1;
+					send_to_C_JS_HEAT=1;
 				}
 				else
 					n++;

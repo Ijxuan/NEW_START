@@ -152,6 +152,8 @@ extern int STATUS_PART_TWO_TIMES;
 extern int STATUS_PART_THREE_TIMES;
 extern int STATUS_PART_FOUR_TIMES;
 extern int STATUS_complete_update_TIMES;
+extern int HEAT_complete_update_TIMES;//裁判系统热量信息更新成功次数
+
 
 extern int DDR16_PART_ONE_TIMES;
 extern int DDR16_PART_TWO_TIMES;
@@ -173,7 +175,9 @@ extern bool cloud_enable;
 extern int VISION_FROM_USART1;
 extern int VISION_Disconnect_test;
 
-extern int lose_time;
+extern int Armour_lose_time;
+extern int SHOOT_STOP_time;
+
 extern int vision_shoot_times;
 
 extern bool disable_for_test;
@@ -184,6 +188,13 @@ extern int this_period_has_shoot_number;//这个周期发射shu
 extern int every_shoot_number;//一次三十发
 extern int targe_shoot_number;//一次三十发
 extern int shoot_speed_text;
+
+extern int ch4_DW_total;
+extern int ch4_DW_total_2;
+extern bool crc_right;
+extern int vision_rc_right;
+extern int vision_rc_error;
+extern int CAN2_rc_times;
 
 /* USER CODE END Private defines */
 

@@ -14,7 +14,7 @@
 #pragma anon_unions
 
 
-#define Vision_BuffSize (13 + 2) //视觉接收数据缓冲区长度
+#define Vision_BuffSize (15 + 2) //视觉接收数据缓冲区长度
 extern uint8_t Vision_DataBuff[Vision_BuffSize];
 
 #define VisionPage_Width 1280
@@ -79,10 +79,13 @@ typedef struct
 
 } XY_t;
 
+#pragma pack(1)
+
 typedef struct
 {
 	struct
 	{
+		#if 1
 		union
 		{
 			struct
@@ -113,7 +116,33 @@ typedef struct
 		float Yaw_Angle;				//Yaw轴的角度
 		float Pitch_Angle;				//Pitch轴的角度
 		float Depth;					//深度
+	#endif
+	#if 0
+			union
+		{
+			struct
+			{
+				char Start_Tag; //帧头   0
+
+				uint8_t Armour; //是否识别到装甲板   1
+				uint8_t Beat; //是否攻击（排除工程2号）  2
+
+		float Yaw_Angle;				//Yaw轴的角度   3 4 5 6
+
+
+		float Pitch_Angle;				//Pitch轴的角度 7 8 9 10
+				
+				uint8_t crc; //CRC校验位  uint16_t               11
+
+        uint16_t  Depth;                             //   12 13
+
+
+				char End_Tag; //帧尾                 14
+			};
+			uint8_t VisionRawData[15];
+		};
 	
+	#endif
 	} RawData; //视觉的协议 接收一帧的数据结构体
 
 	uint32_t Offline_Detec;
@@ -125,6 +154,8 @@ typedef struct
 	uint32_t FPS;							//帧率
 
 } VisionData_t;
+//#pragma pack()
+//#pragma pack(1)
 
 //视觉发送数据结构体
 typedef struct
@@ -146,6 +177,7 @@ typedef struct
 	uint8_t Gyro_y_low;	  //陀螺仪加速度小数点后两位低八位
 
 } VisionSend_Cloud_t;
+//#pragma pack()
 
 
 extern VisionData_t VisionData;

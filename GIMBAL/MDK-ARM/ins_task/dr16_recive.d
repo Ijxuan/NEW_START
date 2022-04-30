@@ -74,3 +74,7 @@ ins_task\dr16_recive.o: ..\ADD\Vision.h
 ins_task\dr16_recive.o: ..\Arithmetic\CRC.h
 ins_task\dr16_recive.o: ..\APP\MY_CLOUD_CONTROL.h
 ins_task\dr16_recive.o: ..\ADD\GM6020.h
+ins_task\dr16_recive.o: ..\application\calibrate_task.h
+ins_task\dr16_recive.o: ..\bsp\boards\bsp_buzzer.h
+ins_task\dr16_recive.o: ../Inc/tim.h
+ins_task\dr16_recive.o: ..\APP\MY_SHOOT_CONTROL.h

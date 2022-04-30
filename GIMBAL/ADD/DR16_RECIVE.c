@@ -11,6 +11,8 @@
 #include "my_IncrementPID_bate.h"
 #include "Vision.h"
 #include "MY_CLOUD_CONTROL.h"
+#include "calibrate_task.h"
+#include "MY_SHOOT_CONTROL.h"
 
 //#include "GM6020_Motor.h"
 //#include "control.h"
@@ -19,6 +21,7 @@ static int USART_Receive_DMA_NO_IT(UART_HandleTypeDef* huart, uint8_t* pData, ui
 ext_shoot_data_t ext_shoot_data;
 ext_robot_hurt_t ext_robot_hurt;
 ext_game_robot_status_t ext_game_robot_state;
+ext_power_heat_data_t ext_power_heat_data;
 
 uint8_t JSBuffer[8];
 
@@ -79,10 +82,16 @@ void DR16_Process(uint8_t *pData)
 		return;
 	}
 	DR16.rc.ch0 = (pData[0] | (pData[1] << 8)) & 0x07FF;
+	DR16.rc.ch0 -= 1024;
 
 	DR16.rc.ch1 = ((pData[1] >> 3) | (pData[2] << 5)) & 0x07FF;
+		DR16.rc.ch1 -= 1024;
+
 	DR16.rc.ch2 = ((pData[2] >> 6) | (pData[3] << 2) | (pData[4] << 10)) & 0x07FF;
+		DR16.rc.ch2 -= 1024;
+
 	DR16.rc.ch3 = ((pData[4] >> 1) | (pData[5] << 7)) & 0x07FF;
+		DR16.rc.ch3 -= 1024;
 	DR16.rc.s_left = ((pData[5] >> 4) & 0x000C) >> 2;
 	DR16.rc.s_right = ((pData[5] >> 4) & 0x0003);
 	DR16.mouse.x = (pData[6]) | (pData[7] << 8);
@@ -94,13 +103,11 @@ void DR16_Process(uint8_t *pData)
 
 	//your control code ….
 	DR16.rc.ch4_DW = (pData[16] | (pData[17] << 8)) & 0x07FF;
+		DR16.rc.ch4_DW -= 1024;
+	ch4_DW_total_2+=DR16.rc.ch4_DW;
 	DR16.infoUpdateFrame++;
-		DR16.rc.ch0 -= 1024;
-	DR16.rc.ch1 -= 1024;
 
-	DR16.rc.ch2 -= 1024;
-	DR16.rc.ch3 -= 1024;
-	DR16.rc.ch4_DW -= 1024;
+
 	/* prevent remote control zero deviation */
 	if (DR16.rc.ch0 <= 20 && DR16.rc.ch0 >= -20)
 		DR16.rc.ch0 = 0;
@@ -112,6 +119,7 @@ void DR16_Process(uint8_t *pData)
 		DR16.rc.ch3 = 0;
 	if (DR16.rc.ch4_DW <= 20 && DR16.rc.ch4_DW >= -20)
 		DR16.rc.ch4_DW = 0;
+	
 	
 	CH0_TOTAL+=DR16.rc.ch0;
 	CH1_TOTAL+=DR16.rc.ch1;
@@ -232,6 +240,28 @@ void NM_swj(void)
 	testdatatosend[_cnt++]=34;
 	if(0)
 	{
+			#if 0//发送陀螺仪数据  YAW PITCH
+	p=0;
+			send_d_32[p++]=DJIC_IMU.total_yaw*1000;//当前角度		1
+			send_d_32[p++]=DJIC_IMU.total_pitch*1000;//最终目标角度		2
+
+			send_d_32[p++]=0;//视觉数据		3 
+//				send_d_32[p++]=PID_YES*1000;//P_OUT		3 
+
+			//DJIC_IMU.Gyro_y*1000000
+//DJIC_IMU.pitch
+			send_d_32[p++]= PITCH_trage_angle*-50000;//I_OUT 4		4PID_YES
+
+			send_d_32[p++]=VisionData.RawData.Depth*10;//P_OUT		5
+			send_d_32[p++]=DJIC_IMU.total_pitch*-50000;//I_OUT		6
+			send_d_32[p++]=VisionData.RawData.Beat*1111;//D_OUT  	7
+	p=0;
+			send_d_16[p++]=this_period_has_shoot_number;//输出电压      8
+
+			send_d_16[p++]=yaw_trage_speed*100000;//目标角度       	9
+			send_d_16[p++]=cali_sensor[i].cali_cmd*1111;//1在校准 0不在		10
+														//保留到小数点后四位558 320 660   bjTlta
+#endif
 		#if 0//发送DR16数据
 	p=0;
 			send_d_32[p++]=yaw_trage_speed*1000;//目标角度		1
@@ -269,7 +299,7 @@ void NM_swj(void)
 			send_d_32[p++]=DR16.rc.ch1;//I_OUT		6
 			send_d_32[p++]=DR16.rc.ch2;//D_OUT  	7
 	p=0;
-			send_d_16[p++]=DR16.rc.ch3;//输出电压      8
+			send_d_16[p++]=0;//输出电压      8
 
 			send_d_16[p++]=0;//目标角度       	9
 			send_d_16[p++]=0;//输出电压		10
@@ -369,7 +399,7 @@ void NM_swj(void)
 			send_d_16[p++]=DJIC_IMU.Gyro_z*10;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
-	#if 0//发送云台数据  PITCH 陀螺仪
+	#if 1//发送云台数据  PITCH 陀螺仪
 //先确定哪个轴是PITCH轴(陀螺仪有三个轴)
 //保证水平时值为0；向上为正，抬头为负
 //
@@ -633,7 +663,26 @@ send_data10=M3508s[2].realSpeed;
 }
 if(1)
 {
-#if 1//发送摩擦轮数据  中
+	#if 1//发送自动开火数据  中
+	p=0;
+
+			send_d_32[p++]=M3508s[1].totalAngle;//拨盘当前角度		1
+			send_d_32[p++]=Driver_ANGLE_pid.Target;//拨盘目标角度		2
+
+			send_d_32[p++]=Driver_arrive*1111;//是否达到目标角度		3 
+	
+			send_d_32[p++]= -M3508s[3].realSpeed;//左摩擦轮 4		4PID_YES
+			send_d_32[p++]=Driver_ANGLE_pid.Target;//拨盘目标角度		5
+			send_d_32[p++]=ext_game_robot_state.data.shooter_id1_17mm_cooling_rate;//拨盘当前角度		6
+			send_d_32[p++]=VisionData.RawData.Beat*1234;//视觉发射指令  	7
+	p=0;
+	
+			send_d_16[p++]=vision_shoot_times;//射击    指令次数      8
+			send_d_16[p++]=SHOOT_STOP_time;//停止射击   指令次数       	9
+			send_d_16[p++]=ext_power_heat_data.data.shooter_id1_17mm_cooling_heat;//枪口1热量		10
+
+#endif
+#if 0//发送摩擦轮数据  中
 	p=0;
 
 //			send_d_32[p++]=Yaw_Angle_pid.Target;//目标角度		1
@@ -649,7 +698,7 @@ if(1)
 	p=0;
 			send_d_16[p++]=JS_RC_TIMES;//输出电压      8
 			send_d_16[p++]=send_to_SHOOT_L;//目标角度       	9
-			send_d_16[p++]=3000;//当前角度		10
+			send_d_16[p++]=ext_power_heat_data.data.shooter_id1_17mm_cooling_heat;//当前角度		10
 
 #endif
 #if 0//发送左摩擦轮数据  
@@ -707,6 +756,8 @@ testdatatosend[_cnt++]=BYTE3(send_d_32[p]);
 testdatatosend[_cnt++]=BYTE0(send_d_16[p]);
 testdatatosend[_cnt++]=BYTE1(send_d_16[p]);
 	}
+	
+	
 sumcheck=0;
 addcheck=0;
 for(i=0; i < (testdatatosend[3]+4); i++)
@@ -721,7 +772,11 @@ addcheck += sumcheck; //每一字节的求和操作，进行一次sumcheck的累加
 
 //	CDC_Transmit_FS(&testdatatosend[0],_cnt);
 
-
+//		for (uint8_t i = 0; i < _cnt; i++)
+//	{
+//		while ((USART6->SR & 0X40) == 0);
+//		USART6->DR = testdatatosend[i];
+//	}//三PIN接口
 }
 
 

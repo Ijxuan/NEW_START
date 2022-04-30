@@ -121,7 +121,8 @@ int STATUS_PART_ONE_TIMES=0;
 int STATUS_PART_TWO_TIMES=0;
 int STATUS_PART_THREE_TIMES=0;
 int STATUS_PART_FOUR_TIMES=0;
-int STATUS_complete_update_TIMES=0;
+int STATUS_complete_update_TIMES=0;//裁判系统状态信息更新成功次数
+int HEAT_complete_update_TIMES=0;//裁判系统热量信息更新成功次数
 
 
 int DDR16_PART_ONE_TIMES=0;
@@ -143,7 +144,9 @@ bool cloud_text_add=1;
 bool cloud_enable=0;
 int VISION_FROM_USART1=0;
 int VISION_Disconnect_test=0;
-int lose_time=0;
+int Armour_lose_time=0;
+int SHOOT_STOP_time=0;
+
 int vision_shoot_times;
 int shoot_times_for_limit=0;//发射周期(为了热量限制)
 bool whether_shoot_in__this_period=0;//这个周期是否发射
@@ -154,6 +157,14 @@ int every_shoot_number=600;//一次三十发
 int targe_shoot_number=0;//一次三十发
 
 bool disable_for_test=0;//为了调试
+int ch4_DW_total=0;
+int ch4_DW_total_2=0;
+
+bool crc_right=0;
+int vision_rc_right=0;
+int vision_rc_error=0;
+
+int CAN2_rc_times=0;
 /* USER CODE END 0 */
 
 /**
@@ -174,7 +185,6 @@ int main(void)
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
-	
 
   /* Configure the system clock */
   SystemClock_Config();
@@ -200,7 +210,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	  delay_init();
 		Buzzer_Init();
-					Buzzer.status = ON;
+//					Buzzer.status = ON;
 
     cali_param_init();
    usart1_dr16_init();

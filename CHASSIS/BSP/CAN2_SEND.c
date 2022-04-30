@@ -36,5 +36,17 @@ osDelay(1);
 	CAN_SendData(&hcan2,CAN_ID_STD,JS_SEND_STATUS_ID_FOUR,&js_SEND_all[24]);
 osDelay(1);
 
+}
+
+void JS_send_HEAT_control()
+{
+
+	for(int i=0;i<18;i++ )//0到17位有效,一共18位
+{
+	js_SEND_all[i]=ext_power_heat_data.data.dataBuff[i];
+}
+	CAN_SendData(&hcan2,CAN_ID_STD,JS_SEND_HEAT_ID_ONE,&js_SEND_all[0]);
+osDelay(1);
+	CAN_SendData(&hcan2,CAN_ID_STD,JS_SEND_HEAT_ID_TWO,&js_SEND_all[8]);
 
 }

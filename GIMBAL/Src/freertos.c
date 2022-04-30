@@ -332,7 +332,7 @@ void MX_FREERTOS_Init(void) {
 __weak void test_task(void const * argument)
 {
   /* init code for USB_DEVICE */
-//  MX_USB_DEVICE_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN test_task */
 	/* Infinite loop */
 	for (;;)
@@ -373,8 +373,8 @@ Tmr Svc        	0		<1%
 	/* Infinite loop */
 	for (;;)
 	{
-		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
-		{
+//		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
+//		{
 			//					USART1->DR = '2';
 			//					TRY[0]='0';
 			//										TRY[1]='1';
@@ -382,11 +382,11 @@ Tmr Svc        	0		<1%
 			//	HAL_UART_Transmit_DMA(&huart1,&TRY[0],2);
 						if (cali_sensor[0].cali_done == CALIED_FLAG && cali_sensor[0].cali_cmd == 0)
 					{
-								NM_swj();
-				
+														NM_swj();
+
 					}
-		
-		}
+//		
+//		}
 
 
   
@@ -491,6 +491,7 @@ int i=0;
 		//出队成功
 		if (ExitQueue_Status == pdTRUE)
 		{
+			CAN2_rc_times++;
 			can2_DR16_TIMES++;
 			//陀螺仪校准指令
 			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == IMU_CAL_REIID)
@@ -498,6 +499,26 @@ int i=0;
 				//解包
 				IMU_Cal_Status_Reivece(CAN2_Rx_Structure);
 			}
+			
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_HEAT_ID_ONE)
+			{
+				//热量数据解包1
+				for(i=0;i<8;i++)
+				{
+				ext_power_heat_data.data.dataBuff[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+			}
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_HEAT_ID_TWO)
+			{
+				//热量数据解包2
+				for(i=0;i<8;i++)
+				{
+				ext_power_heat_data.data.dataBuff[i+8]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+				HEAT_complete_update_TIMES++;
+			}
+			
+			
 			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_RC_SHOOT_ID)
 			{
 				//解包1
@@ -690,6 +711,9 @@ void Robot_Control(void const *argument)
 	/* Infinite loop */
 	for (;;)
 	{
+		if(controul_times%10==0)
+		{
+		}
 				if (DR16.rc.s_left == 2&&DR16.rc.ch1<-600) //失能保护
 				{
 					disable_for_test=1;
@@ -702,15 +726,16 @@ void Robot_Control(void const *argument)
 		
 
 
-				if(VisionData.RawData.Armour==0)//控制挡位-扫描开始
+				if(VisionData.RawData.Armour==0)//
 				{
-		lose_time++;
+		Armour_lose_time++;
 				}
-
-			if(VisionData.RawData.Armour==1)//控制挡位-扫描开始
+			else if(VisionData.RawData.Armour==1)//
 				{
-		lose_time=0;
+		Armour_lose_time=0;
 				}
+				
+				
 				controul_times++;
 		cloud_control();
 

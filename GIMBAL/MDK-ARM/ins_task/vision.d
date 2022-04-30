@@ -64,3 +64,6 @@ ins_task\vision.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core
 ins_task\vision.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
 ins_task\vision.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
 ins_task\vision.o: ..\ADD\DR16_RECIVE.h
+ins_task\vision.o: ..\Arithmetic\my_positionPID_bate.h
+ins_task\vision.o: ..\application\INS_task.h
+ins_task\vision.o: ..\application\struct_typedef.h

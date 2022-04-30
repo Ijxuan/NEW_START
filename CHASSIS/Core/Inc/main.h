@@ -141,6 +141,8 @@ extern bool send_to_C;
 extern bool send_to_C_JS_SHOOT;
 extern bool send_to_C_JS_HURT;//裁判系统_伤害数据_是否发送给C板
 extern bool send_to_C_JS_STATUS;//裁判系统_状态数据_是否发送给C板
+extern bool send_to_C_JS_HEAT;//裁判系统_热量数据_是否发送给C板
+
 extern int send_to_C_STATUS_times;//因为状态数据分4段发送,所以计数保险一点
 
 extern int JS_SEND_times;
@@ -186,6 +188,7 @@ typedef struct
 	
 	
 }JC;
+extern int ch4_DW_total;
 
 
 
