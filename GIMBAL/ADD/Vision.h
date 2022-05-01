@@ -14,7 +14,7 @@
 #pragma anon_unions
 
 
-#define Vision_BuffSize (15 + 2) //视觉接收数据缓冲区长度
+#define Vision_BuffSize (13 + 2) //视觉接收数据缓冲区长度
 extern uint8_t Vision_DataBuff[Vision_BuffSize];
 
 #define VisionPage_Width 1280
@@ -79,7 +79,7 @@ typedef struct
 
 } XY_t;
 
-#pragma pack(1)
+//#pragma pack(1)
 
 typedef struct
 {
