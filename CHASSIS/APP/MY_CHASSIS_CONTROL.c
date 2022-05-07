@@ -98,8 +98,33 @@ void CHASSIS_CONTROUL(void)
 				}				
 		
 	}
+		if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==0)  //两个光电传感器都正常时的初始化逻辑
+	{					
+				if(CHASSIS_R_MIN_new==1&&CHASSIS_L_MAX_new==1	)	//只有当边界值更新完了才会  真正开始巡航	
+				{
+					
+				if(DR16.rc.ch4_DW<=-400)//拨上
+				{
+				Random_CHASSIS_CHOOSE=1;//是选择随机模式
+				Cruise_CHASSIS_CHOOSE=0;
+				}
+				if(DR16.rc.ch4_DW>=400)//拨下
+				{
+				Cruise_CHASSIS_CHOOSE=1;//是选择巡航模式
+				Random_CHASSIS_CHOOSE=0;	
+				}  //正式比赛不需要切换巡航模式,就一直随机就好了
+				
+				if(Cruise_CHASSIS_CHOOSE==1)//是选择巡航模式
+//				Cruise_CHASSIS();//巡航模式
+				CHASSIS_CONTROUL_2();
+				if(Random_CHASSIS_CHOOSE==1)//是选择随机模式
+				Random_CHASSIS();//随机模式
+//				CHASSIS_trage_speed=0;//锁死//弹道测试后取消注释	
+				}
+	}
 					}
 			#endif
+//	if(DR16.rc.s_left==3||DR16.rc.s_left==1)//遥控器控制  左中间
 	if(DR16.rc.s_left==3)//遥控器控制  左中间
 	{
 	CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*(-1)*CHASSIS_MAX_SPEED;//遥控器给速度目标值 二选一		
@@ -228,7 +253,24 @@ else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==1)  //两个光电传感器 
 			}
 			
 	}
-
+	else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==0)  //两个光电传感器左边坏右边好时的轨道末变向逻辑
+	{
+	
+			if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER))
+				//融合编码器,reverse_by_ENCODER是变向提前值
+			{
+				CHASSIS_trage_speed=4000*Chassis_PowerLimit;
+			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
+			}
+			
+			if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
+				//融合编码器,reverse_by_ENCODER是变向提前值
+			{
+				CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
+			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
+			}
+			
+	}
 
     if (RANDOM_CHASSIS.sampling >= Random_CHANGE_times)
     {

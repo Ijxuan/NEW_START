@@ -144,6 +144,9 @@ int CHASSIS_MAX_SPEED=9000;
 int send_to_yaw=0;//发送给yaw轴的数据
 int send_to_pitch=0;//发送给pitch轴的数据
 int send_to_chassis=0;//发送给底盘的数据
+int send_to_chassis_special=0;//发送给底盘的数据
+
+bool use_special_send=0;
 int send_to_SHOOT_R=0;//发送给右发射摩擦轮的数据  +
 int send_to_SHOOT_L=0;//发送给左发射摩擦轮的数据  -
 int send_to_driver=0;//发送给拨盘电机的数据
@@ -176,7 +179,7 @@ int M3508_3ms_ago_speed;//3毫秒改变的值
 float M3508_speed_angle_kp;//角度与速度的关系
 float encoder_fbl_k=1.0;//分辨率的比例关系
 int ENCODER_ADD=0;//编码器这次的值减上次的值得到加速度
-
+int ENCODER_CHANGE=0;//BMQ改变值
 
 int ENCODER_ARRIVE_MAX=0;//编码器抵达的最大值
 int ENCODER_ARRIVE_MIN=0;//编码器抵达的最小值
@@ -240,8 +243,8 @@ float KB_high_JB=80;//狂暴模式缓冲功率回复目标
 int usart_7_times=0;
 
 bool disable_for_test=0;///为了调试///为了调试///为了调试///为了调试///为了调试///为了调试
-bool state_Infrared_R_is_ok=1;//右边红外传感器运转正常
-bool state_Infrared_L_is_ok=1;//左边红外传感器运转正常
+bool state_Infrared_R_is_ok=0;//右边红外传感器运转正常
+bool state_Infrared_L_is_ok=0;//左边红外传感器运转正常
 
 int ch4_DW_total=0;
 //driver  plate

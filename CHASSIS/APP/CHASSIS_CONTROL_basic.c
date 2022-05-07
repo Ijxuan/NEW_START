@@ -8,6 +8,12 @@
 #define HW_SWITCH_JR 2000//¹âµçµÄ¼ì²â¾àÀë  2000  500
 #define GD_LONG 999999
 #define track_long 84500//31000Îª¶Ì¹ìµÀ  84500Îª³¤¹ìµÀ   -4548 80741
+#define inspect_times 200 
+int init_times=0;
+int Encoder_last=0;
+
+int send_to_chassis_JUST_MOVE=2000;//·¢ËÍ¸øµ×ÅÌµÄÊı¾İ_¸ÕºÃ×ã¹»¶¯ÆğÀ´
+
 bool CHASSIS_L_MAX_new=0;//×óÓÒ±ß½çÖµÊÇ·ñ¸üĞÂ
 bool CHASSIS_R_MIN_new=0;
 void switch_change(void)
@@ -76,6 +82,56 @@ else if(state_Infrared_R_is_ok==1&&state_Infrared_L_is_ok==0)  //Á½¸ö¹âµç´«¸ĞÆ÷×
 			}
 		
 	}
+}
+else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==0)  //Á½¸ö¹âµç´«¸ĞÆ÷×ó±ß»µÓÒ±ßºÃÊ±µÄ³õÊ¼»¯Âß¼­
+{
+	//Âß¼­ÊÇÓÒ±ßÊÇºÃµÄ,ÄÇ¾ÍÖ»¼ì²âÓÒ±ßµÄÓÒ±ß½ç ,¼õËÙÒÔÊ¾Çø·Ö  
+	//¸üĞÂÓÒ±ß½çÊ±,ÓÃµ±Ç°Öµ¼õÈ¥¹ìµÀ³¤¶È
+    //´ı²âÁ¿:¹ìµÀ³¤¶È        -31856µ½78     (ÓÃ±àÂëÆ÷²âÁ¿)
+	//µÃµ½×ó±ß½ç    send_to_chassis_special
+	init_times++;
+					if(DR16.rc.s_left==1)//×óÉÏµµÎ»      //¹âµçÃ»¼ì²âµ½ÓÃµÄÊÇÕâÌ×PID,¸Ä±äµÄÊÇÄ¿±ê½Ç¶È
+					{
+		if(init_times>333)//¸øÒ»ÃëÖÓÓÃÀ´Æğ²½
+		{
+	if(init_times%inspect_times==0)//200ms¼ì²âÒ»´Î
+	{
+//		if(send_to_chassis_special<0)
+		ENCODER_CHANGE=Chassis_Encoder.totalLine-Encoder_last;
+		if(CHASSIS_R_MIN_new==0)
+		{
+			if(abs(ENCODER_CHANGE)<2000)
+			{	CHASSIS_R_MIN_new=1;
+								CHASSIS_R_MIN_by_ENCODER=Chassis_Encoder.totalLine      -reverse_by_ENCODER;
+
+			init_times=-666;
+			}
+		}
+		else if(CHASSIS_R_MIN_new==1&&CHASSIS_L_MAX_new==0)
+		{
+						if(abs(ENCODER_CHANGE)<2000)
+						{
+				CHASSIS_L_MAX_new=1;
+				CHASSIS_L_MAX_by_ENCODER=Chassis_Encoder.totalLine       -reverse_by_ENCODER;
+
+						init_times=0;
+						}
+		}
+		
+		Encoder_last=Chassis_Encoder.totalLine;
+	}
+		}
+	
+					}
+					else
+					{
+		init_times=0;
+				
+					}
+						
+		use_special_send=1;
+	
+
 }
 			HWswitch_L_last		=HWswitch_L;
 			HWswitch_R_last		=HWswitch_R;
@@ -171,6 +227,43 @@ void star_and_new()
 				}
 		}
 		
+	}
+		else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==0)  //Á½¸ö¹âµç´«¸ĞÆ÷×ó±ß»µÓÒ±ßºÃÊ±µÄ³õÊ¼»¯Âß¼­
+	{
+		if(CHASSIS_R_MIN_new==0)//ÓÒ±ßµÄµÄ´«¸ĞÆ÷»¹Ã»¼ì²âµ½
+		{
+		CHASSIS_trage_speed=-1500;	
+//		send_to_chassis_special=-send_to_chassis_JUST_MOVE;//ÒÑ¸ÕºÃ¶¯ÆğÀ´µÄËÙ¶ÈÏòÓÒ±ß½ç/×îĞ¡Öµ±ß½çÔË¶¯
+			
+//				if(DR16.rc.s_left==1)//×óÉÏµµÎ»      //¹âµçÃ»¼ì²âµ½ÓÃµÄÊÇÕâÌ×PID,¸Ä±äµÄÊÇÄ¿±ê½Ç¶È
+//				{	
+//					
+//				}
+							CHASSIS_MOTOR_SPEED_pid.Max_result=1900;
+			CHASSIS_MOTOR_SPEED_pid.Min_result=-1900;
+		}
+		else if(CHASSIS_L_MAX_new==0)//×ó±ßµÄµÄ´«¸ĞÆ÷»¹Ã»¼ì²âµ½
+		{
+			
+//		send_to_chassis_special=send_to_chassis_JUST_MOVE;//ÒÑ¸ÕºÃ¶¯ÆğÀ´µÄËÙ¶ÈÏò×ó±ß½ç/×î´óÖµ±ß½çÔË¶¯
+				CHASSIS_trage_speed=1500;	
+				CHASSIS_MOTOR_SPEED_pid.Max_result=1900;
+			CHASSIS_MOTOR_SPEED_pid.Min_result=-1900;
+//				if(DR16.rc.s_left==1)//×óÉÏµµÎ»      //¹âµçÃ»¼ì²âµ½ÓÃµÄÊÇÕâÌ×PID,¸Ä±äµÄÊÇÄ¿±ê½Ç¶È
+//				{	
+//					
+//				}
+		}
+		else
+		{
+						CHASSIS_MOTOR_SPEED_pid.Max_result=14000;
+			CHASSIS_MOTOR_SPEED_pid.Min_result=-14000;	
+			
+		}
+		
+		
+		
+		use_special_send=1;
 	}
 }
 

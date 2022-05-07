@@ -40,6 +40,8 @@
 #include "bsp_buzzer.h"
 #include "stdbool.h"
 #include "DR16_RECIVE.h"
+#include "oled.h"
+//#include "oledfont.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -207,6 +209,7 @@ int main(void)
   MX_CAN1_Init();
   MX_TIM3_Init();
   MX_USART6_UART_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 	  delay_init();
 		Buzzer_Init();
@@ -217,6 +220,13 @@ int main(void)
    #ifdef FREERTOS_TASK_TIME
        HAL_TIM_Base_Start_IT(&htim3);
 #endif
+  oled_init(); 
+  HAL_Delay(500);
+
+    oled_clear(Pen_Clear);
+    oled_LOGO();
+    oled_refresh_gram();
+
 
 //CAN1_Config();
   /* USER CODE END 2 */

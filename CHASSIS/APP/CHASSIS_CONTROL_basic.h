@@ -14,6 +14,8 @@ void CHASSIS_CONTROUL_2(void);
 
 void star_and_new(void);
 
+extern int send_to_chassis_JUST_MOVE;//发送给底盘的数据_刚好足够动起来
+extern int init_times;
 
 
 #endif

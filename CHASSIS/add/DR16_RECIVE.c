@@ -484,7 +484,7 @@ if(1)
 
 			send_d_32[p++]=Chassis_Encoder.totalLine;//P_OUT		5
 			send_d_32[p++]=ENCODER_R_MIN;//I_OUT		6
-			send_d_32[p++]=ENCODER_M_MID;//轨道中值	7
+			send_d_32[p++]=ENCODER_CHANGE;//轨道中值	7
 	p=0;
 			send_d_16[p++]=stop_CH_OP_BC_END*11111;//输出电压      8
 
@@ -553,7 +553,7 @@ if(1)
 			send_d_16[p++]=send_to_pitch;			//随机数		发送给yaw轴电机
 
 #endif
-#if 1//发送底盘功率数据//底盘输出电压 单位 毫伏
+#if 0//发送底盘功率数据//底盘输出电压 单位 毫伏
 /*
 			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
       uint16_t chassis_current; //底盘输出电流 单位 毫安

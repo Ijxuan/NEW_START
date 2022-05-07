@@ -68,10 +68,14 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define debug_rx_Pin GPIO_PIN_7
 #define debug_rx_GPIO_Port GPIOB
+#define OLED_DC_Pin GPIO_PIN_0
+#define OLED_DC_GPIO_Port GPIOF
 #define debug_tx_Pin GPIO_PIN_9
 #define debug_tx_GPIO_Port GPIOA
 #define RED_Pin GPIO_PIN_8
 #define RED_GPIO_Port GPIOC
+#define OLED_RST_Pin GPIO_PIN_1
+#define OLED_RST_GPIO_Port GPIOF
 #define RSTN_IST8310_Pin GPIO_PIN_6
 #define RSTN_IST8310_GPIO_Port GPIOG
 #define LED_R_Pin GPIO_PIN_12
@@ -98,6 +102,13 @@ void Error_Handler(void);
 #define CS1_GYRO_Pin GPIO_PIN_0
 #define CS1_GYRO_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
+
+//#define OLED_DC_Pin GPIO_PIN_9
+//#define OLED_DC_GPIO_Port GPIOB
+
+//#define OLED_RST_Pin GPIO_PIN_10
+//#define OLED_RST_GPIO_Port GPIOB
+
 extern bool ins_ok;
 extern int controul_times;
 extern int ins_times;

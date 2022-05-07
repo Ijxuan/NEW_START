@@ -74,3 +74,4 @@ ins_task\main.o: ..\application\INS_task.h
 ins_task\main.o: ..\application\led_flow_task.h
 ins_task\main.o: ..\bsp\boards\user_can.h
 ins_task\main.o: ..\ADD\DR16_RECIVE.h
+ins_task\main.o: ..\ADD\oled.h

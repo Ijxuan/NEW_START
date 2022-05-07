@@ -661,6 +661,12 @@ void Robot_Sensor(void const *argument)
  if(times_x>2)
  {
 				Get_Encoder_Value(&Chassis_Encoder, &htim5);
+	 
+	 	 if(Chassis_Encoder.totalLine>ENCODER_ARRIVE_MAX)
+		 ENCODER_ARRIVE_MAX=Chassis_Encoder.totalLine;
+	 	 if(Chassis_Encoder.totalLine<ENCODER_ARRIVE_MIN)
+		 ENCODER_ARRIVE_MIN=Chassis_Encoder.totalLine;	
+		 
 	 if(Chassis_Encoder.totalLine>ENCODER_L_MAX)
 		 ENCODER_L_MAX=Chassis_Encoder.totalLine;
 	 

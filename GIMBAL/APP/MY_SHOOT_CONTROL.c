@@ -21,7 +21,7 @@ int DW_DOWN=0;
 int DW_UP=0;
 long M2006_targe_angle=0;
 bool Driver_arrive=1;
-int if_Driver_arrive_angle=2000;
+int if_Driver_arrive_angle=5000;
 void shoot_control(void)
 {
 			if(DR16.rc.s_left==2)//遥控器左下 激光瞄准控制
@@ -88,7 +88,7 @@ if(DR16.rc.ch4_DW<=-100)//拨上
 	
 		if(DR16.rc.s_left==1)//遥控器控制  左中或左上
 	{
-		if(M3508s[1].totalAngle>(M2006_targe_angle-if_Driver_arrive_angle))
+		if(M3508s[1].totalAngle>(M2006_targe_angle*0.8-if_Driver_arrive_angle))
 		Driver_arrive=1;
 
 //									if(DR16.rc.ch4_DW<=-100)//拨上
@@ -178,8 +178,8 @@ shoot_times_for_limit=0;
 				}
 
 #endif
-#if 0
-						if (shoot_times_for_limit<500)
+#if 1
+						if (shoot_times_for_limit<200)
 			{
 					if(VisionData.RawData.Beat==1&&vision_shoot_times>2)//击打标志位为1并且连续收到4帧
 					{
@@ -188,19 +188,19 @@ shoot_times_for_limit=0;
 						whether_shoot_in__this_period=1;
 						VisionData.RawData.Beat=0;
 					}
-					if(SHOOT_STOP_time>10)
+					if(SHOOT_STOP_time>100)
 					{
 			M2006_targe_angle=M3508s[1].totalAngle;//连续收到10次停火指令 清除拨盘目标角度累计
 					}
 	
 			}
-			else if(shoot_times_for_limit>=500)
+			else if(shoot_times_for_limit>=200)
 			{
 			shoot_times_for_limit=0;
 			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
 			}
 #endif
-#if 1
+#if 0
 						if (shoot_times_for_limit<500)
 			{
 					if(VisionData.RawData.Beat==1&&vision_shoot_times>2)//击打标志位为1并且连续收到4帧
@@ -208,7 +208,7 @@ shoot_times_for_limit=0;
 						SHOOT_from_V++;
 						if(Driver_arrive==1)
 						{
-						M2006_targe_angle+=Driver_add;//8*3=24  打一发
+						M2006_targe_angle+=Driver_add*0.8;//8*3=24  打一发
 								Driver_arrive=0;
 						}
 						whether_shoot_in__this_period=1;
