@@ -43,6 +43,7 @@
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
+extern float speed_every_100_ms;
 
 /* USER CODE END EM */
 

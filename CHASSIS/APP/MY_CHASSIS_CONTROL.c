@@ -255,24 +255,142 @@ else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==1)  //两个光电传感器 
 	}
 	else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==0)  //两个光电传感器左边坏右边好时的轨道末变向逻辑
 	{
-	
-			if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER))
-				//融合编码器,reverse_by_ENCODER是变向提前值
+					if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER))
 			{
-				CHASSIS_trage_speed=4000*Chassis_PowerLimit;
-			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
-			}
-			
-			if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
-				//融合编码器,reverse_by_ENCODER是变向提前值
-			{
-				CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
-			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
-			}
-			
-	}
+			arrive_targe_angle=0;
+			stop_CH_OP_BC_LESS=0;
+				stop_CH_OP_BC_END_times=0;
+								xunen_times++;
+						CHASSIS_trage_speed_last=4000;
 
-    if (RANDOM_CHASSIS.sampling >= Random_CHANGE_times)
+//							stop_chassic_output=1;	
+//							  	  HAL_Delay(3000);
+//							stop_chassic_output=0;
+//				if(last_Speed>M3508s[3].realSpeed&&M3508s[3].realSpeed>0)//已经反向了
+								if(M3508s[3].realSpeed>0)//已经反向了
+{
+	speed_has_change=1;
+}
+
+if(speed_has_change==0)
+{
+	
+					if(Chassis_Encoder.totalLine>(CHASSIS_R_MIN_by_ENCODER+2000))
+				{
+					
+								CHASSIS_trage_speed=-6000;
+				stop_CH_OP_BC_END=0;
+
+				}
+				else
+				{
+					
+						CHASSIS_trage_speed=-4000;
+			stop_CH_OP_BC_END=1;
+
+				}
+
+
+}	
+else
+{
+	stop_CH_OP_BC_END=0;
+//	CHASSIS_trage_angle=9900000;
+				CHASSIS_trage_speed=4000*Chassis_PowerLimit;
+
+}
+	if(	xunen_times>3000)//说明出了意外,肯定是卡死了,不管了,直接走
+	{
+	stop_CH_OP_BC_END=0;
+//	CHASSIS_trage_angle=9900000;
+						CHASSIS_trage_speed=4000*Chassis_PowerLimit;
+
+	}
+			}
+			
+else if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
+
+//			else if(M3508s[3].totalAngle>(ENCODER_L_MAX-10000))//
+//			else if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-3000))//
+			{
+				
+								CHASSIS_trage_speed_last=-4000;
+			arrive_targe_angle=0;
+			stop_CH_OP_BC_LESS=0;
+				stop_CH_OP_BC_END_times=0;
+				xunen_times++;
+//							stop_chassic_output=1;	
+//							  	  HAL_Delay(3000);
+//							stop_chassic_output=0;	
+//				if(M3508s[3].realSpeed<0&&M3508s[3].realSpeed>last_Speed)//速度一反还要速度下降也就是弹簧伸到最长才开始计算蓄能时间,然后启动电机
+				if(M3508s[3].realSpeed<0)//只要速度一反就开始计算蓄能时间,然后启动电机
+
+{
+	
+	speed_has_change=1;
+}
+if(speed_has_change==0)
+{
+	
+					if(Chassis_Encoder.totalLine<(CHASSIS_L_MAX_by_ENCODER-2000))
+				{
+					
+	stop_CH_OP_BC_END=0;
+					CHASSIS_trage_speed=6000*Chassis_PowerLimit;
+
+				}
+				else
+				{
+					
+				CHASSIS_trage_speed=4000;
+			stop_CH_OP_BC_END=1;
+
+				}
+//	if(	xunen_times>4)//弹簧冲能前加速的时间
+//	{
+//xunen_percent=0.7;		
+//	}
+//	else 
+//	{
+////xunen_percent=1.0;
+//	}	
+		
+}
+else
+{
+	stop_CH_OP_BC_END=0;
+//	CHASSIS_trage_angle=-9900000;
+					CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
+
+}
+	if(	xunen_times>3000)//说明出了意外,肯定是卡死了,不管了,直接走
+	{
+	stop_CH_OP_BC_END=0;
+//	CHASSIS_trage_angle=-9900000;
+						CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
+
+	}
+			}
+						else//不在两个柱子之间
+			{
+//				xunen_percent=1.5;
+//				if(M3508s[3].realSpeed==0)//不知道静止时速度能否稳定在0?
+				if(abs(M3508s[3].realSpeed)<100)//那就用100以下作为静止判断的条件
+				stop_CH_OP_BC_END_times++;
+				else
+					stop_CH_OP_BC_END_times=0;
+				
+				if(stop_CH_OP_BC_END_times>2000)//避免蓄能没到时间就出了轨道边界判断
+					//避免从失能档/手动挡切换过来时速度目标值:CHASSIS_trage_speed 为0
+				{
+					stop_CH_OP_BC_END=0;//
+					CHASSIS_trage_speed=CHASSIS_trage_speed_last;
+				}
+				speed_has_change=0;
+				xunen_times=0;
+				
+				
+				    if (RANDOM_CHASSIS.sampling >= Random_CHANGE_times)
     {
         if (RANDOM_CHASSIS.number >= Random_Proportion)//是否变向
         {
@@ -280,6 +398,14 @@ else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==1)  //两个光电传感器 
 			arrive_targe_angle=0;
 			stop_CH_OP_BC_LESS=0;
 			speed_change_times++;
+			if(CHASSIS_trage_speed>2000)//正值
+			{
+			CHASSIS_trage_speed_last=4000;	
+			}
+			if(CHASSIS_trage_speed<-2000)//正值
+			{
+			CHASSIS_trage_speed_last=-4000;	
+			}
         }
         RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
     }
@@ -314,6 +440,36 @@ else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==1)  //两个光电传感器 
 							disable_times=0;
 							stop_CH_OP_BC_LESS=0;
 						}
+				
+				
+				
+				
+			}
+//			if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER))
+//				//融合编码器,reverse_by_ENCODER是变向提前值
+//			{
+//				CHASSIS_trage_speed=4000*Chassis_PowerLimit;
+//			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
+//			}
+//			
+//			if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
+//				//融合编码器,reverse_by_ENCODER是变向提前值
+//			{
+//				CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
+//			        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
+//			}
+			
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
+
 
 	
 }
@@ -412,7 +568,7 @@ void Power_Calculate()
 	if(flag==1)Chassis_PowerLimit = 1.00f;  //限制功率 在发给电机前 乘以0.65
 	else Chassis_PowerLimit =1.3500f ;//; 0.8        //不再限制功率 在发给电机前 乘以1.0
 	
-	if(hurt_times_ago<1000)//被击中后3s内
+	if(hurt_times_ago<2000)//被击中后3s内
 	{
 		if(flag_kb==0)
 		{
@@ -427,10 +583,10 @@ void Power_Calculate()
 	//缓冲功率增加到  150  不再限制功率
 	
 	if(flag==1)Chassis_PowerLimit = 1.15f;  //限制功率 在发给电机前 乘以0.65
-	else Chassis_PowerLimit = 1.65;         //不再限制功率 在发给电机前 乘以1.0
+	else Chassis_PowerLimit = 1.80;         //不再限制功率 在发给电机前 乘以1.0
 		
 		
-		Random_CHANGE_times=300;//随机变向频率
+		Random_CHANGE_times=400;//随机变向频率
 	}
 	else
 	{

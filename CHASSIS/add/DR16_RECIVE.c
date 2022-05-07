@@ -12,6 +12,8 @@
 #include "FPS_Calculate.h"
 #include "RM_JudgeSystem.h"
 
+#include "stm32f4xx_it.h"
+
 //#include "GM6020_Motor.h"
 //#include "control.h"
 
@@ -471,7 +473,7 @@ if(1)
 
 #endif
 
-#if 1//发送编码器位置数据
+#if 0//发送编码器位置数据
 	p=0;
 
 			ENCODER_M_MID=(ENCODER_L_MAX+ENCODER_R_MIN)/2;
@@ -492,7 +494,27 @@ if(1)
 			send_d_16[p++]=ext_power_heat_data.data.chassis_power_buffer;//底盘功率缓冲 4		4PID_YES
 
 #endif
+#if 1//发送编码器撞柱数据
+	p=0;
 
+			ENCODER_M_MID=(ENCODER_L_MAX+ENCODER_R_MIN)/2;
+			send_d_32[p++]=CHASSIS_L_MAX_by_ENCODER;//轨道左边界值		1
+			send_d_32[p++]=CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER;//在轨位置		2
+
+			send_d_32[p++]=Chassis_Encoder.totalLine;//轨道右边界值		3 
+
+			send_d_32[p++]=CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER;//当前速度 4		4PID_YES
+
+			send_d_32[p++]=CHASSIS_R_MIN_by_ENCODER;//P_OUT		5
+			send_d_32[p++]=ENCODER_R_MIN;//I_OUT		6
+			send_d_32[p++]=speed_every_100_ms*100;//轨道中值	7
+	p=0;
+			send_d_16[p++]=CHASSIS_trage_speed;//输出电压      8
+
+			send_d_16[p++]=send_to_chassis;//目标角度       	9
+			send_d_16[p++]=ext_power_heat_data.data.chassis_power_buffer;//底盘功率缓冲 4		4PID_YES
+
+#endif
 #if 0//发送拨盘数据
 	p=0;
 			send_d_32[p++]=driver_targe_speed;//轨道左边界值		1

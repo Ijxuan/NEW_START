@@ -134,6 +134,7 @@ float PITCH_trage_angle_2=0;
 
 int PITCH_trage_speed=0;
 int CHASSIS_trage_speed=0;
+int CHASSIS_trage_speed_last=0;
 int CHASSIS_trage_angle=0;
 
 float PITCH_MAX_angle=0;
@@ -186,7 +187,7 @@ int ENCODER_ARRIVE_MIN=0;//编码器抵达的最小值
 
 int32_t CHASSIS_L_MAX_by_ENCODER;//变向用的左边界值
 int32_t CHASSIS_R_MIN_by_ENCODER;//变向用的右边界值
-int reverse_by_ENCODER=1500; //变向提前值
+int reverse_by_ENCODER=8000; //变向提前值
 int speed_change=0;
 int CHASSIS_MID=250000;
 

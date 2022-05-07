@@ -85,6 +85,8 @@ extern float PITCH_MAX_angle;
 extern float PITCH_MIN_angle;
 extern int send_to_chassis;//发送给底盘的数据
 extern int CHASSIS_trage_speed;//底盘的目标速度
+extern int CHASSIS_trage_speed_last;//上一次底盘的目标速度
+
 extern int CHASSIS_trage_angle;//底盘的目标角度
 extern int send_to_SHOOT_R;//发送给右发射摩擦轮的数据
 extern int send_to_SHOOT_L;//发送给左发射摩擦轮的数据

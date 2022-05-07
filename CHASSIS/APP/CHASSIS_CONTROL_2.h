@@ -15,6 +15,8 @@ void CHASSIS_CONTROUL_2(void);
 
 bool just_arrive_targe_speed(int targe_speed);
 extern bool arrive_targe_angle;
+extern int xunen_times;
+extern int speed_has_change;
 
 #endif
 

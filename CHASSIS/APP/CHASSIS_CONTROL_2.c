@@ -18,10 +18,13 @@ void CHASSIS_CONTROUL_2()
 //			{
 //	CHASSIS_trage_angle=-9900000;			
 //			}
-			if(M3508s[3].totalAngle<(ENCODER_R_MIN+2000))
+//			if(M3508s[3].totalAngle<(ENCODER_R_MIN+2000))
+				if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER))
 			{
+
 				stop_CH_OP_BC_END_times=0;
 								xunen_times++;
+						CHASSIS_trage_speed_last=4000;
 
 //							stop_chassic_output=1;	
 //							  	  HAL_Delay(3000);
@@ -34,31 +37,48 @@ void CHASSIS_CONTROUL_2()
 
 if(speed_has_change==0)
 {
-//	if(	xunen_times>4)//弹簧冲能前加速的时间
-//	{
-stop_CH_OP_BC_END=1;
-//xunen_percent=0.7;		
-//	}
-//	else 
-//	{
-////xunen_percent=1.0;
-//	}
+	
+					if(Chassis_Encoder.totalLine>(CHASSIS_R_MIN_by_ENCODER+2000))
+				{
+					
+								CHASSIS_trage_speed=-6000;
+				stop_CH_OP_BC_END=0;
+
+				}
+				else
+				{
+					
+						CHASSIS_trage_speed=-4000;
+			stop_CH_OP_BC_END=1;
+
+				}
+
+
 }	
 else
 {
 	stop_CH_OP_BC_END=0;
-	CHASSIS_trage_angle=9900000;
+//	CHASSIS_trage_angle=9900000;
+				CHASSIS_trage_speed=4000*Chassis_PowerLimit;
+
 }
-	if(	xunen_times>1000)//说明出了意外,肯定是卡死了,不管了,直接走
+	if(	xunen_times>3000)//说明出了意外,肯定是卡死了,不管了,直接走
 	{
 	stop_CH_OP_BC_END=0;
-	CHASSIS_trage_angle=9900000;
-	}
+//	CHASSIS_trage_angle=9900000;
+						CHASSIS_trage_speed=4000*Chassis_PowerLimit;
 
+	}
 			}
-			else if(M3508s[3].totalAngle>(ENCODER_L_MAX-10000))//
+			
+else if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
+
+//			else if(M3508s[3].totalAngle>(ENCODER_L_MAX-10000))//
 //			else if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-3000))//
 			{
+				
+								CHASSIS_trage_speed_last=-4000;
+
 				stop_CH_OP_BC_END_times=0;
 				xunen_times++;
 //							stop_chassic_output=1;	
@@ -73,9 +93,23 @@ else
 }
 if(speed_has_change==0)
 {
+	
+					if(Chassis_Encoder.totalLine<(CHASSIS_L_MAX_by_ENCODER-2000))
+				{
+					
+	stop_CH_OP_BC_END=0;
+					CHASSIS_trage_speed=6000*Chassis_PowerLimit;
+
+				}
+				else
+				{
+					
+				CHASSIS_trage_speed=4000;
+			stop_CH_OP_BC_END=1;
+
+				}
 //	if(	xunen_times>4)//弹簧冲能前加速的时间
 //	{
-stop_CH_OP_BC_END=1;
 //xunen_percent=0.7;		
 //	}
 //	else 
@@ -87,12 +121,16 @@ stop_CH_OP_BC_END=1;
 else
 {
 	stop_CH_OP_BC_END=0;
-	CHASSIS_trage_angle=-9900000;
+//	CHASSIS_trage_angle=-9900000;
+					CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
+
 }
-	if(	xunen_times>1000)//说明出了意外,肯定是卡死了,不管了,直接走
+	if(	xunen_times>3000)//说明出了意外,肯定是卡死了,不管了,直接走
 	{
 	stop_CH_OP_BC_END=0;
-	CHASSIS_trage_angle=-9900000;
+//	CHASSIS_trage_angle=-9900000;
+						CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
+
 	}
 			}
 			else//不在两个柱子之间
@@ -100,17 +138,19 @@ else
 //				xunen_percent=1.5;
 
 				stop_CH_OP_BC_END_times++;
-				if(stop_CH_OP_BC_END_times>200)//避免蓄能没到时间就出了轨道边界判断
+				if(stop_CH_OP_BC_END_times>2000)//避免蓄能没到时间就出了轨道边界判断
+				{
 					stop_CH_OP_BC_END=0;//
-
+					CHASSIS_trage_speed=CHASSIS_trage_speed_last;
+				}
 				speed_has_change=0;
 				xunen_times=0;
 			}
 		
 			last_Speed=M3508s[3].realSpeed;
 			
-			P_PID_bate(&CHASSIS_MOTOR_ANGLE_pid, CHASSIS_trage_angle,M3508s[3].totalAngle);//GM6020s[EMID].totalAngle readAngle
-			CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*xunen_percent;//双环
+//			P_PID_bate(&CHASSIS_MOTOR_ANGLE_pid, CHASSIS_trage_angle,M3508s[3].totalAngle);//GM6020s[EMID].totalAngle readAngle
+//			CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*xunen_percent;//双环
 //			CHASSIS_trage_speed=0;
 //				CHASSIS_MID=(CHASSIS_R_MIN+CHASSIS_L_MAX)/2;
 				//CHASSIS_MID-CHASSIS_R_MIN   一半行程
