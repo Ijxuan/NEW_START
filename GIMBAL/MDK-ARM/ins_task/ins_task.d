@@ -69,3 +69,4 @@ ins_task\ins_task.o: ..\ADD\Vision.h
 ins_task\ins_task.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ins_task\ins_task.o: ../Inc/usart.h
 ins_task\ins_task.o: ..\Arithmetic\CRC.h
+ins_task\ins_task.o: ..\ADD\DR16_RECIVE.h

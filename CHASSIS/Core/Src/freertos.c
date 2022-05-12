@@ -695,6 +695,30 @@ void Robot_Sensor(void const *argument)
 			}
 			
 		}
+		if(DR16.rc.s_left==1)
+		{//自动挡
+			if(DR16.rc.ch4_DW>=200)
+			{
+				restart_times++;//拨下了多久?
+			}
+			else
+			{
+				restart_times=0;//松手,清零				
+			}
+			if(restart_times>3000)//3秒
+			{
+				if(CHASSIS_R_MIN_new==1&&CHASSIS_L_MAX_new==1)//初始化已经完成
+				{
+					CHASSIS_R_MIN_new=0;CHASSIS_L_MAX_new=0;
+				}
+				restart_times=0;//完成重启,清零
+			}
+		}
+        else
+		{
+						restart_times=0;//切换档位,清零				
+		}
+		
 		vTaskDelayUntil(&xLastWakeTime_2, TimeIncrement_2);
 
 	}

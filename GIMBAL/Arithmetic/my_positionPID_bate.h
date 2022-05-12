@@ -11,6 +11,8 @@
 #define abs(x) ((x)>0?(x):-(x))
 #define PID_MOTOR 0 //是否开启电机的PID  0关闭
 #define PID_YAW_IMU 1 //是否开启陀螺仪的PID
+#define VISION_PID_YAW_IMU 1 //是否开启视觉陀螺仪的PID
+
 #define PID_PITCH_MOTOR 0 //是否开启电机的PITCH轴PID  0关闭
 #define PID_PITCH_IMU 1 //是否开启陀螺仪的PITCH轴PID  0关闭
 #define PID_CHASSIS_MOTOR 0//是否开启电机的底盘PID  0关闭
@@ -59,6 +61,9 @@ void P_PID_Parameter_Init(P_PID_t *P_PID, float Kp, float Ki, float Kd,
 //                          float alpha,
                           float Max_antiwindup, float Min_antiwindup,
                           float Max_result, float Min_result);
+						  
+void P_PID_Parameter_Clear(P_PID_t *P_PID);
+
 
 extern int PID_YES;
 #if PID_MOTOR
@@ -69,6 +74,11 @@ extern P_PID_t Yaw_Speed_pid;
 #if PID_YAW_IMU
 extern P_PID_t Yaw_IMU_Angle_pid;
 extern P_PID_t Yaw_IMU_Speed_pid;
+#endif
+		
+#if VISION_PID_YAW_IMU
+extern P_PID_t VISION_Yaw_IMU_Angle_pid;
+extern P_PID_t VISION_Yaw_IMU_Speed_pid;
 #endif
 						  
 #if PID_PITCH_MOTOR

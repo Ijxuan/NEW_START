@@ -135,6 +135,9 @@ extern int Driver_add;
 
 extern int yaw_trage_speed;
 extern float yaw_trage_angle;
+extern float yaw_trage_angle_1s_ago;
+extern float yaw_trage_angle_add_1s;
+
 
 extern int send_to_yaw;
 extern int send_to_pitch;//发送给pitch轴的数据
@@ -206,6 +209,11 @@ extern bool crc_right;
 extern int vision_rc_right;
 extern int vision_rc_error;
 extern int CAN2_rc_times;
+
+extern float simulation_target_yaw;
+
+extern bool TEMPERATURE_is_OK;
+extern int TEMPERATURE_PID_OUT;
 
 /* USER CODE END Private defines */
 

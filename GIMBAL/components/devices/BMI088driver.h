@@ -63,6 +63,7 @@ typedef struct BMI088_REAL_DATA
     fp32 time;
 } bmi088_real_data_t;
 
+extern bmi088_real_data_t bmi088_real_data;
 
 enum
 {

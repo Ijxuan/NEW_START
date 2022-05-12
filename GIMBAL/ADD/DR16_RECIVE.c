@@ -14,6 +14,8 @@
 #include "calibrate_task.h"
 #include "MY_SHOOT_CONTROL.h"
 
+#include "bmi088driver.h"
+
 //#include "GM6020_Motor.h"
 //#include "control.h"
 
@@ -238,7 +240,7 @@ void NM_swj(void)
 	testdatatosend[_cnt++]=0xFF;
 	testdatatosend[_cnt++]=0xF1;
 	testdatatosend[_cnt++]=34;
-	if(0)
+	if(1)
 	{
 			#if 0//发送陀螺仪数据  YAW PITCH
 	p=0;
@@ -355,7 +357,7 @@ void NM_swj(void)
 			send_d_16[p++]=0;//输出电压		10
 														//保留到小数点后四位
 #endif
-	#if 0//发送云台数据  YAW 视觉
+	#if 1//发送云台数据  YAW 视觉
 	p=0;
 			send_d_32[p++]=DJIC_IMU.total_yaw*1000;//当前角度		1
 			send_d_32[p++]=yaw_trage_angle*1000;//最终目标角度		2
@@ -374,32 +376,54 @@ void NM_swj(void)
 			send_d_16[p++]=this_period_has_shoot_number;//输出电压      8
 
 			send_d_16[p++]=yaw_trage_speed*100000;//目标角度       	9
-			send_d_16[p++]=VisionData.RawData.Armour*1111;//输出电压		10
+			send_d_16[p++]=send_to_yaw*1111;//输出电压		10
+														//保留到小数点后四位558 320 660   bjTlta
+#endif
+	#if 0//发送陀螺仪温度数据 YAW 陀螺仪
+	p=0;
+			send_d_32[p++]=TEMPERATURE_is_OK*2000000+2000000;//当前角度		1
+			send_d_32[p++]=DJIC_IMU.total_yaw*10000;//最终目标角度		2
+
+			send_d_32[p++]=TEMPERATURE_PID_OUT;//视觉数据		333333333333 
+//				send_d_32[p++]=PID_YES*1000;//P_OUT		3 
+
+			//DJIC_IMU.Gyro_y*1000000
+//DJIC_IMU.pitch  TEMPERATURE_is_OK
+			send_d_32[p++]= Yaw_IMU_Speed_pid.Error*1000;//I_OUT 4		4PID_YES
+
+			send_d_32[p++]=Vision_RawData_Yaw_Angle*10000;//P_OUT		5
+			send_d_32[p++]=Yaw_IMU_Angle_pid.Error*10000;//I_OUT	666666666666
+			send_d_32[p++]=Yaw_IMU_Angle_pid.result;//D_OUT  	7 角度换的输出值,看有木有更大
+	p=0;
+			send_d_16[p++]=TEMPERATURE_PID_OUT;//输出电压      8
+
+			send_d_16[p++]=bmi088_real_data.temp*10;//目标角度       	9
+			send_d_16[p++]=40*10;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
 	#if 0//发送云台数据 YAW 陀螺仪
 	p=0;
-			send_d_32[p++]=(CLOUD_enable_imu+200.0)*1000;//当前角度		1
-			send_d_32[p++]=DJIC_IMU.total_yaw*1000;//最终目标角度		2
+			send_d_32[p++]=yaw_trage_angle*10000;//当前角度		1
+			send_d_32[p++]=DJIC_IMU.total_yaw*10000;//最终目标角度		2
 
-			send_d_32[p++]=(CLOUD_enable_imu-200.0)*1000;//视觉数据		3 
+			send_d_32[p++]=yaw_trage_angle_add_1s*10000;//视觉数据		333333333333 
 //				send_d_32[p++]=PID_YES*1000;//P_OUT		3 
 
 			//DJIC_IMU.Gyro_y*1000000
-//DJIC_IMU.pitch
+//DJIC_IMU.pitch  TEMPERATURE_is_OK
 			send_d_32[p++]= Yaw_IMU_Speed_pid.Error*1000;//I_OUT 4		4PID_YES
 
-			send_d_32[p++]=Yaw_IMU_Speed_pid.Proportion;//P_OUT		5
-			send_d_32[p++]=Yaw_IMU_Speed_pid.I_Output;//I_OUT		6
-			send_d_32[p++]=Yaw_IMU_Speed_pid.Differential;//D_OUT  	7
+			send_d_32[p++]=Vision_RawData_Yaw_Angle*10000;//P_OUT		5
+			send_d_32[p++]=Yaw_IMU_Angle_pid.Error*10000;//I_OUT	666666666666
+			send_d_32[p++]=Yaw_IMU_Angle_pid.result;//D_OUT  	7 角度换的输出值,看有木有更大
 	p=0;
 			send_d_16[p++]=send_to_yaw;//输出电压      8
 
-			send_d_16[p++]=yaw_trage_speed*10;//目标角度       	9
-			send_d_16[p++]=DJIC_IMU.Gyro_z*10;//输出电压		10
+			send_d_16[p++]=bmi088_real_data.temp*10;//目标角度       	9
+			send_d_16[p++]=cloud_mode.control_mode_NOW*111111;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
-	#if 1//发送云台数据  PITCH 陀螺仪
+	#if 0//发送云台数据  PITCH 陀螺仪
 //先确定哪个轴是PITCH轴(陀螺仪有三个轴)
 //保证水平时值为0；向上为正，抬头为负
 //
@@ -436,6 +460,50 @@ p=0;
 			send_d_32[p++]=PITCH_IMU_Speed_pid.Proportion;//P_OUT		5
 			send_d_32[p++]=PITCH_IMU_Speed_pid.I_Output;//I_OUT		6
 			send_d_32[p++]=PITCH_IMU_Speed_pid.Differential;//D_OUT  	7
+	p=0;
+			send_d_16[p++]=PITCH_IMU_Speed_pid.result;//输出电压      8
+
+			send_d_16[p++]=PITCH_IMU_Angle_pid.Target;//目标角度       	9
+			send_d_16[p++]=send_to_pitch;//当前角度		10
+														//保留到小数点后四位
+#endif
+	#if 0//发送云台数据  与视觉 双轴 陀螺仪
+//先确定哪个轴是PITCH轴(陀螺仪有三个轴)
+//保证水平时值为0；向上为正，抬头为负
+//
+//然后就确定上下机械限位,这个是读GM6020的值，读完以后填到动态限位函数
+//用手动一动，看看边界值是否正确
+//然后就可以正式开始调参了，先把目标角度设为0
+//
+//向上的时候速度为正,到不了0°!
+//角度环参数为正
+//正值正转,
+//速度环参数为正
+p=0;
+
+//			send_d_32[p++]=Yaw_Angle_pid.Target;//目标角度		1
+//			send_d_32[p++]=Yaw_Angle_pid.Measure;//当前角度		2
+			send_d_32[p++]=DJIC_IMU.total_pitch*10000;//目标角度		1
+			send_d_32[p++]=PITCH_trage_angle*10000;//当前角度		2
+
+			send_d_32[p++]=PITCH_IMU_Angle_pid.Error*10000;//P_OUT		3 
+			//DJIC_IMU.Gyro_y*1000000
+//DJIC_IMU.pitch
+			send_d_32[p++]= Vision_RawData_Pitch_Angle*-10000;//I_OUT 4		4PID_YES
+//			send_d_32[p++]=Yaw_Angle_pid.Integral;//I_OUT 4		4
+//			send_d_32[4]=Yaw_Angle_pid.Differential;//D_OUT		
+
+//			send_d_32[p++]=Yaw_Speed_pid.Proportion;//P_OUT		5
+//			send_d_32[p++]=Yaw_Speed_pid.I_Output;//I_OUT		6
+//			send_d_32[p++]=Yaw_Speed_pid.Differential;//D_OUT  	7
+//	p=0;
+//			send_d_16[p++]=Yaw_Speed_pid.result;//输出电压      8
+
+//			send_d_16[p++]=Yaw_Speed_pid.Target;//目标速度     	9
+//			send_d_16[p++]=Yaw_Speed_pid.Measure;//当前速度		10
+			send_d_32[p++]=DJIC_IMU.pitch*10000;//P_OUT		5
+			send_d_32[p++]=Vision_RawData_Yaw_Angle*1000;//I_OUT		6
+			send_d_32[p++]=Vision_RawData_Yaw_Angle*1000;//D_OUT  	7
 	p=0;
 			send_d_16[p++]=PITCH_IMU_Speed_pid.result;//输出电压      8
 
@@ -661,9 +729,9 @@ send_data10=M3508s[2].realSpeed;
 
 #endif
 }
-if(1)
+if(0)
 {
-	#if 1//发送自动开火数据  中
+	#if 0//发送自动开火数据  中
 	p=0;
 
 			send_d_32[p++]=M3508s[1].totalAngle;//拨盘当前角度		1

@@ -195,6 +195,7 @@ extern int ch4_DW_total;
 extern int send_to_chassis_special;//发送给底盘的数据
 extern bool use_special_send;
 extern int ENCODER_CHANGE;//BMQ改变值
+extern int restart_times;//重启时间
 
 
 /* USER CODE END EC */

@@ -40,6 +40,8 @@
 
 #include "Vision.h"
 
+#include "DR16_RECIVE.h"
+
 #define IMU_temp_PWM(pwm)  imu_pwm_set(pwm)                    //pwm给定
 
 #define BMI088_BOARD_INSTALL_SPIN_MATRIX    \
@@ -451,7 +453,11 @@ static void imu_temp_control(fp32 temp)
         {
             imu_temp_pid.out = 0.0f;
         }
+		if (DR16.rc.s_right==3) //失能保护
+            imu_temp_pid.out = 0.0f;
+
         tempPWM = (uint16_t)imu_temp_pid.out;
+		TEMPERATURE_PID_OUT=tempPWM;
         IMU_temp_PWM(tempPWM);
     }
     else
@@ -461,12 +467,13 @@ static void imu_temp_control(fp32 temp)
         if (temp > 40.0f)
         {
             temp_constant_time++;
-            if (temp_constant_time > 200)
+            if (temp_constant_time > 20)//200
             {
                 //达到设置温度，将积分项设置为一半最大功率，加速收敛
                 //
 				ins_ok=1;
                 first_temperate = 1;
+				TEMPERATURE_is_OK=1;
                 imu_temp_pid.Iout = MPU6500_TEMP_PWM_MAX / 2.0f;
             }
         }

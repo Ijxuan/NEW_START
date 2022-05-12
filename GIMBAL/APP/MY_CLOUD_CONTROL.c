@@ -1,5 +1,6 @@
 #include "MY_CLOUD_CONTROL.h"
 
+cloud_control_mode cloud_mode;
 
 void cloud_control(void)
 {
@@ -28,7 +29,24 @@ void cloud_control(void)
 //*/
 //	
 //
+cloud_control_mode_choose();
  scan_cloud();
+ if(DR16.rc.s_left!=3)
+{
+simulation_target_yaw=	DJIC_IMU.total_yaw;
+}
+ if(DR16.rc.s_left==3)
+{
+	if(DR16.rc.s_right==3)
+	{
+	simulation_target_yaw+= 0.018;   // 18¶È/1000ºÁÃë
+	}
+	else
+	{
+		simulation_target_yaw=	DJIC_IMU.total_yaw;
+	}
+	
+}
 
 							YAW_PID();//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //	
@@ -44,6 +62,44 @@ void cloud_control(void)
 						
 							PITCH_PID();//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
+
+
+void cloud_control_mode_choose(void)
+{
+	if(DR16.rc.s_left == 1)//×óÉÏÊ±
+	{
+//		if(VisionData.RawData.Armour==1)
+
+		if(Armour_lose_time>=3)//¶ªÊ§3Ö¡×°¼×
+		{
+			cloud_mode.control_mode_NOW=aoto_scan_mode;
+			cloud_mode.control_mode_LAST=vision_mode;
+			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Angle_pid);
+			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Speed_pid);			
+			
+		}
+		else
+		{
+			cloud_mode.control_mode_NOW=vision_mode;
+			cloud_mode.control_mode_LAST=aoto_scan_mode;
+			P_PID_Parameter_Clear(&Yaw_IMU_Angle_pid);
+			P_PID_Parameter_Clear(&Yaw_IMU_Speed_pid);			
+		}
+
+		
+	}
+	else
+	{
+			cloud_mode.control_mode_NOW=aoto_scan_mode;
+			cloud_mode.control_mode_LAST=vision_mode;
+			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Angle_pid);
+			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Speed_pid);			
+	}
+	
+	
+}
+
+
 bool YAW_TARGE_ANGLE_ADD=1;
 int arrive_targe_angle=0;
 int TEXT_targe_SPEED=400;
@@ -111,6 +167,7 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 					#if PID_YAW_IMU//YAWÖáÍÓÂÝÒÇ
 									if(DR16.rc.s_left==3)//YAWÖá¿ØÖÆµ²Î»
 							{
+								if(cloud_mode.control_mode_NOW==aoto_scan_mode)//É¨ÃèPID
 							yaw_trage_angle-=(DR16.rc.ch0/660.0)/10.0;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
 //							CH0_TOTAL_in_con+=	DR16.rc.ch0;
 //								if(DR16.rc.ch0!=0)
@@ -118,13 +175,21 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 							}
 									if(DR16.rc.s_left==1)//YAWÖá¿ØÖÆµ²Î»
 							{
-								if(VisionData.RawData.Armour==1)
-							yaw_trage_angle=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
-								else
-								yaw_trage_angle-=(DR16.rc.ch0/660.0)/10.0;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
+//								if(VisionData.RawData.Armour==1)
+//							yaw_trage_angle-=Vision_RawData_Yaw_Angle;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
+								
+				if(cloud_mode.control_mode_NOW==vision_mode)//É¨ÃèPID
+				{
+					yaw_trage_angle=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
+				}			
+//								else
+//								yaw_trage_angle-=(DR16.rc.ch0/660.0)/10.0;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
 
 							}							
 //					Yaw_IMU_Angle_pid.Kp=-YAW_IMU_Kp;//µ÷ÊÔ¹ý³ÌÖÐÕâ¸öÖµÒª²»¶Ï¸üÐÂ
+							
+				if(cloud_mode.control_mode_NOW==aoto_scan_mode)//É¨ÃèPID
+				{
 					P_PID_bate(&Yaw_IMU_Angle_pid, yaw_trage_angle,DJIC_IMU.total_yaw);//GM6020s[EMID].totalAngle readAngle
 		
 
@@ -132,7 +197,24 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 //					yaw_trage_speed=(DR16.rc.ch3*1.0/660.0)*10000;//Ò£¿ØÆ÷¸øËÙ¶ÈÄ¿±êÖµ ¶þÑ¡Ò»
 							
 					P_PID_bate(&Yaw_IMU_Speed_pid, yaw_trage_speed,DJIC_IMU.Gyro_z);
+					
 		                   send_to_yaw=Yaw_IMU_Speed_pid.result;
+				}
+				
+				if(cloud_mode.control_mode_NOW==vision_mode)//×ÔÃéPID
+				{
+					P_PID_bate(&VISION_Yaw_IMU_Angle_pid, yaw_trage_angle,DJIC_IMU.total_yaw);//GM6020s[EMID].totalAngle readAngle
+		
+
+					yaw_trage_speed=VISION_Yaw_IMU_Angle_pid.result;//Íâ»·µÄ½á¹û¸øÄÚ»·  ¶þÑ¡Ò»
+//					yaw_trage_speed=(DR16.rc.ch3*1.0/660.0)*10000;//Ò£¿ØÆ÷¸øËÙ¶ÈÄ¿±êÖµ ¶þÑ¡Ò»
+							
+					P_PID_bate(&VISION_Yaw_IMU_Speed_pid, yaw_trage_speed,DJIC_IMU.Gyro_z);
+					
+		                   send_to_yaw=VISION_Yaw_IMU_Speed_pid.result;
+				}
+				
+				
 //					send_to_pitch=(DR16.rc.ch3*1.0/660.0)*29000;
 					#endif
 //	
@@ -274,7 +356,7 @@ void scan_cloud(void)
 			if(DR16.rc.s_left==1)//¿ØÖÆµ²Î»-É¨Ãè
 	{
 //		if(DR16.rc.s_right==3)//¿ØÖÆµ²Î»-É¨Ãè¿ªÊ¼
-		if(Armour_lose_time>2500)//ÊÓ¾õ2.5ÃëÃ»Ëøµ½×°¼×°å-É¨Ãè¿ªÊ¼
+		if(Armour_lose_time>1000)//ÊÓ¾õ1ÃëÃ»Ëøµ½×°¼×°å-É¨Ãè¿ªÊ¼
 		{
 		 int scan_speed_PITCH=4;//PITCHÖáÉ¨ÃèËÙ¶È,×îÐ¡Îª1
 		int scan_speed_YWA=4;//YAWÖáÉ¨ÃèËÙ¶È,×îÐ¡Îª1
@@ -342,7 +424,7 @@ yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0);//YAWÖá×ªÒ»È¦¶àÒ»µ
 			scan_time=0;
 		if(Armour_lose_time>1000)//¿ØÖÆµ²Î»-É¨Ãè¿ªÊ¼
 YAW_START_ANGLE=DJIC_IMU.total_yaw;//Ë¿»¬¿ªÊ¼É¨Ãè
-scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	*0.8;	
+scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	;	
 scan_percent_YAW=0;	
 		
 		}
@@ -352,7 +434,7 @@ scan_percent_YAW=0;
 	{
 		scan_time=0;
 		YAW_START_ANGLE=DJIC_IMU.total_yaw;//Ë¿»¬¿ªÊ¼É¨Ãè
-		scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	*0.8;	
+		scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	;	
 scan_percent_YAW=0;
 	}
 		

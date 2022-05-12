@@ -192,12 +192,31 @@ void MX_FREERTOS_Init(void) {
 						 5000, -5000, //积分限幅，也就是积分的输出范围
 						 29990, -29990);
 						 
-	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 13, 0, 10,//10 0 16//越大越陡峭10
-						 0,
+	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 5, 0, 0,//10 0 16//越大越陡峭10
+						 100,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
-						 0, 0,
-						 500, -500); // Yaw_IMU_Angle_pid
+						 10, -10,
+						 1000, -1000); // Yaw_IMU_Angle_pid
+#endif
+
+#if VISION_PID_YAW_IMU
+
+
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -1000, -6.5, 1100,//
+						 60, //误差大于这个值就积分分离
+						 //	float max_error, float min_error,
+						 //                          float alpha,
+						 5000, -5000, //积分限幅，也就是积分的输出范围
+						 29990, -29990);
+						 
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 13, 0.02, 10,//10 0 16//越大越陡峭10
+						 5,
+						 //						  float max_error, float min_error,
+						 //                          float alpha,
+						 600, -600,
+						 1000, -1000); // Yaw_IMU_Angle_pid
+
 #endif
 #if PID_PITCH_MOTOR
 	P_PID_Parameter_Init(&PITCH_Angle_pid, 1, 0, 0,
@@ -253,7 +272,8 @@ void MX_FREERTOS_Init(void) {
 	USART_RX_DMA_ENABLE(&huart6, Vision_DataBuff, Vision_BuffSize);
 //DJIC_IMU.pitch_turnCounts=-1;
 	//CAN2_Filter0 初始化 使能
-	
+//	  HAL_Delay(1000);
+
 //	CAN2_Filter0_Init();
 //	
 
@@ -311,6 +331,10 @@ void MX_FREERTOS_Init(void) {
 
 	osThreadDef(led, led_RGB_flow_task, osPriorityNormal, 0, 256);
 	led_RGB_flow_handle = osThreadCreate(osThread(led), NULL);
+
+	  osDelay(3000);
+	  osDelay(3000);
+	  osDelay(3000);
 
 	osThreadDef(Task_Robot_Control, Robot_Control, RobotCtrl_Priority, 0, RobotCtrl_Size);
 	RobotCtrl_Handle = osThreadCreate(osThread(Task_Robot_Control), NULL);
@@ -373,8 +397,8 @@ Tmr Svc        	0		<1%
 	/* Infinite loop */
 	for (;;)
 	{
-//		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
-//		{
+		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
+		{
 			//					USART1->DR = '2';
 			//					TRY[0]='0';
 			//										TRY[1]='1';
@@ -386,7 +410,7 @@ Tmr Svc        	0		<1%
 
 					}
 //		
-//		}
+		}
 
 
   
@@ -704,15 +728,50 @@ void Robot_Control(void const *argument)
 	portTickType xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
 	const TickType_t TimeIncrement = pdMS_TO_TICKS(1); //每2毫秒强制进入总控制
-			osDelay(100);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+	yaw_trage_angle=DJIC_IMU.total_yaw;
+	PITCH_trage_angle = DJIC_IMU.total_pitch;
 
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+	
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+    vTaskDelay(1000);
+	
 	GM6020s[3].turnCount=0;
+yaw_trage_angle=DJIC_IMU.total_yaw;
+	PITCH_trage_angle = DJIC_IMU.total_pitch;
 
 	/* Infinite loop */
 	for (;;)
 	{
+		if(controul_times%1000==0)
+		{	
+			yaw_trage_angle_add_1s=yaw_trage_angle-yaw_trage_angle_1s_ago;
+			yaw_trage_angle_1s_ago=yaw_trage_angle;	
+		}
 		if(controul_times%10==0)
 		{
+			 if(DR16.rc.s_left==3&&DR16.rc.s_right==3)
+			 {
+		yaw_trage_angle+=simulation_target_yaw-DJIC_IMU.total_yaw;
+			 }
 		}
 				if (DR16.rc.s_left == 2&&DR16.rc.ch1<-600) //失能保护
 				{
@@ -789,13 +848,14 @@ void Robot_Control(void const *argument)
 		//
 
 		shoot_control();
-		
+	
 		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
 		{
 			//						send_to_chassis=0;
-
 	send_to_SHOOT_L = 0;
-			send_to_SHOOT_R = 0;
+			send_to_SHOOT_R = 0;	
+	GM6020s[3].turnCount=0;
+DJIC_IMU.yaw_turnCounts=0;
 			send_to_2006 = 0;
 			//						send_to_yaw=0;
 			//						M2006_targe_angle=M3508s[1].totalAngle;//摩擦轮误差消除

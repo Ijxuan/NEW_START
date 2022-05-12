@@ -94,6 +94,9 @@ int SHOOT_R_speed=0;//右摩擦轮的目标速度
 
 int yaw_trage_speed=0;
 float yaw_trage_angle=0;
+float yaw_trage_angle_1s_ago=0;
+float yaw_trage_angle_add_1s=0;
+
 int send_to_yaw=0;
 
 int send_to_pitch=0;//发送给pitch轴的数据
@@ -167,6 +170,12 @@ int vision_rc_right=0;
 int vision_rc_error=0;
 
 int CAN2_rc_times=0;
+
+float simulation_target_yaw=0;
+
+bool TEMPERATURE_is_OK=0;
+int TEMPERATURE_PID_OUT=0;
+
 /* USER CODE END 0 */
 
 /**
@@ -182,7 +191,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+   HAL_Init();
 
   /* USER CODE BEGIN Init */
 

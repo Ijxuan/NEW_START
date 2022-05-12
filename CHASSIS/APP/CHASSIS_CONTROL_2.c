@@ -38,10 +38,10 @@ void CHASSIS_CONTROUL_2()
 if(speed_has_change==0)
 {
 	
-					if(Chassis_Encoder.totalLine>(CHASSIS_R_MIN_by_ENCODER+2000))
+					if(Chassis_Encoder.totalLine>(CHASSIS_R_MIN_by_ENCODER+8000))
 				{
 					
-								CHASSIS_trage_speed=-6000;
+								CHASSIS_trage_speed=-4000;
 				stop_CH_OP_BC_END=0;
 
 				}
@@ -94,11 +94,12 @@ else if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
 if(speed_has_change==0)
 {
 	
-					if(Chassis_Encoder.totalLine<(CHASSIS_L_MAX_by_ENCODER-2000))
+					if(Chassis_Encoder.totalLine<(CHASSIS_L_MAX_by_ENCODER-8000))
 				{
 					
 	stop_CH_OP_BC_END=0;
-					CHASSIS_trage_speed=6000*Chassis_PowerLimit;
+//					CHASSIS_trage_speed=4000*Chassis_PowerLimit;
+				CHASSIS_trage_speed=4000;
 
 				}
 				else

@@ -248,6 +248,7 @@ bool state_Infrared_R_is_ok=0;//右边红外传感器运转正常
 bool state_Infrared_L_is_ok=0;//左边红外传感器运转正常
 
 int ch4_DW_total=0;
+int restart_times=0;//重启时间
 //driver  plate
 /* USER CODE END 0 */
 
