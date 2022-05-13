@@ -422,7 +422,7 @@ yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0);//YAWÖá×ªÒ»È¦¶àÒ»µ
 		else //ÊÓ¾õËøµ½×°¼×°å-É¨Ãè½áÊø
 		{
 			scan_time=0;
-		if(Armour_lose_time>1000)//¿ØÖÆµ²Î»-É¨Ãè¿ªÊ¼
+		if(Armour_lose_time>500)//¿ØÖÆµ²Î»-É¨Ãè¿ªÊ¼
 YAW_START_ANGLE=DJIC_IMU.total_yaw;//Ë¿»¬¿ªÊ¼É¨Ãè
 scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	;	
 scan_percent_YAW=0;	

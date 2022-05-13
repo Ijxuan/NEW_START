@@ -227,11 +227,14 @@ PID_YES=beta;
 //切换pid时的清除
 void P_PID_Parameter_Clear(P_PID_t *P_PID)
 {
+		P_PID->Error = 0;					//清除最终输出
+
 	P_PID->LastError = 0;				//清除上次的偏差值
 	P_PID->PreError = 0;				//清除上上次的偏差值
 	P_PID->Integral = 0;				//清除积分累计
 	P_PID->D_Last_Output = 0;		//清除上次的微分输出
 	P_PID->result = 0;					//清除最终输出
+	
 }
 
 
