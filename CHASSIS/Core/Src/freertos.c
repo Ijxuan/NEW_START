@@ -384,6 +384,7 @@ JS_send_STATUS_control();
 		if(send_to_C_IN_END==1)
 		{
 			PLACE_send_control();
+			place_SEND_times++;
 			send_to_C_IN_END=0;
 		}
 		

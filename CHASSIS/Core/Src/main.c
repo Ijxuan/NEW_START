@@ -240,6 +240,7 @@ bool stop_CH_OP_BC_LESS=0;
 int stop_CH_OP_BC_LESS_times=0;
 int CHASSIS_trage_speed_temp;
 int JS_SEND_times=0;//裁判系统发送次数
+int place_SEND_times=0;//底盘位置发送次数
 
 int M3508_acceleration_cycle=10;//加速度计算周期(每次计算的间隔)(ms)
 int M3508_last_speed;//上一时刻的速度,用于加速度计算

@@ -167,6 +167,7 @@ extern int STATUS_PART_THREE_TIMES;
 extern int STATUS_PART_FOUR_TIMES;
 extern int STATUS_complete_update_TIMES;
 extern int HEAT_complete_update_TIMES;//裁判系统热量信息更新成功次数
+extern int place_complete_update_TIMES;//裁判系统热量信息更新成功次数
 
 
 extern int DDR16_PART_ONE_TIMES;

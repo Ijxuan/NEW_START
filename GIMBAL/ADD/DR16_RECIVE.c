@@ -368,7 +368,7 @@ void NM_swj(void)
 
 			//DJIC_IMU.Gyro_y*1000000
 //DJIC_IMU.pitch
-			send_d_32[p++]= PITCH_trage_angle*-50000;//I_OUT 4		4PID_YES
+			send_d_32[p++]= VisionData.RawData.Armour*1111;//I_OUT 4		4PID_YES
 
 			send_d_32[p++]=VisionData.RawData.Depth*10;//P_OUT		5
 			send_d_32[p++]=DJIC_IMU.total_pitch*-50000;//I_OUT		6
@@ -402,7 +402,7 @@ void NM_swj(void)
 			send_d_16[p++]=40*10;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
-	#if 1//发送云台数据 YAW 陀螺仪
+	#if 1//发送云台数据 YAW 陀螺仪 666
 	p=0;
 			send_d_32[p++]=yaw_trage_angle*10000;//当前角度		1
 			send_d_32[p++]=DJIC_IMU.total_yaw*10000;//最终目标角度		2

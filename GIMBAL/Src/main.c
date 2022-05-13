@@ -128,6 +128,7 @@ int STATUS_PART_THREE_TIMES=0;
 int STATUS_PART_FOUR_TIMES=0;
 int STATUS_complete_update_TIMES=0;//裁判系统状态信息更新成功次数
 int HEAT_complete_update_TIMES=0;//裁判系统热量信息更新成功次数
+int place_complete_update_TIMES=0;//裁判系统热量信息更新成功次数
 
 
 int DDR16_PART_ONE_TIMES=0;

@@ -527,6 +527,8 @@ int i=0;
 			
 			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == PLACE_SEND_ID)
 			{//底盘位置信息解包
+				
+				place_complete_update_TIMES++;
 								for(i=0;i<8;i++)
 				{
 				CHASSIS_place[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
