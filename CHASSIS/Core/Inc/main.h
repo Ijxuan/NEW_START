@@ -145,6 +145,14 @@ extern bool send_to_C_JS_HURT;//裁判系统_伤害数据_是否发送给C板
 extern bool send_to_C_JS_STATUS;//裁判系统_状态数据_是否发送给C板
 extern bool send_to_C_JS_HEAT;//裁判系统_热量数据_是否发送给C板
 
+extern bool send_to_C_IN_END;//是否 处于轨道尽头_状态数据_是否发送给C板
+extern bool send_to_C_IN_MID;// 处于轨道中间_状态数据_是否发送给C板  1秒一次
+
+
+extern bool in_MID;//处在轨道中间段
+extern bool in_END;//处在轨道尽头
+extern bool last_in_MID;//刚刚处在轨道中间段
+extern bool last_in_END;//刚刚处在轨道尽头
 extern int send_to_C_STATUS_times;//因为状态数据分4段发送,所以计数保险一点
 
 extern int JS_SEND_times;
@@ -197,6 +205,7 @@ extern bool use_special_send;
 extern int ENCODER_CHANGE;//BMQ改变值
 extern int restart_times;//重启时间
 
+extern int CAN2_SEND_TASK_times;//任务运行时间
 
 /* USER CODE END EC */
 

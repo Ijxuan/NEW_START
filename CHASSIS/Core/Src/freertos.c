@@ -299,7 +299,7 @@ void CAN1_recive(void const * argument)
  * @param argument: Not used
  * @retval None
  */
-char RunTimeInfo[400]; //保存任务运行时间信息
+//char RunTimeInfo[400]; //保存任务运行时间信息
 /* USER CODE END Header_DeBug */
 void DeBug(void const * argument)
 {
@@ -308,7 +308,49 @@ void DeBug(void const * argument)
 	for (;;)
 	{
 
+		CAN2_SEND_TASK_times++;
+		
+				if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER)||Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
+		{
+			if(last_in_MID==1)
+			{
+				send_to_C_IN_END=1;//刚刚进入末尾段,马上发一帧
+				last_in_MID=0;
+			}
+			last_in_END=1;
+			in_END=1;
+			in_MID=0;
+		}
+		else//没有判断是不是在初始化
+		{
 
+			in_END=0;
+			in_MID=1;
+			/* 前两行是用来控制发送频率的,两种不同的发送频率*/
+			/* 接下来是进入轨道末端和离开轨道末端瞬间发送的(触发)*/
+
+			if(last_in_END==1)
+			{
+				send_to_C_IN_END=1;//刚刚离开末尾段,马上发一帧
+				last_in_END=0;				
+			}
+			last_in_MID=1;
+		}
+		if(in_MID==1)
+		{
+		if(CAN2_SEND_TASK_times%100==0)//发送频率为1秒10次
+		{
+						send_to_C_IN_END=1;	//发送频率为1秒10次
+		}
+		}
+		
+		if(in_END==1)
+		{
+		if(CAN2_SEND_TASK_times%10==0)//发送频率为1秒100次
+		{
+					send_to_C_IN_END=1;	//发送频率为1秒100次
+		}
+		}
 //		Update_Vision_SendData();
 		if (send_to_C == 1)//遥控器数据
 		{
@@ -339,6 +381,13 @@ JS_send_STATUS_control();
 			JS_send_HEAT_control();
 			send_to_C_JS_HEAT=0;
 		}
+		if(send_to_C_IN_END==1)
+		{
+			PLACE_send_control();
+			send_to_C_IN_END=0;
+		}
+		
+
 		
 		
 

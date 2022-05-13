@@ -26,6 +26,7 @@ typedef struct
 	FPS_type IMU_Gyro;
 	FPS_type YAW_6020;
 	FPS_type PITCH_6020;
+	FPS_type CHASSIS_PLACE;
 
 	
 }FPS_ALL_type;

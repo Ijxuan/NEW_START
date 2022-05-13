@@ -18,6 +18,8 @@ void NM_swj2(void);
 //extern UART_HandleTypeDef huart1;
 
 extern uint8_t DR16Buffer[DR16BufferNumber];
+extern uint8_t CHASSIS_place[8];
+
 extern uint8_t JSBuffer[8];
 
 #define DR16_GroundInit \

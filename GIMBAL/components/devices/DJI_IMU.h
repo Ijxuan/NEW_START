@@ -10,6 +10,8 @@
 //·¢ËÍID
 #define DR16_Angle_SENDID 0x101
 
+#define PLACE_SEND_ID 0x144
+
 
 #define DJI_C_Angle_SENDID 0x195
 #define DJI_C_Gyro_SENDID 0x165

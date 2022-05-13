@@ -215,6 +215,8 @@ extern float simulation_target_yaw;
 extern bool TEMPERATURE_is_OK;
 extern int TEMPERATURE_PID_OUT;
 
+extern bool in_MID;//处在轨道中间段
+extern bool in_END;//处在轨道尽头
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

@@ -5,6 +5,9 @@
 #include "BSP_CAN.h"		//ถþักาป
 #include "RM_JudgeSystem.h"
 
+#define PLACE_SEND_ID 0x144
+
+
 #define JS_SEND_HEAT_ID_ONE 0x142
 #define JS_SEND_HEAT_ID_TWO 0x143 
 
@@ -22,6 +25,7 @@ void JS_send_SHOOT_control(void);
 void JS_send_HURT_control(void);
 void JS_send_STATUS_control(void);
 void JS_send_HEAT_control(void);
+void PLACE_send_control(void);
 
 #endif
 

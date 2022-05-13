@@ -176,6 +176,9 @@ float simulation_target_yaw=0;
 bool TEMPERATURE_is_OK=0;
 int TEMPERATURE_PID_OUT=0;
 
+bool in_MID=1;//处在轨道中间段
+bool in_END=0;//处在轨道尽头
+
 /* USER CODE END 0 */
 
 /**

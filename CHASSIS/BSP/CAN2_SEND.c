@@ -50,3 +50,48 @@ osDelay(1);
 	CAN_SendData(&hcan2,CAN_ID_STD,JS_SEND_HEAT_ID_TWO,&js_SEND_all[8]);
 
 }
+
+void PLACE_send_control()
+{
+
+if(in_END==1)//不在轨道中间段,在末端
+{
+	js_SEND_all[0]=1;
+}
+else//在轨道中间段
+{
+	js_SEND_all[0]=0;
+}
+
+	js_SEND_all[1]=0;
+	js_SEND_all[2]=0;
+
+if(in_MID==1)//在轨道中间段
+{
+	js_SEND_all[3]=1;
+	js_SEND_all[4]=1;
+}
+else//不在轨道中间段
+{
+	js_SEND_all[3]=0;
+	js_SEND_all[4]=0;	
+}
+
+	js_SEND_all[5]=0;
+	js_SEND_all[6]=0;
+
+if(in_END==1)//不在轨道中间段,在末端
+{
+	js_SEND_all[7]=1;
+}
+else
+{
+	js_SEND_all[7]=0;
+}
+	
+	
+	CAN_SendData(&hcan2,CAN_ID_STD,PLACE_SEND_ID,&js_SEND_all[0]);
+
+
+}
+

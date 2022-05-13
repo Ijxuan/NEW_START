@@ -46,6 +46,7 @@
 #include "bsp_buzzer.h"
 #include "Vision.h"
 #include "string.h"
+#include "FPS_Calculate.h"
 
 /* USER CODE END Includes */
 
@@ -522,6 +523,33 @@ int i=0;
 			{
 				//解包
 				IMU_Cal_Status_Reivece(CAN2_Rx_Structure);
+			}
+			
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == PLACE_SEND_ID)
+			{//底盘位置信息解包
+								for(i=0;i<8;i++)
+				{
+				CHASSIS_place[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+				
+				if(CHASSIS_place[0]==1||CHASSIS_place[6]==1)
+				{
+					in_END=1;
+				}
+				if(CHASSIS_place[0]==0||CHASSIS_place[6]==0)
+				{
+					in_END=0;
+				}
+				if(CHASSIS_place[3]==1||CHASSIS_place[4]==1)
+				{
+					in_MID=1;
+				}
+				if(CHASSIS_place[3]==0||CHASSIS_place[4]==0)
+				{
+					in_MID=0;
+				}
+					Get_FPS(&FPS_ALL.CHASSIS_PLACE.WorldTimes,   &FPS_ALL.CHASSIS_PLACE.FPS);
+
 			}
 			
 			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_HEAT_ID_ONE)

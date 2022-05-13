@@ -27,13 +27,192 @@ Project File Date:  04/14/2022
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'CHASSIS'
+compiling usart.c...
+compiling gpio.c...
+compiling stm32f4xx_hal_msp.c...
+compiling dma.c...
+compiling tim.c...
+compiling can.c...
+compiling MY_SHOOT_CONTROL.c...
+..\APP\MY_SHOOT_CONTROL.h(8): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_SHOOT_CONTROL.c: 3 warnings, 0 errors
+compiling stm32f4xx_it.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\add\Sensor.h(69): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/stm32f4xx_it.c(44): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  float lun_1_quan_m=pai*0.06;
+../Core/Src/stm32f4xx_it.c(396): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		speed_every_100_ms=angle_100_ms*lun_1_quan_m/8191.0/14.0*10;//这100m秒走过的路程 变成圈数 再经过减速比 最后根据轮径
+../Core/Src/stm32f4xx_it.c: 5 warnings, 0 errors
 compiling stm32f4xx_hal_timebase_tim.c...
+compiling rng.c...
+compiling main.c...
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/main.c: 1 warning, 0 errors
+compiling freertos.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(18): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\MY_SHOOT_CONTROL.h(8): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\BSP\DR16_CAN2_SEND.h(37): warning:  #1295-D: Deprecated declaration DR16_send_master_control - give arg types
+  void DR16_send_master_control();//鎬绘帶鍒?
+..\APP\CHASSIS_CONTROL_basic.h(23): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\CHASSIS_CONTROL_2.h(28): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\add\Sensor.h(69): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/freertos.c(429): warning:  #550-D: variable "xLastWakeTime"  was set but never used
+  	portTickType xLastWakeTime;
+../Core/Src/freertos.c(431): warning:  #177-D: variable "TimeIncrement"  was declared but never referenced
+  	const TickType_t TimeIncrement = pdMS_TO_TICKS(2); //每十毫秒强制进入总控制
+../Core/Src/freertos.c: 11 warnings, 0 errors
+compiling MY_CLOUD_CONTROL.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CLOUD_CONTROL.c(118): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  								PITCH_trage_angle-=(Vision_RawData_Pitch_Angle/10.0);
+..\APP\MY_CLOUD_CONTROL.c: 3 warnings, 0 errors
+compiling MY_CHASSIS_CONTROL.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(18): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\CHASSIS_CONTROL_2.h(28): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.c(504): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				speed_change=DEBUFF*CHASSIS_trage_speed*0.7;		//最多减慢百分之70
+..\APP\MY_CHASSIS_CONTROL.c: 6 warnings, 0 errors
+compiling CHASSIS_CONTROL_basic.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(18): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\CHASSIS_CONTROL_basic.h(23): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\CHASSIS_CONTROL_2.h(28): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\CHASSIS_CONTROL_basic.c(200): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*0.8;//双环	//两个传感器都是好的,速度可以快一点
+..\APP\CHASSIS_CONTROL_basic.c(214): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*0.5;//双环	//只有一个传感器都是好的,速度可以慢一点
+..\APP\CHASSIS_CONTROL_basic.c(228): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*0.5;//双环	//只有一个传感器都是好的,速度可以慢一点
+..\APP\CHASSIS_CONTROL_basic.c: 9 warnings, 0 errors
+compiling CHASSIS_CONTROL_2.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(18): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\CHASSIS_CONTROL_2.h(28): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\CHASSIS_CONTROL_2.c: 5 warnings, 0 errors
+compiling GM6020.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Device\GM6020.c: 1 warning, 0 errors
+compiling BSP_CAN.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\BSP\BSP_CAN.c: 1 warning, 0 errors
+compiling user_UART.c...
+compiling DR16_CAN2_SEND.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\BSP\DR16_CAN2_SEND.h(37): warning:  #1295-D: Deprecated declaration DR16_send_master_control - give arg types
+  void DR16_send_master_control();//鎬绘帶鍒?
+..\BSP\DR16_CAN2_SEND.c: 2 warnings, 0 errors
+compiling M2006.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Device\M2006.c: 2 warnings, 0 errors
+compiling timer.c...
+compiling my_IncrementPID_bate.c...
+compiling User_math.c...
+compiling Sensor.c...
+..\add\Sensor.h(69): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\add\Sensor.c: 1 warning, 0 errors
+compiling FPS_Calculate.c...
+compiling my_positionPID_bate.c...
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.c: 1 warning, 0 errors
+compiling M3508.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Device\M3508.c: 2 warnings, 0 errors
+compiling Vision.c...
+compiling DR16_RECIVE.c...
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(18): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\add\DR16_RECIVE.c: 4 warnings, 0 errors
+compiling CAN2_SEND.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\BSP\CAN2_SEND.c: 2 warnings, 0 errors
+compiling RM_JudgeSystem.c...
+..\Arithmetic\my_positionPID_bate.h(100): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Device\RM_JudgeSystem.c(1470): warning:  #223-D: function "sprintf" declared implicitly
+  	sprintf(data, "%d", i);
+..\Device\RM_JudgeSystem.c: 2 warnings, 0 errors
+compiling DJI_C_IMU.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Device\DJI_C_IMU.c(118): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	PITCH_MAX_angle=DJIC_IMU.total_pitch+(7130-GM6020s[1].totalAngle)/8196.0*360.0;
+..\Device\DJI_C_IMU.c(119): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	PITCH_MIN_angle=DJIC_IMU.total_pitch+(6430-GM6020s[1].totalAngle)/8196.0*360.0;
+..\Device\DJI_C_IMU.c: 3 warnings, 0 errors
 linking...
 freertos1\CHASSIS.axf: Warning: L6304W: Duplicate input file freertos1\stm32f4xx_hal_timebase_tim_1.o ignored.
-Program Size: Code=36168 RO-data=1544 RW-data=848 ZI-data=31840  
+Program Size: Code=36516 RO-data=1544 RW-data=856 ZI-data=31440  
 Finished: 0 information, 1 warning and 0 error messages.
 FromELF: creating hex file...
-"freertos1\CHASSIS.axf" - 0 Error(s), 1 Warning(s).
+"freertos1\CHASSIS.axf" - 0 Error(s), 65 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -56,7 +235,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.2.0
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:17
 </pre>
 </body>
 </html>

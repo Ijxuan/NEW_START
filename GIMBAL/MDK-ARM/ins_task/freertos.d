@@ -82,3 +82,4 @@ ins_task\freertos.o: ..\ADD\buzzer_TIM_init.h
 ins_task\freertos.o: ..\ADD\bsp_buzzer_driver.h
 ins_task\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 ins_task\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+ins_task\freertos.o: ..\Arithmetic\FPS_Calculate.h

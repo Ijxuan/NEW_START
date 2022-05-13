@@ -25,6 +25,7 @@ ext_robot_hurt_t ext_robot_hurt;
 ext_game_robot_status_t ext_game_robot_state;
 ext_power_heat_data_t ext_power_heat_data;
 
+uint8_t CHASSIS_place[8];
 uint8_t JSBuffer[8];
 
 //uint8_t DR16Buffer[DR16BufferNumber];
@@ -419,7 +420,7 @@ void NM_swj(void)
 	p=0;
 			send_d_16[p++]=send_to_yaw;//输出电压      8
 
-			send_d_16[p++]=bmi088_real_data.temp*10;//目标角度       	9
+			send_d_16[p++]=auto_shoot_condition_show;///*热量 角度误差允许 视觉发射指令是连续 不在轨道末端 所有条件全部满足*/       	9
 			send_d_16[p++]=cloud_mode.control_mode_NOW*111111;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
