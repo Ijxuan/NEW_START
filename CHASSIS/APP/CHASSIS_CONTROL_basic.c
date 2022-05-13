@@ -16,6 +16,7 @@ int send_to_chassis_JUST_MOVE=2000;//发送给底盘的数据_刚好足够动起来
 
 bool CHASSIS_L_MAX_new=0;//左右边界值是否更新
 bool CHASSIS_R_MIN_new=0;
+CHASSIS_KEY key_message;
 void switch_change(void)
 {
 			HWswitch_L			 = HAL_GPIO_ReadPin(GPIOA,HWswitch_1_Pin);

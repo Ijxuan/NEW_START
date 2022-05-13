@@ -14,6 +14,24 @@ void CHASSIS_CONTROUL_2(void);
 
 void star_and_new(void);
 
+typedef struct
+{
+int game_state_progress;/*0：未开始比赛；
+? 1：准备阶段；
+? 2：自检阶段；
+? 3：5s 倒计时；
+? 4：对战中；
+? 5：比赛结算中
+	*/
+int this_progress_remain_time;/*当前阶段剩余时间，单位 */
+	
+bool red_outpost_is_live;
+bool blue_outpost_is_live;	
+bool our_outpost_is_live;
+} CHASSIS_KEY;
+
+extern CHASSIS_KEY key_message;
+
 extern int send_to_chassis_JUST_MOVE;//发送给底盘的数据_刚好足够动起来
 extern int init_times;
 

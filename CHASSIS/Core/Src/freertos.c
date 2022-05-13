@@ -700,13 +700,45 @@ void Robot_Sensor(void const *argument)
 	/* Infinite loop */
 	for (;;)
 	{
+		
 				task_debug_times++;
  if(task_debug_times%M3508_acceleration_cycle==0)//加速度计算周期(每次计算的间隔)(ms)
  {
  M3508_acceleration=M3508s[3].realSpeed-M3508_last_speed;//加速度计算
  M3508_last_speed=M3508s[3].realSpeed;
  }
- 
+ if(ext_game_robot_HP.data.blue_outpost_HP>0 )
+ {
+	key_message.blue_outpost_is_live=1; 
+ }
+ else//前哨判断
+ {
+	key_message.blue_outpost_is_live=0; 
+ }
+ if(ext_game_robot_HP.data.red_outpost_HP>0 )
+ {
+	key_message.red_outpost_is_live=1; 
+ }
+ else//前哨判断
+ {
+	key_message.red_outpost_is_live=0; 
+ } 
+if(ext_game_robot_state.data.robot_id== 7)//自己是红色
+{
+	if(	key_message.red_outpost_is_live==1)
+    key_message.our_outpost_is_live=1;
+	else
+    key_message.our_outpost_is_live=0;
+		
+}
+if(ext_game_robot_state.data.robot_id== 107)//自己蓝色
+{
+	if(	key_message.blue_outpost_is_live==1)
+    key_message.our_outpost_is_live=1;
+	else
+    key_message.our_outpost_is_live=0;
+		
+}
  times_x++;
  if(times_x>2)
  {
