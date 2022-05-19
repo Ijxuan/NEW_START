@@ -186,6 +186,9 @@ bool in_END_R=0;//处在右轨道尽头
 bool in_END_L=0;//处在左轨道尽头
 
 bool disable_for_test_CHASSIS=0;
+
+float my_voltage;
+
 /* USER CODE END 0 */
 
 /**

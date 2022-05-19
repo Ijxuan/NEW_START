@@ -374,7 +374,7 @@ __weak void test_task(void const * argument)
  * @param argument: Not used
  * @retval None
  */
-fp32 voltage;
+//fp32 voltage;
 
 /* USER CODE END Header_Debug */
 void Debug(void const * argument)
@@ -421,7 +421,7 @@ Tmr Svc        	0		<1%
 		{
 		        //get battery voltage
         //获取电源电压
-        voltage = get_battery_voltage();
+        my_voltage = get_battery_voltage();
 		}
   
 		  
@@ -547,6 +547,11 @@ int i=0;
 				{
 					in_END=1;
 				}
+				if(CHASSIS_place[0]==0&&CHASSIS_place[7]==0)
+				{
+					in_END=0;
+				}
+				
 				if(CHASSIS_place[0]==1)
 				{
 					in_END_L=1;
@@ -567,12 +572,7 @@ int i=0;
 					in_END_R=0;
 				}
 				
-				if(CHASSIS_place[0]==0&&CHASSIS_place[6]==0)
-				{
-					in_END=0;
-					in_END_R=0;
-					in_END_L=0;
-				}
+
 
 				if(CHASSIS_place[3]==1||CHASSIS_place[4]==1)
 				{

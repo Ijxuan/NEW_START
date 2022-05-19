@@ -93,7 +93,7 @@ else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==0)  //Á½¸ö¹âµç´«¸ĞÆ÷×
 	init_times++;
 					if(DR16.rc.s_left==1)//×óÉÏµµÎ»      //¹âµçÃ»¼ì²âµ½ÓÃµÄÊÇÕâÌ×PID,¸Ä±äµÄÊÇÄ¿±ê½Ç¶È
 					{
-		if(init_times>333)//¸øÒ»ÃëÖÓÓÃÀ´Æğ²½
+		if(init_times>666)//¸øÒ»ÃëÖÓÓÃÀ´Æğ²½
 		{
 	if(init_times%inspect_times==0)//200ms¼ì²âÒ»´Î
 	{

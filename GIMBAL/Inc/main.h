@@ -222,6 +222,7 @@ extern bool in_END_R;//处在右轨道尽头
 extern bool in_END_L;//处在左轨道尽头
 
 extern bool disable_for_test_CHASSIS;
+extern float my_voltage;
 
 /* USER CODE END Private defines */
 
