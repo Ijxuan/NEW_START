@@ -61,3 +61,5 @@ ins_task\my_cloud_control.o: ..\ADD\Vision.h
 ins_task\my_cloud_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ins_task\my_cloud_control.o: ../Inc/usart.h
 ins_task\my_cloud_control.o: ..\Arithmetic\CRC.h
+ins_task\my_cloud_control.o: ..\bsp\boards\bsp_buzzer.h
+ins_task\my_cloud_control.o: ../Inc/tim.h

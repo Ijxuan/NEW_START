@@ -1,4 +1,5 @@
 #include "MY_CLOUD_CONTROL.h"
+#include "bsp_buzzer.h"
 
 cloud_control_mode cloud_mode;
 
@@ -414,8 +415,133 @@ if(scan_time%scan_speed_YWA==0)//是扫描速度的整数倍  scan_percent_YAW在0到1000之
 				scan_percent_YAW=999;
 	}
 	
-}	
-			
+}
+#if 1
+if	(in_END_R==1)
+{
+	if(GM6020s[0].readAngle>4350&&GM6020s[0].readAngle<4900)//4700-4900
+	{
+				scan_i_YAW=0;//增大模式
+							Buzzer.mode = One_times;
+
+	}
+	if(GM6020s[0].readAngle>3700&&GM6020s[0].readAngle<=4350) //3700-4000
+	{
+				scan_i_YAW=1;//减小模式
+							Buzzer.mode = One_times;
+
+	}
+
+//	if(GM6020s[0].readAngle>=4330&&GM6020s[0].readAngle<=4700)//4000-4700
+//	{
+//					scan_i_YAW=0;//增大模式
+//		YAW_START_ANGLE=DJIC_IMU.total_yaw+400;
+//		scan_percent_YAW=0;
+//				Buzzer.mode = One_times;
+
+//		
+//	}
+//	if(GM6020s[0].readAngle>=4000&&GM6020s[0].readAngle<=4329)//4000-4329
+//	{
+//				scan_i_YAW=1;//减小模式
+//		YAW_START_ANGLE=DJIC_IMU.total_yaw-500;
+//		scan_percent_YAW=999;
+//				Buzzer.mode = One_times;
+
+//	}
+}
+if	(in_END_L==1)
+{		
+	
+		if(GM6020s[0].readAngle>0&&GM6020s[0].readAngle<1200)//500-1200
+	{
+				scan_i_YAW=0;//增大模式
+							Buzzer.mode = One_times;
+
+	}
+	if(GM6020s[0].readAngle>7000&&GM6020s[0].readAngle<8191) //7000-7700
+	{
+				scan_i_YAW=1;//减小模式
+							Buzzer.mode = One_times;
+
+	}
+
+//	if(GM6020s[0].readAngle>=0&&GM6020s[0].readAngle<=500)//0-500
+//	{
+//					scan_i_YAW=0;//增大模式
+//		YAW_START_ANGLE=DJIC_IMU.total_yaw+500;
+//		scan_percent_YAW=0;
+//		Buzzer.mode = One_times;
+
+//	}
+//	if(GM6020s[0].readAngle>=7700&&GM6020s[0].readAngle<=8191)//4000-4329
+//	{
+//				scan_i_YAW=1;//减小模式
+//		YAW_START_ANGLE=DJIC_IMU.total_yaw-400;
+//		scan_percent_YAW=999;
+//				Buzzer.mode = One_times;
+
+//	}
+}
+#endif	
+#if 0
+if	(in_END_R==1)
+{
+	if(GM6020s[0].readAngle>4700&&GM6020s[0].readAngle<4900)//4700-4900
+	{
+				scan_i_YAW=0;//增大模式
+	}
+	if(GM6020s[0].readAngle>3700&&GM6020s[0].readAngle<4000) //3700-4000
+	{
+				scan_i_YAW=1;//减小模式
+	}
+	if(GM6020s[0].readAngle>=4330&&GM6020s[0].readAngle<=4700)//4000-4700
+	{
+					scan_i_YAW=0;//增大模式
+		YAW_START_ANGLE=DJIC_IMU.total_yaw+400;
+		scan_percent_YAW=0;
+				Buzzer.mode = One_times;
+
+		
+	}
+	if(GM6020s[0].readAngle>=4000&&GM6020s[0].readAngle<=4329)//4000-4329
+	{
+				scan_i_YAW=1;//减小模式
+		YAW_START_ANGLE=DJIC_IMU.total_yaw-500-720;
+		scan_percent_YAW=999;
+//				Buzzer.mode = One_times;
+
+	}
+}
+if	(in_END_L==1)
+{		
+
+	if(GM6020s[0].readAngle>500&&GM6020s[0].readAngle<1200)//500-1200
+	{
+				scan_i_YAW=0;//增大模式
+	}
+	if(GM6020s[0].readAngle>7000&&GM6020s[0].readAngle<7700) //7000-7700
+	{
+				scan_i_YAW=1;//减小模式
+	}
+	if(GM6020s[0].readAngle>=0&&GM6020s[0].readAngle<=500)//0-500
+	{
+					scan_i_YAW=0;//增大模式
+		YAW_START_ANGLE=DJIC_IMU.total_yaw+500;
+		scan_percent_YAW=0;
+//		Buzzer.mode = One_times;
+
+	}
+	if(GM6020s[0].readAngle>=7700&&GM6020s[0].readAngle<=8191)//4000-4329
+	{
+				scan_i_YAW=1;//减小模式
+		YAW_START_ANGLE=DJIC_IMU.total_yaw-500-720;
+		scan_percent_YAW=999;
+//				Buzzer.mode = One_times;
+
+	}
+}
+#endif			
 PITCH_trage_angle=PITCH_MIN_angle+(allow_angle)*0.8*(scan_percent_PITCH/1000.0);//PITCH
 yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0);//YAW轴转一圈多一点
 		}

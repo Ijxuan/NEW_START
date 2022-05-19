@@ -1,4 +1,5 @@
 #include "CAN2_SEND.h"
+#include "MY_CHASSIS_CONTROL.h"
 
 uint8_t js_SEND_all[33];  // 4x8=32
 
@@ -56,11 +57,25 @@ void PLACE_send_control()
 
 if(in_END==1)//不在轨道中间段,在末端
 {
+	//先右后左
+	if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
+	{
 	js_SEND_all[0]=1;
+	js_SEND_all[7]=0;
+	
+	}
+	if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER))
+	{
+	js_SEND_all[0]=0;
+	js_SEND_all[7]=1;
+	}
+
 }
 else//在轨道中间段
 {
 	js_SEND_all[0]=0;
+	js_SEND_all[7]=0;
+
 }
 
 	js_SEND_all[1]=0;
@@ -80,14 +95,7 @@ else//不在轨道中间段
 	js_SEND_all[5]=0;
 	js_SEND_all[6]=0;
 
-if(in_END==1)//不在轨道中间段,在末端
-{
-	js_SEND_all[7]=1;
-}
-else
-{
-	js_SEND_all[7]=0;
-}
+
 	
 	
 	CAN_SendData(&hcan2,CAN_ID_STD,PLACE_SEND_ID,&js_SEND_all[0]);

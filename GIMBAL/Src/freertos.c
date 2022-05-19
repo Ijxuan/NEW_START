@@ -333,9 +333,9 @@ void MX_FREERTOS_Init(void) {
 	osThreadDef(led, led_RGB_flow_task, osPriorityNormal, 0, 256);
 	led_RGB_flow_handle = osThreadCreate(osThread(led), NULL);
 
-	  osDelay(3000);
-	  osDelay(3000);
-	  osDelay(3000);
+//	  osDelay(3000);
+//	  osDelay(3000);
+//	  osDelay(3000);
 
 	osThreadDef(Task_Robot_Control, Robot_Control, RobotCtrl_Priority, 0, RobotCtrl_Size);
 	RobotCtrl_Handle = osThreadCreate(osThread(Task_Robot_Control), NULL);
@@ -534,14 +534,37 @@ int i=0;
 				CHASSIS_place[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
 				}
 				
-				if(CHASSIS_place[0]==1||CHASSIS_place[6]==1)
+				if(CHASSIS_place[0]==1||CHASSIS_place[7]==1)
 				{
 					in_END=1;
 				}
-				if(CHASSIS_place[0]==0||CHASSIS_place[6]==0)
+				if(CHASSIS_place[0]==1)
+				{
+					in_END_L=1;
+
+				}
+				else
+				{
+					in_END_L=0;					
+				}
+				
+				if(CHASSIS_place[7]==1)
+				{
+					in_END_R=1;
+
+				}
+				else
+				{
+					in_END_R=0;
+				}
+				
+				if(CHASSIS_place[0]==0&&CHASSIS_place[6]==0)
 				{
 					in_END=0;
+					in_END_R=0;
+					in_END_L=0;
 				}
+
 				if(CHASSIS_place[3]==1||CHASSIS_place[4]==1)
 				{
 					in_MID=1;
@@ -775,15 +798,7 @@ void Robot_Control(void const *argument)
 
     vTaskDelay(1000);
     vTaskDelay(1000);
-    vTaskDelay(1000);
-	
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-	
+
 	GM6020s[3].turnCount=0;
 yaw_trage_angle=DJIC_IMU.total_yaw;
 	PITCH_trage_angle = DJIC_IMU.total_pitch;
@@ -791,6 +806,14 @@ yaw_trage_angle=DJIC_IMU.total_yaw;
 	/* Infinite loop */
 	for (;;)
 	{
+								if (DR16.rc.s_left == 2&&DR16.rc.ch3<-600) //失能保护
+				{
+					disable_for_test_CHASSIS=1;
+				}
+				if (DR16.rc.s_left == 2&&DR16.rc.ch3>600) //失能保护
+				{
+					disable_for_test_CHASSIS=0;
+				}	
 		if(controul_times%1000==0)
 		{	
 			yaw_trage_angle_add_1s=yaw_trage_angle-yaw_trage_angle_1s_ago;
@@ -800,7 +823,7 @@ yaw_trage_angle=DJIC_IMU.total_yaw;
 		{
 			 if(DR16.rc.s_left==3&&DR16.rc.s_right==3)
 			 {
-		yaw_trage_angle+=simulation_target_yaw-DJIC_IMU.total_yaw;
+//		yaw_trage_angle+=simulation_target_yaw-DJIC_IMU.total_yaw;
 			 }
 		}
 				if (DR16.rc.s_left == 2&&DR16.rc.ch1<-600) //失能保护

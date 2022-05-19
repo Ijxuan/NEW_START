@@ -61,3 +61,6 @@ freertos1\can2_send.o: ../Core/Inc/gpio.h
 freertos1\can2_send.o: ..\add\DR16_RECIVE.h
 freertos1\can2_send.o: ..\Arithmetic\my_positionPID_bate.h
 freertos1\can2_send.o: ..\Arithmetic\FPS_Calculate.h
+freertos1\can2_send.o: ..\APP\MY_CHASSIS_CONTROL.h
+freertos1\can2_send.o: ..\Device\M3508.h
+freertos1\can2_send.o: ..\Arithmetic\User_math.h

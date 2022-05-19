@@ -3,7 +3,7 @@
 <title>Static Call Graph - [freertos1\CHASSIS.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image freertos1\CHASSIS.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat May 14 01:00:21 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed May 18 21:36:37 2022
 <BR><P>
 <H3>Maximum Stack Usage =        312 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -801,7 +801,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[30]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
 </UL>
 
-<P><STRONG><a name="[6e]"></a>DeBug</STRONG> (Thumb, 346 bytes, Stack size 0 bytes, freertos.o(i.DeBug))
+<P><STRONG><a name="[6e]"></a>DeBug</STRONG> (Thumb, 376 bytes, Stack size 0 bytes, freertos.o(i.DeBug))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = DeBug &rArr; JS_send_STATUS_control &rArr; osDelay &rArr; vTaskDelay &rArr; xTaskResumeAll &rArr; xTaskIncrementTick
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
@@ -1272,12 +1272,12 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[e2]"></a>HAL_TIM_ConfigClockSource</STRONG> (Thumb, 264 bytes, Stack size 24 bytes, stm32f4xx_hal_tim.o(i.HAL_TIM_ConfigClockSource))
-<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = HAL_TIM_ConfigClockSource &rArr; TIM_TI2_ConfigInputStage
+<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = HAL_TIM_ConfigClockSource &rArr; TIM_ETR_SetConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI2_ConfigInputStage
+<BR>[Calls]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ETR_SetConfig
+<LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI2_ConfigInputStage
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_TI1_ConfigInputStage
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ITRx_SetConfig
-<LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ETR_SetConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM3_Init
 </UL>
@@ -1649,7 +1649,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Robot_Sensor
 </UL>
 
-<P><STRONG><a name="[aa]"></a>PLACE_send_control</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, can2_send.o(i.PLACE_send_control))
+<P><STRONG><a name="[aa]"></a>PLACE_send_control</STRONG> (Thumb, 130 bytes, Stack size 8 bytes, can2_send.o(i.PLACE_send_control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = PLACE_send_control &rArr; CAN_SendData &rArr; HAL_CAN_AddTxMessage
 </UL>
 <BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_SendData
@@ -1695,7 +1695,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(.constdata)
 </UL>
-<P><STRONG><a name="[71]"></a>Robot_Sensor</STRONG> (Thumb, 472 bytes, Stack size 8 bytes, freertos.o(i.Robot_Sensor))
+<P><STRONG><a name="[71]"></a>Robot_Sensor</STRONG> (Thumb, 478 bytes, Stack size 8 bytes, freertos.o(i.Robot_Sensor))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = Robot_Sensor &rArr; Get_Encoder_Value &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_Encoder_Value

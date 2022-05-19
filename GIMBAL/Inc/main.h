@@ -218,6 +218,11 @@ extern int TEMPERATURE_PID_OUT;
 
 extern bool in_MID;//处在轨道中间段
 extern bool in_END;//处在轨道尽头
+extern bool in_END_R;//处在右轨道尽头
+extern bool in_END_L;//处在左轨道尽头
+
+extern bool disable_for_test_CHASSIS;
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

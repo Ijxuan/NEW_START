@@ -309,7 +309,8 @@ void DeBug(void const * argument)
 	{
 
 		CAN2_SEND_TASK_times++;
-		
+		if(CHASSIS_L_MAX_new==1&&CHASSIS_R_MIN_new==1)	
+	{//初始化完成才有末端判断	
 				if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER)||Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
 		{
 			if(last_in_MID==1)
@@ -336,6 +337,13 @@ void DeBug(void const * argument)
 			}
 			last_in_MID=1;
 		}
+	}
+		else
+	{
+	in_MID=1;
+		in_END=0;
+		//初始化没完成,认为在轨道中间
+	}
 		if(in_MID==1)
 		{
 		if(CAN2_SEND_TASK_times%100==0)//发送频率为1秒10次
@@ -777,7 +785,7 @@ if(ext_game_robot_state.data.robot_id== 107)//自己蓝色
 			}
 			
 		}
-		if(DR16.rc.s_left==1)
+		if(DR16.rc.s_left==1||DR16.rc.s_left==2)
 		{//自动挡
 			if(DR16.rc.ch4_DW>=200)
 			{
@@ -787,7 +795,7 @@ if(ext_game_robot_state.data.robot_id== 107)//自己蓝色
 			{
 				restart_times=0;//松手,清零				
 			}
-			if(restart_times>3000)//3秒
+			if(restart_times>1000)//3秒
 			{
 				if(CHASSIS_R_MIN_new==1&&CHASSIS_L_MAX_new==1)//初始化已经完成
 				{

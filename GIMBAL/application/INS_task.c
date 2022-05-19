@@ -324,6 +324,55 @@ static void imu_cali_slove(fp32 gyro[3], fp32 accel[3], fp32 mag[3], bmi088_real
     }
 }
 
+/**
+  * @brief          control the temperature of bmi088
+  * @param[in]      temp: the temperature of bmi088
+  * @retval         none
+  */
+/**
+  * @brief          控制bmi088的温度
+  * @param[in]      temp:bmi088的温度
+  * @retval         none
+  */
+static void imu_temp_control(fp32 temp)
+{
+    uint16_t tempPWM;
+    static uint8_t temp_constant_time = 0;
+    if (first_temperate)
+    {
+        PID_calc(&imu_temp_pid, temp, 40.0f);
+        if (imu_temp_pid.out < 0.0f)
+        {
+            imu_temp_pid.out = 0.0f;
+        }
+//		if (DR16.rc.s_right==3) //失能保护
+////            imu_temp_pid.out = 0.0f;
+
+        tempPWM = (uint16_t)imu_temp_pid.out;
+		TEMPERATURE_PID_OUT=tempPWM;
+        IMU_temp_PWM(tempPWM);
+    }
+    else
+    {
+        //在没有达到设置的温度，一直最大功率加热
+        //in beginning, max power
+        if (temp > 40.0f)
+        {
+            temp_constant_time++;
+            if (temp_constant_time > 200)//200
+            {
+                //达到设置温度，将积分项设置为一半最大功率，加速收敛
+                //
+				ins_ok=1;
+                first_temperate = 1;
+				TEMPERATURE_is_OK=1;
+                imu_temp_pid.Iout = MPU6500_TEMP_PWM_MAX / 2.0f;
+            }
+        }
+
+        IMU_temp_PWM(MPU6500_TEMP_PWM_MAX - 1);
+    }
+}
 
 /**
   * @brief          calculate gyro zero drift
@@ -432,55 +481,6 @@ void get_angle(fp32 q[4], fp32 *yaw, fp32 *pitch, fp32 *roll)
     *roll = atan2f(2.0f*(q[0]*q[1]+q[2]*q[3]),2.0f*(q[0]*q[0]+q[3]*q[3])-1.0f);
 }
 
-/**
-  * @brief          control the temperature of bmi088
-  * @param[in]      temp: the temperature of bmi088
-  * @retval         none
-  */
-/**
-  * @brief          控制bmi088的温度
-  * @param[in]      temp:bmi088的温度
-  * @retval         none
-  */
-static void imu_temp_control(fp32 temp)
-{
-    uint16_t tempPWM;
-    static uint8_t temp_constant_time = 0;
-    if (first_temperate)
-    {
-        PID_calc(&imu_temp_pid, temp, 40.0f);
-        if (imu_temp_pid.out < 0.0f)
-        {
-            imu_temp_pid.out = 0.0f;
-        }
-		if (DR16.rc.s_right==3) //失能保护
-            imu_temp_pid.out = 0.0f;
-
-        tempPWM = (uint16_t)imu_temp_pid.out;
-		TEMPERATURE_PID_OUT=tempPWM;
-        IMU_temp_PWM(tempPWM);
-    }
-    else
-    {
-        //在没有达到设置的温度，一直最大功率加热
-        //in beginning, max power
-        if (temp > 40.0f)
-        {
-            temp_constant_time++;
-            if (temp_constant_time > 20)//200
-            {
-                //达到设置温度，将积分项设置为一半最大功率，加速收敛
-                //
-				ins_ok=1;
-                first_temperate = 1;
-				TEMPERATURE_is_OK=1;
-                imu_temp_pid.Iout = MPU6500_TEMP_PWM_MAX / 2.0f;
-            }
-        }
-
-        IMU_temp_PWM(MPU6500_TEMP_PWM_MAX - 1);
-    }
-}
 
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)

@@ -179,7 +179,10 @@ int TEMPERATURE_PID_OUT=0;
 
 bool in_MID=1;//处在轨道中间段
 bool in_END=0;//处在轨道尽头
+bool in_END_R=0;//处在右轨道尽头
+bool in_END_L=0;//处在左轨道尽头
 
+bool disable_for_test_CHASSIS=0;
 /* USER CODE END 0 */
 
 /**

@@ -70,7 +70,7 @@ void shoot_control(void)
 	if(auto_shoot_condition.heat_allow==1/*热量允许*/
 	 &&auto_shoot_condition.weather_angle_error_less_than_1==1	/*角度误差小于一*/ 
 	 &&auto_shoot_condition.vision_shoot_is_continuous==1/*视觉发射指令是连续的*/
-	 &&auto_shoot_condition.not_in_track_end==1/*不在轨道末端*/
+//	 &&auto_shoot_condition.not_in_track_end==1/*不在轨道末端*/
 	  )
 	{
 	auto_shoot_condition.ALL_condition_satisfaction=1;	//所有条件全部满足
@@ -300,7 +300,7 @@ shoot_times_for_limit=0;
 					if(VisionData.RawData.Beat==1&&vision_shoot_times>2)//击打标志位为1并且连续收到4帧
 					{
 						SHOOT_from_V++;
-						if(VISION_Yaw_IMU_Angle_pid.Error>1.0||VISION_Yaw_IMU_Angle_pid.Error<-1.0)
+						if(VISION_Yaw_IMU_Angle_pid.Error>1.5||VISION_Yaw_IMU_Angle_pid.Error<-1.5)
 						{
 						weather_error_less_than_1=0;	
 						}
@@ -308,10 +308,21 @@ shoot_times_for_limit=0;
 						{
 						weather_error_less_than_1=1;	
 						}
-						if(in_MID==1&&weather_error_less_than_1==1)//不在末端
+						if(disable_for_test_CHASSIS==0)
 						{
-						M2006_targe_angle+=Driver_add/4;//8*3=24  打一发
+						if(in_MID==1&&weather_error_less_than_1==1)//不在末端in_MID==1&&
+						{
+						M2006_targe_angle+=Driver_add;//8*3=24  打一发
 						whether_shoot_in__this_period=1;
+						}
+					    }
+						else if(disable_for_test_CHASSIS==1)
+						{
+						if(weather_error_less_than_1==1)//不在末端in_MID==1&&
+						{
+						M2006_targe_angle+=Driver_add;//8*3=24  打一发
+						whether_shoot_in__this_period=1;
+						}	
 						}
 						VisionData.RawData.Beat=0;
 					}

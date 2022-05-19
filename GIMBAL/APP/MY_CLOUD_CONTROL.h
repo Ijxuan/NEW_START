@@ -11,6 +11,18 @@
 #define GM6020_border_near_big 2000
 #define GM6020_border_near_small 6000
 
+#define GM6020_R_BIG 4736
+//这个范围就继续增大吧
+#define GM6020_R_MID 4328
+//这个范围就继续减小吧
+#define GM6020_R_SMALL 3891
+//先右后左
+#define GM6020_L_BIG 7847
+//这个范围就继续增大吧
+#define GM6020_L_MID 151
+//这个范围就继续减小吧
+#define GM6020_L_SMALL 500
+
 void cloud_control(void);
 
 void cloud_control_mode_choose(void);

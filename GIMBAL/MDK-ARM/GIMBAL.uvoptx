@@ -325,6 +325,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>auto_shoot_condition,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>35</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>INS_angle</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
