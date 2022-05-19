@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "adc.h"
 #include "can.h"
 #include "dma.h"
 #include "i2c.h"
@@ -41,6 +42,8 @@
 #include "stdbool.h"
 #include "DR16_RECIVE.h"
 #include "oled.h"
+#include "bsp_adc.h"
+
 //#include "oledfont.h"
 /* USER CODE END Includes */
 
@@ -198,7 +201,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-   HAL_Init();
+  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -226,6 +229,8 @@ int main(void)
   MX_TIM3_Init();
   MX_USART6_UART_Init();
   MX_SPI2_Init();
+  MX_ADC1_Init();
+  MX_ADC3_Init();
   /* USER CODE BEGIN 2 */
 	  delay_init();
 		Buzzer_Init();
@@ -243,7 +248,10 @@ int main(void)
     oled_LOGO();
     oled_refresh_gram();
 
-
+    //use vrefint voltage to calibrate
+    //使用基准电压来校准
+    init_vrefint_reciprocal();
+	
 //CAN1_Config();
   /* USER CODE END 2 */
 

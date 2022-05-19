@@ -23,6 +23,8 @@ ins_task\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_exti.h
 ins_task\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h
 ins_task\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h
 ins_task\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h
+ins_task\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h
+ins_task\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h
 ins_task\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 ins_task\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 ins_task\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
@@ -53,6 +55,7 @@ ins_task\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 ins_task\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 ins_task\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 ins_task\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+ins_task\main.o: ../Inc/adc.h
 ins_task\main.o: ../Inc/can.h
 ins_task\main.o: ../Inc/dma.h
 ins_task\main.o: ../Inc/i2c.h
@@ -75,3 +78,4 @@ ins_task\main.o: ..\application\led_flow_task.h
 ins_task\main.o: ..\bsp\boards\user_can.h
 ins_task\main.o: ..\ADD\DR16_RECIVE.h
 ins_task\main.o: ..\ADD\oled.h
+ins_task\main.o: ..\bsp\boards\bsp_adc.h

@@ -47,6 +47,7 @@
 #include "Vision.h"
 #include "string.h"
 #include "FPS_Calculate.h"
+#include "bsp_adc.h"
 
 /* USER CODE END Includes */
 
@@ -373,12 +374,13 @@ __weak void test_task(void const * argument)
  * @param argument: Not used
  * @retval None
  */
+fp32 voltage;
 
 /* USER CODE END Header_Debug */
 void Debug(void const * argument)
 {
   /* USER CODE BEGIN Debug */
-	
+	int debug_times=0;
 /* 
 char RunTimeInfo[400];		//保存任务运行时间信息
 任务名\t\t\t运行时间\t运行所占百分比
@@ -398,6 +400,7 @@ Tmr Svc        	0		<1%
 	/* Infinite loop */
 	for (;;)
 	{
+		debug_times++;
 		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
 		{
 			//					USART1->DR = '2';
@@ -411,9 +414,15 @@ Tmr Svc        	0		<1%
 
 					}
 //		
+					
 		}
-
-
+		if(debug_times%10==0)//100ms运行一次
+			
+		{
+		        //get battery voltage
+        //获取电源电压
+        voltage = get_battery_voltage();
+		}
   
 		  
 
