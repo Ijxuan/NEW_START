@@ -102,7 +102,8 @@ else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==0)  //Á½¸ö¹âµç´«¸ÐÆ÷×
 		if(CHASSIS_R_MIN_new==0)
 		{
 			if(abs(ENCODER_CHANGE)<2000)
-			{	CHASSIS_R_MIN_new=1;
+			{	
+				CHASSIS_R_MIN_new=1;
 //								CHASSIS_R_MIN_by_ENCODER=Chassis_Encoder.totalLine      -reverse_by_ENCODER;
 								CHASSIS_R_MIN_by_ENCODER=Chassis_Encoder.totalLine;//¼ÇÂ¼ÏÂµ±Ç°Öµ×÷ÎªÓÒ±ß½ç/×îÐ¡Öµ
 

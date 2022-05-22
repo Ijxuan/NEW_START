@@ -96,5 +96,6 @@ extern P_PID_t CHASSIS_MOTOR_ANGLE_pid;
 extern P_PID_t CHASSIS_MOTOR_SPEED_pid;
 #endif
 						  
-						  
+extern P_PID_t BREAK_ANGLE_pid;//É²³µPID
+extern P_PID_t BREAK_SPEED_pid;						  
 #endif

@@ -208,6 +208,8 @@ extern int restart_times;//重启时间
 extern int CAN2_SEND_TASK_times;//任务运行时间
 extern int place_SEND_times;//底盘位置发送次数
 
+extern bool break_is_raedy;//刹车已经装备好了
+
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

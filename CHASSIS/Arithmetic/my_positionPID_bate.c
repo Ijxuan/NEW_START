@@ -31,6 +31,8 @@ P_PID_t CHASSIS_MOTOR_SPEED_pid;
 P_PID_t PITCH_EM_Angle_pid;
 P_PID_t PITCH_EM_Speed_pid;
 
+P_PID_t BREAK_ANGLE_pid;//É²³µPID
+P_PID_t BREAK_SPEED_pid;
 
 int PID_YES=0;
 

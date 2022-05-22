@@ -13,6 +13,7 @@
 #include "RM_JudgeSystem.h"
 
 #include "stm32f4xx_it.h"
+#include "BREAK.h"
 
 //#include "GM6020_Motor.h"
 //#include "control.h"
@@ -494,7 +495,7 @@ if(1)
 			send_d_16[p++]=ext_power_heat_data.data.chassis_power_buffer;//底盘功率缓冲 4		4PID_YES
 
 #endif
-#if 1//发送编码器撞柱数据
+#if 0//发送编码器撞柱数据
 	p=0;
 
 			ENCODER_M_MID=(ENCODER_L_MAX+ENCODER_R_MIN)/2;
@@ -592,11 +593,11 @@ if(1)
 
 			send_d_32[p++]=0;//P_OUT		5
 			send_d_32[p++]=M3508s[3].realCurrent;//I_OUT		6
-			send_d_32[p++]=M3508s[3].realSpeed;//D_OUT  	7
+			send_d_32[p++]=M3508s[3].realSpeed;//真实速度  	7
 	p=0;
 			send_d_16[p++]=DO_NOT_STOP.This_area_stay_times;//在一个区域停留的时间      8
 
-			send_d_16[p++]=CHASSIS_trage_speed;//fps       	9 				M3508s[3].
+			send_d_16[p++]=CHASSIS_trage_speed;//目标速度       	9 				M3508s[3].
 			send_d_16[p++]=send_to_chassis;
 			//随机数		发送给yaw轴电机
 
@@ -652,6 +653,33 @@ if(1)
 			send_d_16[p++]=0;//在一个区域停留的时间      8
 
 			send_d_16[p++]=0;//fps       	9 				M3508s[3].
+			send_d_16[p++]=0;
+			//随机数		发送给yaw轴电机
+
+#endif
+#if 1//m2006电机测试
+/*
+			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
+      uint16_t chassis_current; //底盘输出电流 单位 毫安
+      float chassis_power;//底盘输出功率 单位 W 瓦
+      uint16_t chassis_power_buffer;//底盘功率缓冲 单位 J 焦耳 备注：飞坡根据规则增加至 250J
+	  */
+
+	p=0;
+			send_d_32[p++]=M3508s[BREAK_ID].realSpeed;//底盘输出电压 单位 毫伏
+			send_d_32[p++]=BREAK_SPEED_pid.Error;//底盘输出电流 单位 W 瓦    2
+
+			send_d_32[p++]=BREAK_SPEED_pid.Proportion;//底盘输出功率
+
+			send_d_32[p++]=BREAK_SPEED_pid.I_Output;//底盘功率缓冲 4		4PID_YES
+
+			send_d_32[p++]=ENCODER_R_MIN;//P_OUT		5
+			send_d_32[p++]=0;//I_OUT		6
+			send_d_32[p++]=M3508s[3].realSpeed;//D_OUT  	7
+	p=0;
+			send_d_16[p++]=M2006_targe_speed;//在一个区域停留的时间      8
+
+			send_d_16[p++]=send_to_break;//fps       	9 				M3508s[3].
 			send_d_16[p++]=0;
 			//随机数		发送给yaw轴电机
 

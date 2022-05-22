@@ -49,6 +49,7 @@
 #include "CHASSIS_CONTROL_2.h"
 #include "CAN2_SEND.h"
 #include "Sensor.h"
+#include "BREAK.h"
 
 //#include "task.h"
 
@@ -460,9 +461,9 @@ void init_task(void const * argument)
 	__HAL_UART_ENABLE_IT(&huart8, UART_IT_IDLE);
 
 	USART_RX_DMA_ENABLE(&huart8, SENSOR_L_DataBuff, SENSOR_BuffSize);
-		//传感器2
 		
 		
+//传感器2		
 //	__HAL_UART_CLEAR_IDLEFLAG(&huart7);
 ////	__HAL_UART_ENABLE(&huart7);
 
@@ -609,8 +610,20 @@ void init_task(void const * argument)
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
 						 0, 0,
-						 80, -80); // Yaw_IMU_Angle_pid
+						 80, -80); // Yaw_IMU_Angle_pid       BREAK_SPEED_pid
 
+	P_PID_Parameter_Init(&BREAK_ANGLE_pid, 1, 0, 0,
+						 50,
+						 //						  float max_error, float min_error,
+						 //                          float alpha,
+						 10, -10,
+						 1000, -1000);
+P_PID_Parameter_Init(&BREAK_SPEED_pid, 7, 0.6, 0,
+						 3000,
+						 //						  float max_error, float min_error,
+						 //                          float alpha,
+						 1000, -1000,
+						 9999, -9999);
 	HAL_Delay(100);
 
 
@@ -841,6 +854,8 @@ void Robot_Control(void const *argument)
 		task_controul_times++;
 		hurt_times_ago++;//伤害计时
 
+//		break_init();		
+		break_control();		
 		switch_change();
 		star_and_new();//弹道测试后取消注释
 		CHASSIS_CONTROUL();
@@ -876,9 +891,10 @@ if(DR16.s_left_last!=DR16.rc.s_left)
 			CHASSIS_MOTOR_SPEED_pid.Integral=0;
 			send_to_chassis = 0;
 			CHASSIS_trage_speed=0;
+			send_to_break=0;
 		}
 
-		M3508s1_setCurrent(0, 0, 0, send_to_chassis);
+		M3508s1_setCurrent(0, 0, send_to_break, send_to_chassis);
 //		M3508s1_setCurrent(0, 0, 0, 0);		
 		vTaskDelayUntil(&xLastWakeTime, TimeIncrement);
 

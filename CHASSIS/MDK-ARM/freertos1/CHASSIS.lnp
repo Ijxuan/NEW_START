@@ -4,6 +4,7 @@
 "freertos1\chassis_control_2.o"
 "freertos1\my_cloud_control.o"
 "freertos1\my_shoot_control.o"
+"freertos1\break.o"
 "freertos1\startup_stm32f427xx.o"
 "freertos1\main.o"
 "freertos1\gpio.o"

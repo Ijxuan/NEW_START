@@ -118,8 +118,8 @@ void CHASSIS_CONTROUL(void)
 //				Cruise_CHASSIS();//巡航模式
 				CHASSIS_CONTROUL_2();
 				if(Random_CHASSIS_CHOOSE==1)//是选择随机模式
-//				Random_CHASSIS();//随机模式
-					CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*(-1)*CHASSIS_MAX_SPEED;//遥控器给速度目标值 二选一		
+				Random_CHASSIS();//随机模式
+//					CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*(-1)*CHASSIS_MAX_SPEED;//遥控器给速度目标值 二选一		
 
 //				CHASSIS_trage_speed=0;//锁死//弹道测试后取消注释	
 				}

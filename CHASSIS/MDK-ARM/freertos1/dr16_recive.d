@@ -71,3 +71,4 @@ freertos1\dr16_recive.o: ../Core/Inc/rng.h
 freertos1\dr16_recive.o: ../Core/Inc/tim.h
 freertos1\dr16_recive.o: ../Core/Inc/gpio.h
 freertos1\dr16_recive.o: ../Core/Inc/stm32f4xx_it.h
+freertos1\dr16_recive.o: ..\APP\BREAK.h

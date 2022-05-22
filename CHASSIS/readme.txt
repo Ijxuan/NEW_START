@@ -35,7 +35,13 @@
 
 
 
+模块初始化应该有三个阶段:
+未初始化    正在初始化   初始化完成
 
+本来想用两个bool 类型来区分三种情况的,但是一个bool一字节 
+那还不如用int8_t(范围-128~127)类型
+
+对齐Shift + Alt + F
 
 const float SHOOT_LOW_SPEED = 3500.0f;
 const float SHOOT_HIGH_SPEED = 6700.0f;

@@ -118,6 +118,8 @@ void shoot_control(void)
 	
 	if(DR16.rc.s_left==3)
 	{
+			if(DR16.rc.s_right==1||DR16.rc.s_right==3)
+			{
 //		
 					if(DR16.rc.ch4_DW==0)//松手
 					{
@@ -147,7 +149,7 @@ if(DR16.rc.ch4_DW<=-100)//拨上
 
 				
 			}
-			
+		}
 			
 		
 		
@@ -297,7 +299,7 @@ shoot_times_for_limit=0;
 #if 1//不在末端+误差小于1度
 						if (shoot_times_for_limit<200)
 			{
-					if(VisionData.RawData.Beat==1&&vision_shoot_times>2)//击打标志位为1并且连续收到4帧
+					if(VisionData.RawData.Beat==1&&vision_shoot_times>0)//击打标志位为1并且连续收到4帧
 					{
 						SHOOT_from_V++;
 						if(VISION_Yaw_IMU_Angle_pid.Error>1.5||VISION_Yaw_IMU_Angle_pid.Error<-1.5)

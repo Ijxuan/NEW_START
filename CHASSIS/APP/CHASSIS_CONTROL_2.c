@@ -6,6 +6,7 @@ int speed_has_change=0;
 int last_Speed=0;
 int xunen_times=0;
 float xunen_percent=1.5;
+int test_speed=5500;
 void CHASSIS_CONTROUL_2()
 {
 				stop_CH_OP_BC_LESS=0;//这个模式用不到	
@@ -24,7 +25,7 @@ void CHASSIS_CONTROUL_2()
 
 				stop_CH_OP_BC_END_times=0;
 								xunen_times++;
-						CHASSIS_trage_speed_last=4000;
+						CHASSIS_trage_speed_last=test_speed;
 
 //							stop_chassic_output=1;	
 //							  	  HAL_Delay(3000);
@@ -41,14 +42,14 @@ if(speed_has_change==0)
 					if(Chassis_Encoder.totalLine>(CHASSIS_R_MIN_by_ENCODER+8000))
 				{
 					
-								CHASSIS_trage_speed=-4000;
+								CHASSIS_trage_speed=-test_speed;
 				stop_CH_OP_BC_END=0;
 
 				}
 				else
 				{
 					
-						CHASSIS_trage_speed=-4000;
+						CHASSIS_trage_speed=-test_speed;
 			stop_CH_OP_BC_END=1;
 
 				}
@@ -59,14 +60,14 @@ else
 {
 	stop_CH_OP_BC_END=0;
 //	CHASSIS_trage_angle=9900000;
-				CHASSIS_trage_speed=4000*Chassis_PowerLimit;
+				CHASSIS_trage_speed=test_speed*Chassis_PowerLimit;
 
 }
 	if(	xunen_times>3000)//说明出了意外,肯定是卡死了,不管了,直接走
 	{
 	stop_CH_OP_BC_END=0;
 //	CHASSIS_trage_angle=9900000;
-						CHASSIS_trage_speed=4000*Chassis_PowerLimit;
+						CHASSIS_trage_speed=test_speed*Chassis_PowerLimit;
 
 	}
 			}
@@ -77,7 +78,7 @@ else if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
 //			else if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-3000))//
 			{
 				
-								CHASSIS_trage_speed_last=-4000;
+								CHASSIS_trage_speed_last=-test_speed;
 
 				stop_CH_OP_BC_END_times=0;
 				xunen_times++;
@@ -98,14 +99,14 @@ if(speed_has_change==0)
 				{
 					
 	stop_CH_OP_BC_END=0;
-//					CHASSIS_trage_speed=4000*Chassis_PowerLimit;
-				CHASSIS_trage_speed=4000;
+					CHASSIS_trage_speed=test_speed*Chassis_PowerLimit;
+//				CHASSIS_trage_speed=4000;
 
 				}
 				else
 				{
 					
-				CHASSIS_trage_speed=4000;
+				CHASSIS_trage_speed=test_speed;
 			stop_CH_OP_BC_END=1;
 
 				}
@@ -123,14 +124,14 @@ else
 {
 	stop_CH_OP_BC_END=0;
 //	CHASSIS_trage_angle=-9900000;
-					CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
+					CHASSIS_trage_speed=-test_speed*Chassis_PowerLimit;
 
 }
 	if(	xunen_times>3000)//说明出了意外,肯定是卡死了,不管了,直接走
 	{
 	stop_CH_OP_BC_END=0;
 //	CHASSIS_trage_angle=-9900000;
-						CHASSIS_trage_speed=-4000*Chassis_PowerLimit;
+						CHASSIS_trage_speed=-test_speed*Chassis_PowerLimit;
 
 	}
 			}

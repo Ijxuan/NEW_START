@@ -207,6 +207,8 @@ float Vision_RawData_Yaw_Angle=0;
 float Vision_RawData_Pitch_Angle=0;
 
 bool send_to_C;//DR16_遥控器_是否发送给C板
+bool break_is_raedy=1;//刹车已经装备好了
+
 /*
 机器人状态数据，10Hz 周期发送                              27(15)
 实时功率热量数据，50Hz 周期发送                            16(14)

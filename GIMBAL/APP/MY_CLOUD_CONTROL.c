@@ -421,13 +421,13 @@ if	(in_END_R==1)
 {
 	if(GM6020s[0].readAngle>4350&&GM6020s[0].readAngle<4900)//4700-4900
 	{
-				scan_i_YAW=0;//增大模式
+				scan_i_YAW=1;//增大模式
 							Buzzer.mode = One_times;
 
 	}
 	if(GM6020s[0].readAngle>3700&&GM6020s[0].readAngle<=4350) //3700-4000
 	{
-				scan_i_YAW=1;//减小模式
+				scan_i_YAW=0;//减小模式
 							Buzzer.mode = One_times;
 
 	}
@@ -455,13 +455,13 @@ if	(in_END_L==1)
 	
 		if(GM6020s[0].readAngle>0&&GM6020s[0].readAngle<1200)//500-1200
 	{
-				scan_i_YAW=0;//增大模式
+				scan_i_YAW=1;//增大模式
 							Buzzer.mode = One_times;
 
 	}
 	if(GM6020s[0].readAngle>7000&&GM6020s[0].readAngle<8191) //7000-7700
 	{
-				scan_i_YAW=1;//减小模式
+				scan_i_YAW=0;//减小模式
 							Buzzer.mode = One_times;
 
 	}
