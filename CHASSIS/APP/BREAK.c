@@ -71,10 +71,10 @@ void break_init(void) {
         if (abs(M2006_init_change_angle) < 200)  //角度变化小于200
         {
           break_basic.BREAK_MIN = M3508s[BREAK_ID].totalAngle;  //最小值找到了
-          break_basic.BREAK_MID =
-              (break_basic.BREAK_MIN + break_basic.BREAK_MAX) /
-              2;  //中间值找到了
-
+          break_basic.BREAK_MID =(break_basic.BREAK_MIN + break_basic.BREAK_MAX) /2;  //中间值找到了
+			M2006_targe_angle=break_basic.BREAK_MID;
+			BREAK_SPEED_pid.Max_result = 9000;
+      BREAK_SPEED_pid.Min_result = -9000;
           break_basic.STATE = 3;  //初始化全部完成
         }
       }
@@ -94,7 +94,7 @@ void break_init(void) {
 
 
 void break_control(void) {
-
+break_init();
 
 M2006_targe_speed=P_PID_bate(&BREAK_ANGLE_pid,M2006_targe_angle,M3508s[BREAK_ID].totalAngle);//M2006_targe_speed应该大于0
 	

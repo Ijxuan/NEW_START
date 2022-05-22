@@ -667,15 +667,15 @@ if(1)
 
 	p=0;
 			send_d_32[p++]=M3508s[BREAK_ID].realSpeed;//底盘输出电压 单位 毫伏
-			send_d_32[p++]=BREAK_SPEED_pid.Error;//底盘输出电流 单位 W 瓦    2
+			send_d_32[p++]=BREAK_ANGLE_pid.Error;//底盘输出电流 单位 W 瓦    2
 
-			send_d_32[p++]=BREAK_SPEED_pid.Proportion;//底盘输出功率
+			send_d_32[p++]=BREAK_ANGLE_pid.Proportion;//底盘输出功率
 
-			send_d_32[p++]=BREAK_SPEED_pid.I_Output;//底盘功率缓冲 4		4PID_YES
+			send_d_32[p++]=BREAK_ANGLE_pid.I_Output;//底盘功率缓冲 4		4PID_YES
 
-			send_d_32[p++]=ENCODER_R_MIN;//P_OUT		5
-			send_d_32[p++]=0;//I_OUT		6
-			send_d_32[p++]=M3508s[3].realSpeed;//D_OUT  	7
+			send_d_32[p++]=M2006_targe_angle;//P_OUT		5
+			send_d_32[p++]=M3508s[2].totalAngle;//I_OUT		6
+			send_d_32[p++]=M3508s[2].realSpeed;//D_OUT  	7
 	p=0;
 			send_d_16[p++]=M2006_targe_speed;//在一个区域停留的时间      8
 

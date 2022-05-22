@@ -612,12 +612,12 @@ void init_task(void const * argument)
 						 0, 0,
 						 80, -80); // Yaw_IMU_Angle_pid       BREAK_SPEED_pid
 
-	P_PID_Parameter_Init(&BREAK_ANGLE_pid, 1, 0, 0,
-						 50,
+	P_PID_Parameter_Init(&BREAK_ANGLE_pid, 0.8, 0.1, 0,
+						 5000,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
 						 10, -10,
-						 1000, -1000);
+						 3500, -3500);
 P_PID_Parameter_Init(&BREAK_SPEED_pid, 7, 0.6, 0,
 						 3000,
 						 //						  float max_error, float min_error,

@@ -375,6 +375,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>M2006_targe_speed,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>43</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>break_basic,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
