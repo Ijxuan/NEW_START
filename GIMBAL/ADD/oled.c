@@ -26,7 +26,7 @@
  * [7]0 1 2 3 ... 127
 **/
 
-static uint8_t OLED_GRAM[128][8];
+static uint8_t OLED_GRAM[130][8];
 
 //short delay uesd in spi transmmit
 //void delay_ms(uint16_t delaytimes)
@@ -111,7 +111,7 @@ void oled_refresh_gram(void)
     {
         oled_set_pos(0, i);
 
-        for (n = 0; n < 128; n++)
+        for (n = 0; n < 130; n++)
         {
             oled_write_byte(OLED_GRAM[n][i], OLED_DATA);
         }
@@ -130,7 +130,7 @@ void oled_clear(Pen_Typedef pen)
 
     for (i = 0; i < 8; i++)
     {
-        for (n = 0; n < 128; n++)
+        for (n = 0; n < 130; n++)
         {
             if (pen == Pen_Write)
                 OLED_GRAM[n][i] = 0xff;

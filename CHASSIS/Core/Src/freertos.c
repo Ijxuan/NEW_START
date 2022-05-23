@@ -311,7 +311,14 @@ void DeBug(void const * argument)
 
 		CAN2_SEND_TASK_times++;
 		if(CHASSIS_L_MAX_new==1&&CHASSIS_R_MIN_new==1)	
-	{//初始化完成才有末端判断	
+	{//初始化完成才有末端判断
+		
+		if(send_to_C_SPEED_CHANGE==1)
+		{
+		SPEED_CHANGE_SEND_control();
+		send_to_C_SPEED_CHANGE=0;
+		}
+		
 				if(Chassis_Encoder.totalLine<(CHASSIS_R_MIN_by_ENCODER+reverse_by_ENCODER)||Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
 		{
 			if(last_in_MID==1)
@@ -892,6 +899,7 @@ if(DR16.s_left_last!=DR16.rc.s_left)
 			send_to_chassis = 0;
 			CHASSIS_trage_speed=0;
 			send_to_break=0;
+			
 		}
 
 		M3508s1_setCurrent(0, 0, send_to_break, send_to_chassis);

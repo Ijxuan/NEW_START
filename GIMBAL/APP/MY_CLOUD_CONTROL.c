@@ -2,7 +2,7 @@
 #include "bsp_buzzer.h"
 
 cloud_control_mode cloud_mode;
-
+float YAW_TRAGET_ANGLE_TEMP;
 void cloud_control(void)
 {
 //	
@@ -170,6 +170,7 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 							{
 								if(cloud_mode.control_mode_NOW==aoto_scan_mode)//扫描PID
 							yaw_trage_angle-=(DR16.rc.ch0/660.0)/10.0;//YAW轴遥控器控制
+								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
 //							CH0_TOTAL_in_con+=	DR16.rc.ch0;
 //								if(DR16.rc.ch0!=0)
 //								dr16_controul_times++;
@@ -181,7 +182,10 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 								
 				if(cloud_mode.control_mode_NOW==vision_mode)//扫描PID
 				{
-					yaw_trage_angle=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;//YAW轴遥控器控制
+//					yaw_trage_angle=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;//YAW轴遥控器控制
+					yaw_trage_angle=YAW_TRAGET_ANGLE_TEMP;//YAW轴遥控器控制
+													
+
 				}			
 //								else
 //								yaw_trage_angle-=(DR16.rc.ch0/660.0)/10.0;//YAW轴遥控器控制
@@ -544,6 +548,8 @@ if	(in_END_L==1)
 #endif			
 PITCH_trage_angle=PITCH_MIN_angle+(allow_angle)*0.8*(scan_percent_PITCH/1000.0);//PITCH
 yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0);//YAW轴转一圈多一点
+								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
+
 		}
 		else //视觉锁到装甲板-扫描结束
 		{

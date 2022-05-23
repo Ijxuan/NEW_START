@@ -20,9 +20,9 @@ for(int i=0;i<18;i++ )//0到17位有效,一共18位
 }
 
 DR16_send_part_one();
-osDelay(2);
+osDelay(1);
 DR16_send_part_two();
-osDelay(2);
+osDelay(1);
 DR16_send_part_three();
 
 

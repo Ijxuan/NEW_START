@@ -224,6 +224,8 @@ bool send_to_C_JS_HEAT=0;//裁判系统_状态数据_是否发送给C板
 bool send_to_C_IN_END=0;//是否 处于轨道尽头_状态数据_是否发送给C板 100ms发一次
 bool send_to_C_IN_MID=0;// 处于轨道中间_状态数据_是否发送给C板  1秒一次
 
+bool send_to_C_SPEED_CHANGE=0;// 处于轨道中间_状态数据_是否发送给C板  1秒一次
+int8_t SPEED_CHANGE_STATE=0;
 bool in_MID=0;//处在轨道中间段
 bool in_END=0;//处在轨道尽头
 

@@ -15,7 +15,7 @@ void switch_change(void);
 void Random_CHASSIS(void);
 
 void Cruise_CHASSIS(void);
-void Power_Calculate();
+void Power_Calculate(void);
 
 
 uint16_t Get_RandomNumbers_Range(int16_t min,int16_t max);

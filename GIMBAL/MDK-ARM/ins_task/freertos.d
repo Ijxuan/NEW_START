@@ -86,3 +86,5 @@ ins_task\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis
 ins_task\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ins_task\freertos.o: ..\Arithmetic\FPS_Calculate.h
 ins_task\freertos.o: ..\bsp\boards\bsp_adc.h
+ins_task\freertos.o: ..\ADD\oled.h
+ins_task\freertos.o: ../Inc/spi.h

@@ -3,6 +3,16 @@
 
 uint8_t js_SEND_all[33];  // 4x8=32
 
+void SPEED_CHANGE_SEND_control()
+{
+//	for(int i=0;i<7;i++ )//0到6位有效,一共7位
+//{
+//	js_SEND_all[i]=ext_shoot_data.data.dataBuff[i];
+//}
+	CAN_SendData(&hcan2,CAN_ID_STD,SPEED_CHANGE_SEND_ID,&js_SEND_all[0]);
+
+}
+
 void JS_send_SHOOT_control()
 {
 	for(int i=0;i<7;i++ )//0到6位有效,一共7位

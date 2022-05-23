@@ -48,6 +48,7 @@
 #include "string.h"
 #include "FPS_Calculate.h"
 #include "bsp_adc.h"
+#include "oled.h"
 
 /* USER CODE END Includes */
 
@@ -381,6 +382,7 @@ void Debug(void const * argument)
 {
   /* USER CODE BEGIN Debug */
 	int debug_times=0;
+	char error_e[5]="error";
 /* 
 char RunTimeInfo[400];		//保存任务运行时间信息
 任务名\t\t\t运行时间\t运行所占百分比
@@ -421,9 +423,25 @@ Tmr Svc        	0		<1%
 		{
 		        //get battery voltage
         //获取电源电压
+			
         my_voltage = get_battery_voltage();
+			if(my_voltage<21)
+			{
+			  		if(debug_times%500==0)//5s运行一次
+					{
+												Buzzer.mode = One_times;
+
+					}
+			}
+			
 		}
-  
+  		if(debug_times%100==0)//1s运行一次
+		{
+		    oled_clear(Pen_Clear);
+oled_printf(1,1,error_e);
+	    oled_refresh_gram();
+	
+		}
 		  
 
 		  

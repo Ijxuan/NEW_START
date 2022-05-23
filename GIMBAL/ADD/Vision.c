@@ -3,6 +3,7 @@
 #include "usbd_cdc_if.h"
 #include "DR16_RECIVE.h"
 #include "my_positionPID_bate.h"
+#include "MY_CLOUD_CONTROL.h"
 
 
 //#include "usb_device.h"
@@ -118,6 +119,7 @@ if(abs(Vision_RawData_Pitch_Angle)>30)//PITCH轴接收到的值 绝对值 超过30,判断为错
 {
 	Vision_RawData_Pitch_Angle=0;
 }
+YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;
 	if(VisionData.RawData.Beat==1&&shoot_last==1)//连续两帧,从第二帧开始累加
 	vision_shoot_times++;
 	else

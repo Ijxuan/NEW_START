@@ -5,6 +5,10 @@
 #include "BSP_CAN.h"		//ถþักาป
 #include "RM_JudgeSystem.h"
 
+#define SPEED_CHANGE_SEND_ID 0x145
+
+
+
 #define PLACE_SEND_ID 0x144
 
 
@@ -26,6 +30,7 @@ void JS_send_HURT_control(void);
 void JS_send_STATUS_control(void);
 void JS_send_HEAT_control(void);
 void PLACE_send_control(void);
+void SPEED_CHANGE_SEND_control(void);
 
 #endif
 

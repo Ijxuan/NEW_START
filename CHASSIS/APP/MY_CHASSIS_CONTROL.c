@@ -16,6 +16,8 @@ int disable_targe_times=100;//失能持续时间:100  150  200 250  300
 int next_disable_start_times=200;//下次失能间隔时间:200  300 400 500
 int whether_change_direction=0;//重新使能时是否变向
 CH_DO_NOT_STOP_AT_ONE_AREA DO_NOT_STOP;//不要在同一区域停留过久
+
+int change_speed_delay=0;
 void CHASSIS_CONTROUL(void)
 {
 	#if PID_CHASSIS_MOTOR
@@ -396,7 +398,18 @@ else
     {
         if (RANDOM_CHASSIS.number >= Random_Proportion)//是否变向
         {
-            CHASSIS_trage_speed = -CHASSIS_trage_speed;
+			change_speed_delay=1;
+send_to_C_SPEED_CHANGE=1;
+        }
+        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
+    }
+	if(change_speed_delay>0)
+	{		
+		change_speed_delay++;
+
+		if(change_speed_delay>11)//延迟了三十毫秒
+		{
+			            CHASSIS_trage_speed = -CHASSIS_trage_speed;
 			arrive_targe_angle=0;
 			stop_CH_OP_BC_LESS=0;
 			speed_change_times++;
@@ -408,9 +421,9 @@ else
 			{
 			CHASSIS_trage_speed_last=-4000;	
 			}
-        }
-        RANDOM_CHASSIS.sampling = 0;//这个函数运行500次才会进入一次变向判断
-    }
+			change_speed_delay=0;
+		}
+	}
 				if(CHASSIS_trage_speed>0)
 			{
 				CHASSIS_trage_speed=4000*Chassis_PowerLimit;

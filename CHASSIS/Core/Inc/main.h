@@ -147,6 +147,7 @@ extern bool send_to_C_JS_HEAT;//裁判系统_热量数据_是否发送给C板
 
 extern bool send_to_C_IN_END;//是否 处于轨道尽头_状态数据_是否发送给C板
 extern bool send_to_C_IN_MID;// 处于轨道中间_状态数据_是否发送给C板  1秒一次
+extern bool send_to_C_SPEED_CHANGE;// 处于轨道中间_状态数据_是否发送给C板  1秒一次
 
 
 extern bool in_MID;//处在轨道中间段

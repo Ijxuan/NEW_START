@@ -69,3 +69,8 @@ ins_task\vision.o: ..\ADD\DR16_RECIVE.h
 ins_task\vision.o: ..\Arithmetic\my_positionPID_bate.h
 ins_task\vision.o: ..\application\INS_task.h
 ins_task\vision.o: ..\application\struct_typedef.h
+ins_task\vision.o: ..\APP\MY_CLOUD_CONTROL.h
+ins_task\vision.o: ..\ADD\GM6020.h
+ins_task\vision.o: ..\bsp\boards\user_can.h
+ins_task\vision.o: ../Inc/can.h
+ins_task\vision.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h

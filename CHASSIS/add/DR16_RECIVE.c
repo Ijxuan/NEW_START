@@ -680,7 +680,7 @@ if(1)
 			send_d_16[p++]=M2006_targe_speed;//在一个区域停留的时间      8
 
 			send_d_16[p++]=send_to_break;//fps       	9 				M3508s[3].
-			send_d_16[p++]=0;
+			send_d_16[p++]=M3508s[2].realCurrent;
 			//随机数		发送给yaw轴电机
 
 #endif
