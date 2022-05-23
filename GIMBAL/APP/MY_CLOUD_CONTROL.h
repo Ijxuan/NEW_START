@@ -56,6 +56,8 @@ extern		 bool scan_i_PITCH;
 extern		 int scan_percent_PITCH;//0到1000,百分比
 extern		 int scan_time;
 extern	 float YAW_TRAGET_ANGLE_TEMP;
+extern float PITCH_TRAGET_ANGLE_TEMP;
+
 extern		 int scan_percent_YAW;//0到1000,百分比
 extern	 float YAW_START_ANGLE;//S扫描开始时YAW轴角度
 extern int arrive_targe_angle;

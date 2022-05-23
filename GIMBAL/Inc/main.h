@@ -220,9 +220,12 @@ extern bool in_MID;//处在轨道中间段
 extern bool in_END;//处在轨道尽头
 extern bool in_END_R;//处在右轨道尽头
 extern bool in_END_L;//处在左轨道尽头
+extern bool in_END_last;//上一时刻处在轨道尽头
 
 extern bool disable_for_test_CHASSIS;
 extern float my_voltage;
+
+extern int stay_in_track_end_times;
 
 /* USER CODE END Private defines */
 

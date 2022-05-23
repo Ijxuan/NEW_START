@@ -418,6 +418,18 @@ Tmr Svc        	0		<1%
 //		
 					
 		}
+		if(DR16.rc.s_right == 1)
+		{
+			if(in_END==1&&in_END_last==0)//上一时刻不在轨道末端,这一时刻在轨道末端
+			{
+		stay_in_track_end_times++;//10ms增加一次
+			}
+			if(in_END==0)
+			{
+			stay_in_track_end_times=0;//这一时刻不在轨道末端了,那肯定就不需要计时了,计时清零
+			}
+		}
+		in_END_last=in_END;
 		if(debug_times%10==0)//100ms运行一次
 			
 		{

@@ -3,6 +3,7 @@
 
 cloud_control_mode cloud_mode;
 float YAW_TRAGET_ANGLE_TEMP;
+float PITCH_TRAGET_ANGLE_TEMP;
 void cloud_control(void)
 {
 //	
@@ -171,6 +172,7 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 								if(cloud_mode.control_mode_NOW==aoto_scan_mode)//É¨ÃèPID
 							yaw_trage_angle-=(DR16.rc.ch0/660.0)/10.0;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
 								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
+								PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch;
 //							CH0_TOTAL_in_con+=	DR16.rc.ch0;
 //								if(DR16.rc.ch0!=0)
 //								dr16_controul_times++;
@@ -180,7 +182,7 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 //								if(VisionData.RawData.Armour==1)
 //							yaw_trage_angle-=Vision_RawData_Yaw_Angle;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
 								
-				if(cloud_mode.control_mode_NOW==vision_mode)//É¨ÃèPID
+				if(cloud_mode.control_mode_NOW==vision_mode)//ÊÓ¾õPID
 				{
 //					yaw_trage_angle=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
 					yaw_trage_angle=YAW_TRAGET_ANGLE_TEMP;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
@@ -256,10 +258,12 @@ void PITCH_PID()
 							}
 														if(DR16.rc.s_left==1)//PITCHÖá¿ØÖÆµ²Î»
 							{
-								if(VisionData.RawData.Armour==1)
-							PITCH_trage_angle=DJIC_IMU.total_pitch-Vision_RawData_Pitch_Angle;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
-								else
-								PITCH_trage_angle+=(DR16.rc.ch1/660.0)*0.4;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
+//								if(VisionData.RawData.Armour==1)
+//							PITCH_trage_angle=DJIC_IMU.total_pitch-Vision_RawData_Pitch_Angle;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
+												if(cloud_mode.control_mode_NOW==vision_mode)//ÊÓ¾õPID
+								PITCH_trage_angle=PITCH_TRAGET_ANGLE_TEMP;
+//								else
+//								PITCH_trage_angle+=(DR16.rc.ch1/660.0)*0.4;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
 							
 							}
 
@@ -549,7 +553,7 @@ if	(in_END_L==1)
 PITCH_trage_angle=PITCH_MIN_angle+(allow_angle)*0.8*(scan_percent_PITCH/1000.0);//PITCH
 yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0);//YAWÖá×ªÒ»È¦¶àÒ»µã
 								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
-
+								PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch;
 		}
 		else //ÊÓ¾õËøµ½×°¼×°å-É¨Ãè½áÊø
 		{
