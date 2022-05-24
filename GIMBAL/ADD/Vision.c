@@ -297,10 +297,15 @@ void Update_Vision_SendData(void)
 		Vision_SendBuff[i][1] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
 			
 		Vision_SendBuff[i][2] = 5;//?
-		if(stay_in_track_end_times>0&&stay_in_track_end_times<150)//在轨道末端,并且不超过1.5秒,超过1.5s可能是在轨道末端失能了
-		{
-		Vision_SendBuff[i][2] = 1;		//关掉预测
-		}
+//		if(stay_in_track_end_times>50&&stay_in_track_end_times<150)//在轨道末端,并且不超过1.5秒,超过1.5s可能是在轨道末端失能了
+//		{
+//		Vision_SendBuff[i][2] = 1;		//关掉预测
+//			send_to_vision_1=1;
+//		}
+//		else
+//		{
+//			send_to_vision_1=0;
+//		}
 		//模式：0默认 1自瞄 2大神符 3哨兵 4基地
         //'5'哨兵专用  视频录制
 		//云台Yaw轴的角度偏差 float -> uint8_t

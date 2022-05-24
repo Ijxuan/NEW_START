@@ -418,11 +418,19 @@ Tmr Svc        	0		<1%
 //		
 					
 		}
-		if(DR16.rc.s_right == 1)
+		if(DR16.rc.s_left == 1)
 		{
 			if(in_END==1&&in_END_last==0)//上一时刻不在轨道末端,这一时刻在轨道末端
 			{
 		stay_in_track_end_times++;//10ms增加一次
+			}
+			if(stay_in_track_end_times>0)
+			{
+			stay_in_track_end_times++;
+			}
+			if(stay_in_track_end_times>160)
+			{
+			stay_in_track_end_times=0;
 			}
 			if(in_END==0)
 			{

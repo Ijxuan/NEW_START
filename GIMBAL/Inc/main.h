@@ -227,6 +227,8 @@ extern float my_voltage;
 
 extern int stay_in_track_end_times;
 
+extern bool send_to_vision_1;
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

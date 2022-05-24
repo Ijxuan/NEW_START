@@ -27,37 +27,7 @@ Project File Date:  05/19/2022
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'GIMBAL'
-compiling MY_CLOUD_CONTROL.c...
-..\APP\MY_CLOUD_CONTROL.c(44): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	simulation_target_yaw+= 0.018;   // 18∂»/1000∫¡√Î
-..\APP\MY_CLOUD_CONTROL.c(290): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	PITCH_MAX_angle=DJIC_IMU.total_pitch+(5080-GM6020s[3].totalAngle)/8191.0*360.0;
-..\APP\MY_CLOUD_CONTROL.c(291): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	PITCH_MIN_angle=DJIC_IMU.total_pitch+(3900-GM6020s[3].totalAngle)/8191.0*360.0;
-..\APP\MY_CLOUD_CONTROL.c(553): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  PITCH_trage_angle=PITCH_MIN_angle+(allow_angle)*0.8*(scan_percent_PITCH/1000.0);//PITCH
-..\APP\MY_CLOUD_CONTROL.c: 4 warnings, 0 errors
-compiling Vision.c...
-..\ADD\DR16_RECIVE.h(103): warning:  #3135-D: attribute does not apply to any entity
-  		__packed struct
-..\ADD\DR16_RECIVE.h(121): warning:  #3135-D: attribute does not apply to any entity
-  		__packed struct
-..\ADD\DR16_RECIVE.h(143): warning:  #3135-D: attribute does not apply to any entity
-  		__packed struct
-..\ADD\DR16_RECIVE.h(180): warning:  #3135-D: attribute does not apply to any entity
-  		__packed struct
-..\ADD\Vision.c: 4 warnings, 0 errors
-compiling freertos.c...
-compiling DR16_RECIVE.c...
-..\application\calibrate_task.h(48): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct
-..\components\devices\bmi088driver.h(49): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct BMI088_RAW_DATA
-..\ADD\DR16_RECIVE.c: 2 warnings, 0 errors
-linking...
-Program Size: Code=95350 RO-data=4674 RW-data=1544 ZI-data=54632  
-FromELF: creating hex file...
-"ins_task\GIMBAL.axf" - 0 Error(s), 10 Warning(s).
+"ins_task\GIMBAL.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -80,7 +50,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.2.0
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>
