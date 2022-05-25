@@ -828,20 +828,21 @@ void Robot_Control(void const *argument)
 	portTickType xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
 	const TickType_t TimeIncrement = pdMS_TO_TICKS(1); //每2毫秒强制进入总控制
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
-    vTaskDelay(1000);
+//    vTaskDelay(1000);
+//    vTaskDelay(1000);
+//    vTaskDelay(1000);
+//    vTaskDelay(1000);
+//    vTaskDelay(1000);
+//    vTaskDelay(1000);
+//    vTaskDelay(1000);
+//    vTaskDelay(1000);
+//    vTaskDelay(1000);
+//    vTaskDelay(1000);
     vTaskDelay(1000);
     vTaskDelay(1000);
 	yaw_trage_angle=DJIC_IMU.total_yaw;
 	PITCH_trage_angle = DJIC_IMU.total_pitch;
+M2006_targe_angle=M3508s[1].totalAngle;//清除拨盘目标角度累计
 
     vTaskDelay(1000);
     vTaskDelay(1000);

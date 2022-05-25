@@ -86,6 +86,12 @@ typedef struct
 	float last_pitch;
 	int32_t pitch_turnCounts;
 	float total_pitch;
+	
+		float Row;
+	float last_Row;
+	int32_t Row_turnCounts;
+	float total_Row;
+	
 	float Gyro_z;
 	float Gyro_y;
 
@@ -102,7 +108,7 @@ extern fp32 INS_angle[3];
 extern fp32 INS_gyro[3];
 void Updata_Hand_Euler_Gyro_Data(void);
 
-
+extern float text_BOARD_INSTALL[3][3];
 
 /**
   * @brief          imu task, init bmi088, ist8310, calculate the euler angle
