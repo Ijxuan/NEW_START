@@ -43,6 +43,7 @@
 #include "DR16_RECIVE.h"
 
 #define IMU_temp_PWM(pwm)  imu_pwm_set(pwm)                    //pwm¸ø¶¨
+//0  1  0     {-1.0f, 0.0f, 0.0f},                     \
 
 #define BMI088_BOARD_INSTALL_SPIN_MATRIX    \
     {0.0f, 1.0f, 0.0f},                     \
