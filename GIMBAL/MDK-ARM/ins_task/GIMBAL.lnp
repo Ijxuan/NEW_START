@@ -6,6 +6,7 @@
 "ins_task\my_positionpid_bate.o"
 "ins_task\crc.o"
 "ins_task\fps_calculate.o"
+"ins_task\spinning_top_examine.o"
 "ins_task\m3508.o"
 "ins_task\m2006.o"
 "ins_task\dr16_recive.o"

@@ -88,3 +88,4 @@ ins_task\freertos.o: ..\Arithmetic\FPS_Calculate.h
 ins_task\freertos.o: ..\bsp\boards\bsp_adc.h
 ins_task\freertos.o: ..\ADD\oled.h
 ins_task\freertos.o: ../Inc/spi.h
+ins_task\freertos.o: ..\Arithmetic\spinning_top_examine.h

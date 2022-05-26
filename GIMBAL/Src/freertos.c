@@ -49,6 +49,7 @@
 #include "FPS_Calculate.h"
 #include "bsp_adc.h"
 #include "oled.h"
+#include "spinning_top_examine.h"
 
 /* USER CODE END Includes */
 
@@ -897,6 +898,7 @@ yaw_trage_angle=DJIC_IMU.total_yaw;
 				
 				
 				controul_times++;
+				S_T_examine();
 		cloud_control();
 
 		if (GM6020s[3].totalAngle <= 3860 && send_to_pitch < 0)

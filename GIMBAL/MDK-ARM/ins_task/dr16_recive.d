@@ -81,3 +81,4 @@ ins_task\dr16_recive.o: ..\bsp\boards\bsp_buzzer.h
 ins_task\dr16_recive.o: ../Inc/tim.h
 ins_task\dr16_recive.o: ..\APP\MY_SHOOT_CONTROL.h
 ins_task\dr16_recive.o: ..\components\devices\bmi088driver.h
+ins_task\dr16_recive.o: ..\Arithmetic\spinning_top_examine.h

@@ -432,6 +432,11 @@
               <FileType>1</FileType>
               <FilePath>..\Arithmetic\FPS_Calculate.c</FilePath>
             </File>
+            <File>
+              <FileName>spinning_top_examine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Arithmetic\spinning_top_examine.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

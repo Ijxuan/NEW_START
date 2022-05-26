@@ -19,7 +19,7 @@ MIN_BUZZER_PWM（10000）和 MAX_BUZZER_PWM（20000）之间变动，psc 的值�
 
 底盘:边界值异常(编码器跳动)  底盘电机温度异常
 
-
+spinning top小陀螺   examine 检测
 //低音
 //1 - do - 262Hz
 //2 - re - 294Hz
