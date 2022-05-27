@@ -43,6 +43,7 @@
 #include "DR16_RECIVE.h"
 #include "oled.h"
 #include "bsp_adc.h"
+//#include "stdio.h"
 
 //#include "oledfont.h"
 /* USER CODE END Includes */
@@ -251,6 +252,7 @@ int main(void)
 #endif
   oled_init(); 
   HAL_Delay(500);
+//		printf("检测到正向大变化,开始第一个检测周期		");
 
     oled_clear(Pen_Clear);
     oled_LOGO();
@@ -332,6 +334,15 @@ void ConfigureTimeForRunTimeStats(void)
 	FreeRTOSRunTimeTicks=0;
 //	TIM3_Int_Init(50-1,84-1);	//初始化TIM3
 }
+
+
+//int fputc(int ch, FILE *f)
+//{
+// uint8_t temp[1] = {ch};
+//// HAL_UART_Transmit(&huart1, temp, 1, 2);
+// return ch;
+//}
+
 /* USER CODE END 4 */
 
 /**

@@ -4,6 +4,7 @@
 #include "DR16_RECIVE.h"
 #include "my_positionPID_bate.h"
 #include "MY_CLOUD_CONTROL.h"
+#include "spinning_top_examine.h"
 
 
 //#include "usb_device.h"
@@ -297,6 +298,11 @@ void Update_Vision_SendData(void)
 		Vision_SendBuff[i][1] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
 			
 		Vision_SendBuff[i][2] = 5;//?
+		if(YAW_MOTION_STATE==12)
+		{//检测到小陀螺
+		Vision_SendBuff[i][2] = 3;//?
+		}
+		
 //		if(stay_in_track_end_times>50&&stay_in_track_end_times<150)//在轨道末端,并且不超过1.5秒,超过1.5s可能是在轨道末端失能了
 //		{
 //		Vision_SendBuff[i][2] = 1;		//关掉预测

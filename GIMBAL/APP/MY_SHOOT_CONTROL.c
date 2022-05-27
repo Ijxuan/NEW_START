@@ -297,7 +297,7 @@ shoot_times_for_limit=0;
 			}
 #endif
 #if 1//不在末端+误差小于1度
-						if (shoot_times_for_limit<200)
+						if (shoot_times_for_limit<333)
 			{
 					if(VisionData.RawData.Beat==1&&vision_shoot_times>0)//击打标志位为1并且连续收到4帧
 					{
@@ -312,7 +312,7 @@ shoot_times_for_limit=0;
 						}
 						if(disable_for_test_CHASSIS==0)
 						{
-						if(in_MID==1&&weather_error_less_than_1==1)//不在末端in_MID==1&&
+						if(in_MID==1&&weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
 						{
 						M2006_targe_angle+=Driver_add;//8*3=24  打一发
 						whether_shoot_in__this_period=1;
@@ -320,7 +320,7 @@ shoot_times_for_limit=0;
 					    }
 						else if(disable_for_test_CHASSIS==1)
 						{
-						if(weather_error_less_than_1==1)//不在末端in_MID==1&&
+						if(weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
 						{
 						M2006_targe_angle+=Driver_add;//8*3=24  打一发
 						whether_shoot_in__this_period=1;
@@ -334,8 +334,9 @@ shoot_times_for_limit=0;
 					}
 	
 			}
-			else if(shoot_times_for_limit>=200)
+			else if(shoot_times_for_limit>=333)
 			{
+				whether_shoot_in__this_period=0;
 			shoot_times_for_limit=0;
 			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
 			}

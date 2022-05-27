@@ -74,3 +74,4 @@ ins_task\vision.o: ..\ADD\GM6020.h
 ins_task\vision.o: ..\bsp\boards\user_can.h
 ins_task\vision.o: ../Inc/can.h
 ins_task\vision.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+ins_task\vision.o: ..\Arithmetic\spinning_top_examine.h
