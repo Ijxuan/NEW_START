@@ -79,13 +79,13 @@ if(examine_run_times%examine_sampling_period==0)
 	{
 		YAW_MOTION_STATE=2;
 		over_time=examine_run_times+200;//0.2秒退出
-		printf("检测到正向大变化,开始第一个检测周期		");
+//		printf("检测到正向大变化,开始第一个检测周期		");
 	}
 	if(total_yaw_change<-examine_sampling_extent)
 	{
 		YAW_MOTION_STATE=6;
 		over_time=examine_run_times+200;//0.2秒退出
-		printf("检测到反向大变化,开始第一个检测周期		");
+//		printf("检测到反向大变化,开始第一个检测周期		");
 	}	
 	}
 		if(YAW_MOTION_STATE==7)
@@ -93,45 +93,45 @@ if(examine_run_times%examine_sampling_period==0)
 		if(total_yaw_change>0.3)//小变化检测阈值
 		{
 			yaw_angle_is_small_change++;
-			printf("检测到第二个周期第%d个小变化	",yaw_angle_is_small_change);
+//			printf("检测到第二个周期第%d个小变化	",yaw_angle_is_small_change);
 		over_time=examine_run_times+200;//0.2秒退出
 		}
 		if(yaw_angle_is_small_change>=3)
 		{
 			YAW_MOTION_STATE=12;//开始第二个个检测周期
 			yaw_angle_is_small_change=0;
-			printf("第二个周期结束	");
-			printf("进入小陀螺模式	");
-					over_time=examine_run_times+100000;//10秒退出
+//			printf("第二个周期结束	");
+//			printf("进入小陀螺模式	");
+					over_time=examine_run_times+10000;//10秒退出
 
 			YAW_MOTION_STATE=12;
 		}
-		printf("\r\n");
+//		printf("\r\n");
 	}
 		if(YAW_MOTION_STATE==6)
 	{
 		if(total_yaw_change>0.3)//小变化检测阈值
 		{
 			yaw_angle_is_small_change++;
-			printf("检测到第一个周期第%d个小变化	",yaw_angle_is_small_change);
+//			printf("检测到第一个周期第%d个小变化	",yaw_angle_is_small_change);
 		over_time=examine_run_times+200;//0.2秒退出
 		}
 		if(yaw_angle_is_small_change>=3)
 		{
 			YAW_MOTION_STATE=7;//开始第二个个检测周期
 			yaw_angle_is_small_change=0;
-			printf("第一个周期结束	");
+//			printf("第一个周期结束	");
 //			printf("进入小陀螺模式	");
 //			YAW_MOTION_STATE=12;
 		}
-		printf("\r\n");
+//		printf("\r\n");
 	}
 		if(YAW_MOTION_STATE==3)
 	{
 		if(total_yaw_change<-0.3)//小变化检测阈值
 		{
 			yaw_angle_is_small_change++;
-			printf("检测到第二个周期第%d个小变化	",yaw_angle_is_small_change);
+//			printf("检测到第二个周期第%d个小变化	",yaw_angle_is_small_change);
 		over_time=examine_run_times+200;//0.2秒退出
 		
 		}
@@ -139,28 +139,28 @@ if(examine_run_times%examine_sampling_period==0)
 		{
 //			YAW_MOTION_STATE=3;//开始第二个个检测周期
 			yaw_angle_is_small_change=0;
-			printf("第二个周期结束	");
-			printf("进入小陀螺模式	");
+//			printf("第二个周期结束	");
+//			printf("进入小陀螺模式	");
 			YAW_MOTION_STATE=12;
 		}
-		printf("\r\n");
+//		printf("\r\n");
 	}
 	if(YAW_MOTION_STATE==2)
 	{
 		if(total_yaw_change<-0.3)
 		{
 			yaw_angle_is_small_change++;
-			printf("检测到第一个周期第%d个小变化	",yaw_angle_is_small_change);
+//			printf("检测到第一个周期第%d个小变化	",yaw_angle_is_small_change);
 					over_time=examine_run_times+200;//0.2秒退出
 
 		}
 		if(yaw_angle_is_small_change>=3)
 		{
 			YAW_MOTION_STATE=3;//开始第二个个检测周期
-			printf("第一个周期结束	");
+//			printf("第一个周期结束	");
 			yaw_angle_is_small_change=0;
 		}
-		printf("\r\n");
+//		printf("\r\n");
 
 	}
 		if(YAW_MOTION_STATE==2||YAW_MOTION_STATE==3||YAW_MOTION_STATE==6||YAW_MOTION_STATE==7)
@@ -168,8 +168,8 @@ if(examine_run_times%examine_sampling_period==0)
 		if(examine_run_times>over_time)
 		{
 		YAW_MOTION_STATE=1;
-			printf("检测超时,退出检测模式	");
-					printf("\r\n");
+//			printf("检测超时,退出检测模式	");
+//					printf("\r\n");
 
 		}
 			
@@ -179,8 +179,8 @@ if(examine_run_times%examine_sampling_period==0)
 		if(examine_run_times>over_time)
 		{
 		YAW_MOTION_STATE=1;
-			printf("在小陀螺模式超过10秒,退出小陀螺模式	");
-					printf("\r\n");
+//			printf("在小陀螺模式超过10秒,退出小陀螺模式	");
+//					printf("\r\n");
 
 		}
 			

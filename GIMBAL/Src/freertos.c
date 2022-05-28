@@ -285,7 +285,8 @@ void MX_FREERTOS_Init(void) {
 
 //			HAL_CAN_Start(&hcan2);
 
-	
+//			printf("准		");
+
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -413,7 +414,7 @@ Tmr Svc        	0		<1%
 			//	HAL_UART_Transmit_DMA(&huart1,&TRY[0],2);
 						if (cali_sensor[0].cali_done == CALIED_FLAG && cali_sensor[0].cali_cmd == 0)
 					{
-														NM_swj();
+//														NM_swj();
 
 					}
 //		
@@ -516,7 +517,7 @@ void IMU_Send(void const * argument)
 
 #endif
 Update_Vision_SendData();
-		VISION_Disconnect_test++;
+//		VISION_Disconnect_test++;
 		if(VISION_Disconnect_test==1000)//一秒检测一次
 		{
 			if(VisionData.Offline_Detec>10)//一秒接受10次不过分吧
@@ -851,7 +852,7 @@ M2006_targe_angle=M3508s[1].totalAngle;//清除拨盘目标角度累计
 	GM6020s[3].turnCount=0;
 yaw_trage_angle=DJIC_IMU.total_yaw;
 	PITCH_trage_angle = DJIC_IMU.total_pitch;
-
+YAW_MOTION_STATE=1;//开启小陀螺检测
 	/* Infinite loop */
 	for (;;)
 	{

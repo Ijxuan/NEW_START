@@ -97,7 +97,7 @@
 "ins_task\usbd_ctlreq.o"
 "ins_task\usbd_ioreq.o"
 "ins_task\usbd_cdc.o"
---strict --scatter "ins_task\GIMBAL.sct"
+--library_type=microlib --strict --scatter "ins_task\GIMBAL.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "GIMBAL.map" -o ins_task\GIMBAL.axf
