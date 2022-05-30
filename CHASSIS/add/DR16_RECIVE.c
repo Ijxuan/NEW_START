@@ -225,7 +225,7 @@ void NM_swj(void)
 	testdatatosend[_cnt++]=0xFF;//1
 	testdatatosend[_cnt++]=0xF1;//2
 	testdatatosend[_cnt++]=34;//3
-if(1)
+if(0)
 {
 	
 		#if 0//发送pitch云台数据
@@ -576,7 +576,7 @@ if(1)
 			send_d_16[p++]=send_to_pitch;			//随机数		发送给yaw轴电机
 
 #endif
-#if 0//发送底盘功率数据//底盘输出电压 单位 毫伏
+#if 1//发送底盘功率数据//底盘输出电压 单位 毫伏
 /*
 			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
       uint16_t chassis_current; //底盘输出电流 单位 毫安
@@ -657,7 +657,7 @@ if(1)
 			//随机数		发送给yaw轴电机
 
 #endif
-#if 1//m2006电机测试
+#if 0//m2006电机测试
 /*
 			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
       uint16_t chassis_current; //底盘输出电流 单位 毫安

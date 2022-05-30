@@ -250,7 +250,7 @@ void PITCH_PID()
 							{
 							PITCH_trage_angle+=(DR16.rc.ch1*1.0/660.0)*0.4;//遥控器给速度目标值 二选一
 
-////							if(DR16.rc.ch4_DW<=-400)//拨上
+ ////							if(DR16.rc.ch4_DW<=-400)//拨上
 ////							PITCH_trage_angle=PITCH_MAX_angle-10;
 ////							if(DR16.rc.ch4_DW>=400)//拨下
 ////							PITCH_trage_angle=PITCH_MIN_angle+10;

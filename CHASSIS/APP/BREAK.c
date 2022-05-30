@@ -1,4 +1,5 @@
 #include "BREAK.h"
+#include "main.h"
 
 BREAK_e break_basic;
 
@@ -96,6 +97,80 @@ void break_init(void) {
 void break_control(void) {
 break_init();
 
+	if(DR16.rc.s_left == 3)
+	{
+if(break_basic.STATE == 3)  //初始化全部完成
+{	
+	if(DR16.rc.ch4_DW>=-100&&DR16.rc.ch4_DW<=100)
+	{
+	M2006_targe_angle=	break_basic.BREAK_MID;	
+stop_CH_OP_BC_BREAK_times=0;
+				stop_CH_OP_BC_BREAK=0;
+		
+	}
+	else if(DR16.rc.ch4_DW<-100)//拨上
+	{
+	M2006_targe_angle=	break_basic.BREAK_MAX+200;
+		stop_CH_OP_BC_BREAK=1;
+		break_FX=1;
+		stop_CH_OP_BC_BREAK_times++;
+		if(stop_CH_OP_BC_BREAK_times>50)//超过300ms,取消底盘失能,
+		{
+		stop_CH_OP_BC_BREAK=0;
+		}
+		
+		if(stop_CH_OP_BC_BREAK_times>250)//超过500ms,刹车回中
+		{
+		M2006_targe_angle=	break_basic.BREAK_MID;	
+					stop_CH_OP_BC_BREAK=0;
+
+		}
+	}
+	else if(DR16.rc.ch4_DW>100)//拨下
+	{
+	M2006_targe_angle=	break_basic.BREAK_MIN-200;
+				stop_CH_OP_BC_BREAK=1;
+		stop_CH_OP_BC_BREAK_times++;
+				break_FX=-1;
+
+				if(stop_CH_OP_BC_BREAK_times>50)//超过300ms,取消底盘失能,
+		{
+					stop_CH_OP_BC_BREAK=0;		
+		}
+				if(stop_CH_OP_BC_BREAK_times>250)//超过500ms,刹车回中
+		{
+		M2006_targe_angle=	break_basic.BREAK_MID;
+		stop_CH_OP_BC_BREAK=0;		
+		}
+	}
+	if(DR16.rc.ch3==0)
+	{
+	break_FX=-1;
+	}
+	
+}	
+	}
+
+		if(DR16.rc.s_left == 3&&DR16.rc.s_right == 4)
+	{
+if(break_basic.STATE == 3)  //初始化全部完成
+{	
+	if(DR16.rc.ch4_DW>=-100&&DR16.rc.ch4_DW<=200)
+	{
+	M2006_targe_angle=	break_basic.BREAK_MID;		
+	}
+	else if(DR16.rc.ch4_DW>=200)
+	{
+		if(M3508s[3].realSpeed>0)
+		{
+	M2006_targe_angle=	break_basic.BREAK_MIN-200;
+
+		}
+	}
+	
+}	
+	}
+	
 M2006_targe_speed=P_PID_bate(&BREAK_ANGLE_pid,M2006_targe_angle,M3508s[BREAK_ID].totalAngle);//M2006_targe_speed应该大于0
 	
 	

@@ -149,6 +149,10 @@ extern bool send_to_C_IN_END;//是否 处于轨道尽头_状态数据_是否发送给C板
 extern bool send_to_C_IN_MID;// 处于轨道中间_状态数据_是否发送给C板  1秒一次
 extern bool send_to_C_SPEED_CHANGE;// 处于轨道中间_状态数据_是否发送给C板  1秒一次
 
+extern bool stop_CH_OP_BC_BREAK;
+extern int stop_CH_OP_BC_BREAK_times;
+extern int break_FX;
+
 
 extern bool in_MID;//处在轨道中间段
 extern bool in_END;//处在轨道尽头

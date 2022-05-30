@@ -243,8 +243,8 @@ void star_and_new()
 //				{	
 //					
 //				}
-							CHASSIS_MOTOR_SPEED_pid.Max_result=1900;
-			CHASSIS_MOTOR_SPEED_pid.Min_result=-1900;
+							CHASSIS_MOTOR_SPEED_pid.Max_result=16000;
+			CHASSIS_MOTOR_SPEED_pid.Min_result=-16000;
 		}
 		else if(CHASSIS_L_MAX_new==0)//左边的的传感器还没检测到
 		{

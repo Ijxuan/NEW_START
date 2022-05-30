@@ -471,12 +471,12 @@ void init_task(void const * argument)
 		
 		
 //传感器2		
-//	__HAL_UART_CLEAR_IDLEFLAG(&huart7);
-////	__HAL_UART_ENABLE(&huart7);
+	__HAL_UART_CLEAR_IDLEFLAG(&huart7);
+//	__HAL_UART_ENABLE(&huart7);
 
-//	__HAL_UART_ENABLE_IT(&huart7, UART_IT_IDLE);
+	__HAL_UART_ENABLE_IT(&huart7, UART_IT_IDLE);
 
-//	USART_RX_DMA_ENABLE(&huart7, SENSOR_R_DataBuff, SENSOR_BuffSize);
+	USART_RX_DMA_ENABLE(&huart7, SENSOR_R_DataBuff, SENSOR_BuffSize);
 
 
 	//裁判系统
@@ -875,7 +875,10 @@ if(stop_CH_OP_BC_END==1)
 {
 			send_to_chassis = 0;//弹道测试后取消注释//撞柱前,加速,然后失能一段时间
 }
-
+if(stop_CH_OP_BC_BREAK==1)
+{
+			send_to_chassis = 0;//弹道测试后取消注释//撞柱前,加速,然后失能一段时间
+}
 if(DR16.s_left_last!=DR16.rc.s_left)
 {
 	stop_CH_OP_BC_LESS=0;

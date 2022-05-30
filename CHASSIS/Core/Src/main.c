@@ -140,7 +140,9 @@ int CHASSIS_trage_angle=0;
 float PITCH_MAX_angle=0;
 float PITCH_MIN_angle=0;
 
-int CHASSIS_MAX_SPEED=9000;
+int CHASSIS_MAX_SPEED=4700;
+
+int break_FX=-1;
 
 int send_to_yaw=0;//发送给yaw轴的数据
 int send_to_pitch=0;//发送给pitch轴的数据
@@ -241,6 +243,9 @@ bool stop_chassic_output=0;
 bool stop_CH_OP_BC_END=0;
 int stop_CH_OP_BC_END_times=0;
 bool stop_CH_OP_BC_LESS=0;
+bool stop_CH_OP_BC_BREAK=0;
+int stop_CH_OP_BC_BREAK_times=0;
+
 int stop_CH_OP_BC_LESS_times=0;
 int CHASSIS_trage_speed_temp;
 int JS_SEND_times=0;//裁判系统发送次数
