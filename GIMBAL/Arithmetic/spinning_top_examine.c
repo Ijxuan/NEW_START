@@ -102,7 +102,7 @@ if(examine_run_times%examine_sampling_period==0)
 			yaw_angle_is_small_change=0;
 //			printf("第二个周期结束	");
 //			printf("进入小陀螺模式	");
-					over_time=examine_run_times+10000;//10秒退出
+					over_time=examine_run_times+5000;//5秒退出
 
 			YAW_MOTION_STATE=12;
 		}
@@ -142,6 +142,8 @@ if(examine_run_times%examine_sampling_period==0)
 //			printf("第二个周期结束	");
 //			printf("进入小陀螺模式	");
 			YAW_MOTION_STATE=12;
+								over_time=examine_run_times+5000;//5秒退出
+
 		}
 //		printf("\r\n");
 	}
@@ -199,6 +201,7 @@ total_yaw_last_time=DJIC_IMU.total_yaw;
 	}
 	else{
 	examine_run_times=0;//有自瞄
+		over_time=5000;
 	}
 	
 	

@@ -189,7 +189,7 @@ void MX_FREERTOS_Init(void) {
 #endif
 
 #if PID_YAW_IMU
-	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -1000, -6.5, 1100,//
+	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -500, -4.5, 100,//
 						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
@@ -207,14 +207,14 @@ void MX_FREERTOS_Init(void) {
 #if VISION_PID_YAW_IMU
 
 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -1000, -6.5, 1100,//
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -600, -2.5, 500,//
 						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 5000, -5000, //积分限幅，也就是积分的输出范围
 						 29990, -29990);
 						 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 13, 0.02, 10,//10 0 16//越大越陡峭10
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 10, 0.02, 5,//10 0 16//越大越陡峭10
 						 5,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
@@ -238,7 +238,7 @@ void MX_FREERTOS_Init(void) {
 #endif
 
 #if PID_PITCH_IMU
-	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 170,1.43,50,//100, 1.5, 0,
+	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 120,1.43,50,//100, 1.5, 0,
 						 240, //误差大于这个值就积分分离  550 1.9 0   -20000
 						 //	float max_error, float min_error,
 						 //                          float alpha,
@@ -285,7 +285,6 @@ void MX_FREERTOS_Init(void) {
 
 //			HAL_CAN_Start(&hcan2);
 
-//			printf("准		");
 
   /* USER CODE END RTOS_MUTEX */
 
@@ -304,6 +303,7 @@ void MX_FREERTOS_Init(void) {
   MX_USB_DEVICE_Init();
 
   /* USER CODE END RTOS_QUEUES */
+			printf("好");
 
   /* Create the thread(s) */
   /* definition and creation of test */
@@ -415,6 +415,7 @@ Tmr Svc        	0		<1%
 						if (cali_sensor[0].cali_done == CALIED_FLAG && cali_sensor[0].cali_cmd == 0)
 					{
 //														NM_swj();
+//			printf("好");
 
 					}
 //		
@@ -447,7 +448,7 @@ Tmr Svc        	0		<1%
         //获取电源电压
 			
         my_voltage = get_battery_voltage();
-			if(my_voltage<21)
+			if(my_voltage<21&&my_voltage>20)
 			{
 			  		if(debug_times%500==0)//5s运行一次
 					{
