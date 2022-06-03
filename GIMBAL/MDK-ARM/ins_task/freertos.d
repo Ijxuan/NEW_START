@@ -89,3 +89,9 @@ ins_task\freertos.o: ..\bsp\boards\bsp_adc.h
 ins_task\freertos.o: ..\ADD\oled.h
 ins_task\freertos.o: ../Inc/spi.h
 ins_task\freertos.o: ..\Arithmetic\spinning_top_examine.h
+ins_task\freertos.o: ..\application\Vision_Control.h
+ins_task\freertos.o: ..\Arithmetic\Kalman.h
+ins_task\freertos.o: ..\Drivers\CMSIS\DSP\Include\arm_math.h
+ins_task\freertos.o: ../Drivers/CMSIS/Include/core_cm4.h
+ins_task\freertos.o: ..\Arithmetic\User_math.h
+ins_task\freertos.o: ..\Arithmetic\User_typedef.h

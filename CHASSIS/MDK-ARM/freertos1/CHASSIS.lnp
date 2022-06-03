@@ -37,6 +37,7 @@
 "freertos1\stm32f4xx_hal_tim_ex.o"
 "freertos1\stm32f4xx_hal_uart.o"
 "freertos1\system_stm32f4xx.o"
+"..\Drivers\CMSIS\Lib\ARM\arm_cortexM4lf_math.lib"
 "freertos1\croutine.o"
 "freertos1\event_groups.o"
 "freertos1\list.o"
@@ -64,6 +65,7 @@
 "freertos1\crc.o"
 "freertos1\fps_calculate.o"
 "freertos1\user_math.o"
+"freertos1\kalman.o"
 "freertos1\dji_c_imu.o"
 --library_type=microlib --strict --scatter "freertos1\CHASSIS.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols

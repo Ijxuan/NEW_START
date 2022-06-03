@@ -50,6 +50,7 @@
 #include "bsp_adc.h"
 #include "oled.h"
 #include "spinning_top_examine.h"
+#include "Vision_Control.h"
 
 /* USER CODE END Includes */
 
@@ -254,6 +255,8 @@ void MX_FREERTOS_Init(void) {
 
 #endif
 
+Vision_Control_Init();//卡尔曼参数初始化
+
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -303,7 +306,6 @@ void MX_FREERTOS_Init(void) {
   MX_USB_DEVICE_Init();
 
   /* USER CODE END RTOS_QUEUES */
-			printf("好");
 
   /* Create the thread(s) */
   /* definition and creation of test */
@@ -414,24 +416,29 @@ Tmr Svc        	0		<1%
 			//	HAL_UART_Transmit_DMA(&huart1,&TRY[0],2);
 						if (cali_sensor[0].cali_done == CALIED_FLAG && cali_sensor[0].cali_cmd == 0)
 					{
-//														NM_swj();
+		if(debug_times%10==0)//上位机发送频率
+						{
+														NM_swj();
 //			printf("好");
-
+						}
 					}
 //		
 					
-		}
+		}	
+
+						
+						
 		if(DR16.rc.s_left == 1)
 		{
 			if(in_END==1&&in_END_last==0)//上一时刻不在轨道末端,这一时刻在轨道末端
 			{
-		stay_in_track_end_times++;//10ms增加一次
+		stay_in_track_end_times++;//1ms增加一次
 			}
 			if(stay_in_track_end_times>0)
 			{
 			stay_in_track_end_times++;
 			}
-			if(stay_in_track_end_times>160)
+			if(stay_in_track_end_times>1600)
 			{
 			stay_in_track_end_times=0;
 			}
@@ -441,7 +448,7 @@ Tmr Svc        	0		<1%
 			}
 		}
 		in_END_last=in_END;
-		if(debug_times%10==0)//100ms运行一次
+		if(debug_times%100==0)//100ms运行一次
 			
 		{
 		        //get battery voltage
@@ -450,7 +457,7 @@ Tmr Svc        	0		<1%
         my_voltage = get_battery_voltage();
 			if(my_voltage<21&&my_voltage>20)
 			{
-			  		if(debug_times%500==0)//5s运行一次
+			  		if(debug_times%5000==0)//5s运行一次
 					{
 												Buzzer.mode = One_times;
 
@@ -458,7 +465,7 @@ Tmr Svc        	0		<1%
 			}
 			
 		}
-  		if(debug_times%100==0)//1s运行一次
+  		if(debug_times%1000==0)//1s运行一次
 		{
 		    oled_clear(Pen_Clear);
 oled_printf(1,1,error_e);
@@ -477,7 +484,7 @@ oled_printf(1,1,error_e);
 		
 		
 //BEEP_TEXT();		
-		osDelay(10);
+		osDelay(1);
 	}
   /* USER CODE END Debug */
 }
@@ -857,6 +864,9 @@ YAW_MOTION_STATE=1;//开启小陀螺检测
 	/* Infinite loop */
 	for (;;)
 	{
+						Vision_Control_Cloud();
+
+		
 								if (DR16.rc.s_left == 2&&DR16.rc.ch3<-600) //失能保护
 				{
 					disable_for_test_CHASSIS=1;
@@ -874,7 +884,7 @@ YAW_MOTION_STATE=1;//开启小陀螺检测
 		{
 			 if(DR16.rc.s_left==3&&DR16.rc.s_right==3)
 			 {
-//		yaw_trage_angle+=simulation_target_yaw-DJIC_IMU.total_yaw;
+//		yaw_trage_angle=simulation_target_yaw;
 			 }
 		}
 				if (DR16.rc.s_left == 2&&DR16.rc.ch1<-600) //失能保护
@@ -976,6 +986,7 @@ DJIC_IMU.yaw_turnCounts=0;
 //		M3508s1_setCurrent(0, 0,TEST_Current_R ,TEST_Current_L );  //end_to_SHOOT_R给正降得慢
         //                                    +                 -
 		vTaskDelayUntil(&xLastWakeTime, TimeIncrement);
+		
 	}
 
 	/* USER CODE END RobotControl */

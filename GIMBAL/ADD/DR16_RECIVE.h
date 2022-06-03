@@ -32,7 +32,8 @@ extern uint8_t JSBuffer[8];
 &DR16_Process, \
 } \
 
-
+#pragma anon_unions
+#pragma pack(1)
 typedef struct
 {
 	struct {
@@ -91,16 +92,19 @@ typedef struct
 //	void(*DR16_Handler)(UART_HandleTypeDef *huart);
 
 } DR16_t;
+#pragma pack()
+
 extern DR16_t DR16;
 
-
+#pragma anon_unions
+#pragma pack(1)
 /* ID: 0X0207          Byte: 7       实时射击数据 */
 typedef struct
 {
   union
 	{
 		uint8_t dataBuff[7];
-		__packed struct
+		 struct
 		{
 		  uint8_t bullet_type;//子弹类型: 1：17mm 弹丸 2：42mm 弹丸
       uint8_t shooter_id;//发射机构 ID
@@ -110,15 +114,17 @@ typedef struct
 	}data;
 	uint8_t InfoUpdataFlag;
 }ext_shoot_data_t;
+#pragma pack()
 extern ext_shoot_data_t ext_shoot_data;
-
+#pragma anon_unions
+#pragma pack(1)
 /* ID: 0X0206          Byte: 1       伤害状态数据 */
 typedef struct
 {
   union
 	{
 		uint8_t dataBuff[1];
-		__packed struct
+		 struct
 		{
 		  uint8_t armor_id : 4;/*bit 0-3：当血量变化类型为装甲伤害，代表装甲 ID，其中数值为 0-4 号代表机器人的
                              五个装甲片，其他血量变化类型，该变量数值为 0。*/
@@ -132,15 +138,17 @@ typedef struct
 	}data;
 	uint8_t InfoUpdataFlag;
 }ext_robot_hurt_t;
+#pragma pack()
 extern ext_robot_hurt_t ext_robot_hurt;
-
+#pragma anon_unions
+#pragma pack(1)
 /* ID: 0X0201          Byte: 27      机器人状态数据 */
 typedef struct
 {
 	union
 	{
 		uint8_t dataBuff[27];
-		__packed struct
+		 struct
 		{
 		  uint8_t robot_id;
       uint8_t robot_level;
@@ -167,17 +175,18 @@ typedef struct
 	}data;
 	uint8_t InfoUpdataFlag;
 }ext_game_robot_status_t;
-
+#pragma pack()
 extern ext_game_robot_status_t ext_game_robot_state;
 
-
+#pragma anon_unions
+#pragma pack(1)
 /* ID: 0X0202          Byte: 16      实时功率热量数据 */
 typedef struct
 {
   union
 	{
 		uint8_t dataBuff[16];
-		__packed struct
+		 struct
 		{
 			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
       uint16_t chassis_current; //底盘输出电流 单位 毫安
@@ -190,7 +199,7 @@ typedef struct
 	}data;
 	uint8_t InfoUpdataFlag;
 }ext_power_heat_data_t;
-
+#pragma pack()
 extern ext_power_heat_data_t ext_power_heat_data;
 
 /**********为了匿名四轴上位机的协议定义的变量****************************/

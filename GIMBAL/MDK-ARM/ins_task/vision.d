@@ -75,3 +75,10 @@ ins_task\vision.o: ..\bsp\boards\user_can.h
 ins_task\vision.o: ../Inc/can.h
 ins_task\vision.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 ins_task\vision.o: ..\Arithmetic\spinning_top_examine.h
+ins_task\vision.o: ..\application\Vision_Control.h
+ins_task\vision.o: ..\Arithmetic\Kalman.h
+ins_task\vision.o: ..\Drivers\CMSIS\DSP\Include\arm_math.h
+ins_task\vision.o: ../Drivers/CMSIS/Include/core_cm4.h
+ins_task\vision.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+ins_task\vision.o: ..\Arithmetic\User_math.h
+ins_task\vision.o: ..\Arithmetic\User_typedef.h

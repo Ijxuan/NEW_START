@@ -1,5 +1,7 @@
 #include "MY_CLOUD_CONTROL.h"
 #include "bsp_buzzer.h"
+#include "Vision_Control.h"
+#include "spinning_top_examine.h"
 
 cloud_control_mode cloud_mode;
 float YAW_TRAGET_ANGLE_TEMP;
@@ -31,6 +33,8 @@ void cloud_control(void)
 //*/
 //	
 //
+
+
 cloud_control_mode_choose();
  scan_cloud();
  if(DR16.rc.s_left!=3)
@@ -41,13 +45,18 @@ simulation_target_yaw=	DJIC_IMU.total_yaw;
 {
 	if(DR16.rc.s_right==3)
 	{
-	simulation_target_yaw+= 0.018;   // 18度/1000毫秒
+	simulation_target_yaw+= 0.018f;   // 18度/1000毫秒
 	}
 	else
 	{
 		simulation_target_yaw=	DJIC_IMU.total_yaw;
 	}
 	
+}
+else
+{
+		simulation_target_yaw=	DJIC_IMU.total_yaw;
+
 }
 
 							YAW_PID();//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -90,6 +99,11 @@ void cloud_control_mode_choose(void)
 
 		
 	}
+//	else if(DR16.rc.s_left == 3&&DR16.rc.s_right == 3)
+//	{
+////				cloud_mode.control_mode_NOW=vision_mode;
+
+//	}
 	else
 	{
 			cloud_mode.control_mode_NOW=aoto_scan_mode;
@@ -185,7 +199,7 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 				if(cloud_mode.control_mode_NOW==vision_mode)//视觉PID
 				{
 //					yaw_trage_angle=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;//YAW轴遥控器控制
-					yaw_trage_angle=YAW_TRAGET_ANGLE_TEMP;//YAW轴遥控器控制
+//					yaw_trage_angle=YAW_TRAGET_ANGLE_TEMP;//YAW轴视觉控制
 													
 
 				}			
@@ -216,9 +230,17 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 					yaw_trage_speed=VISION_Yaw_IMU_Angle_pid.result;//外环的结果给内环  二选一
 //					yaw_trage_speed=(DR16.rc.ch3*1.0/660.0)*10000;//遥控器给速度目标值 二选一
 							
-					P_PID_bate(&VISION_Yaw_IMU_Speed_pid, yaw_trage_speed,DJIC_IMU.Gyro_z);
-					
+					P_PID_bate(&VISION_Yaw_IMU_Speed_pid, yaw_trage_speed,DJIC_IMU.Gyro_z);	
 		                   send_to_yaw=VISION_Yaw_IMU_Speed_pid.result;
+				
+					if(YAW_MOTION_STATE==12)
+					{
+				Vision_Control_Cloud();
+						
+//										P_PID_bate(&VISION_Yaw_IMU_Angle_pid, yaw_trage_angle,DJIC_IMU.total_yaw);//GM6020s[EMID].totalAngle readAngle
+	
+					}
+				
 				}
 				
 				
@@ -287,8 +309,8 @@ void imu_angle()
 //	PITCH_MAX_angle=DJIC_IMU.total_pitch+(7990-GM6020s[3].totalAngle)/8196.0*360.0;
 //	PITCH_MIN_angle=DJIC_IMU.total_pitch+(7450-GM6020s[3].totalAngle)/8196.0*360.0;
 	
-	PITCH_MAX_angle=DJIC_IMU.total_pitch+(5080-GM6020s[3].totalAngle)/8191.0*360.0;
-	PITCH_MIN_angle=DJIC_IMU.total_pitch+(3900-GM6020s[3].totalAngle)/8191.0*360.0;
+	PITCH_MAX_angle=DJIC_IMU.total_pitch+(5080-GM6020s[3].totalAngle)/8191.0f*360.0f;
+	PITCH_MIN_angle=DJIC_IMU.total_pitch+(3900-GM6020s[3].totalAngle)/8191.0f*360.0f;
 			allow_angle=	PITCH_MAX_angle-PITCH_MIN_angle;
 
 }
@@ -550,8 +572,8 @@ if	(in_END_L==1)
 	}
 }
 #endif			
-PITCH_trage_angle=PITCH_MIN_angle+(allow_angle)*0.8*(scan_percent_PITCH/1000.0);//PITCH
-yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0);//YAW轴转一圈多一点
+PITCH_trage_angle=PITCH_MIN_angle+(allow_angle)*0.8f*(scan_percent_PITCH/1000.0f);//PITCH
+yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0f);//YAW轴转一圈多一点
 								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
 								PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch;
 		}

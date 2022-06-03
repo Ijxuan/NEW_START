@@ -44,8 +44,8 @@ typedef enum
     //add more...
     CALI_LIST_LENGHT,
 } cali_id_e;
-
-typedef __packed struct
+#pragma anon_unions
+typedef  struct
 {
     uint8_t name[3];                                    //device name
     uint8_t cali_done;                                  //0x55 means has been calibrated

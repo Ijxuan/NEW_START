@@ -3,7 +3,6 @@
 #include "FreeRTOS.h"
 #include "cmsis_os.h"
 
-uint8_t DR16_SEND_all[24];  // 3x8=24
 //uint8_t DR16_SEND_part_one[9];
 //uint8_t DR16_SEND_part_two[9];
 //uint8_t DR16_SEND_part_three[9];
@@ -11,6 +10,8 @@ uint8_t DR16_SEND_all[24];  // 3x8=24
 
 #if send_any_time==1
 //任何时候都会以固定频率发送
+uint8_t DR16_SEND_all[24];  // 3x8=24
+
 void DR16_send_master_control()
 {
 	

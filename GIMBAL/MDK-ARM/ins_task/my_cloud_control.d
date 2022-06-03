@@ -65,3 +65,13 @@ ins_task\my_cloud_control.o: ../Inc/usart.h
 ins_task\my_cloud_control.o: ..\Arithmetic\CRC.h
 ins_task\my_cloud_control.o: ..\bsp\boards\bsp_buzzer.h
 ins_task\my_cloud_control.o: ../Inc/tim.h
+ins_task\my_cloud_control.o: ..\application\Vision_Control.h
+ins_task\my_cloud_control.o: ..\Arithmetic\Kalman.h
+ins_task\my_cloud_control.o: ..\Drivers\CMSIS\DSP\Include\arm_math.h
+ins_task\my_cloud_control.o: ../Drivers/CMSIS/Include/core_cm4.h
+ins_task\my_cloud_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+ins_task\my_cloud_control.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+ins_task\my_cloud_control.o: ..\Arithmetic\User_math.h
+ins_task\my_cloud_control.o: ..\Arithmetic\User_typedef.h
+ins_task\my_cloud_control.o: ..\Arithmetic\FPS_Calculate.h
+ins_task\my_cloud_control.o: ..\Arithmetic\spinning_top_examine.h

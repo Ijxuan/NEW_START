@@ -90,7 +90,7 @@ if(examine_run_times%examine_sampling_period==0)
 	}
 		if(YAW_MOTION_STATE==7)
 	{
-		if(total_yaw_change>0.3)//小变化检测阈值
+		if(total_yaw_change>0.3f)//小变化检测阈值
 		{
 			yaw_angle_is_small_change++;
 //			printf("检测到第二个周期第%d个小变化	",yaw_angle_is_small_change);
@@ -110,7 +110,7 @@ if(examine_run_times%examine_sampling_period==0)
 	}
 		if(YAW_MOTION_STATE==6)
 	{
-		if(total_yaw_change>0.3)//小变化检测阈值
+		if(total_yaw_change>0.3f)//小变化检测阈值
 		{
 			yaw_angle_is_small_change++;
 //			printf("检测到第一个周期第%d个小变化	",yaw_angle_is_small_change);
@@ -128,7 +128,7 @@ if(examine_run_times%examine_sampling_period==0)
 	}
 		if(YAW_MOTION_STATE==3)
 	{
-		if(total_yaw_change<-0.3)//小变化检测阈值
+		if(total_yaw_change<-0.3f)//小变化检测阈值
 		{
 			yaw_angle_is_small_change++;
 //			printf("检测到第二个周期第%d个小变化	",yaw_angle_is_small_change);
@@ -149,7 +149,7 @@ if(examine_run_times%examine_sampling_period==0)
 	}
 	if(YAW_MOTION_STATE==2)
 	{
-		if(total_yaw_change<-0.3)
+		if(total_yaw_change<-0.3f)
 		{
 			yaw_angle_is_small_change++;
 //			printf("检测到第一个周期第%d个小变化	",yaw_angle_is_small_change);

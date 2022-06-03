@@ -5,6 +5,7 @@
 #include "my_positionPID_bate.h"
 #include "MY_CLOUD_CONTROL.h"
 #include "spinning_top_examine.h"
+#include "Vision_Control.h"
 
 
 //#include "usb_device.h"
@@ -113,9 +114,12 @@ void Vision_DataReceive(uint8_t *data)
 	}
 //				//Yaw轴：单位 角度° 转成 机械角度(码盘值)
 			Vision_RawData_Yaw_Angle = (float)VisionData.RawData.Yaw_Angle / 100.0f;
-//			//Pitch轴：
-			Vision_RawData_Pitch_Angle = (float)VisionData.RawData.Pitch_Angle / 100.0f;
+VisionData_Hand.Vision_RawData.Yaw_Angle = (float)VisionData.RawData.Yaw_Angle / 100.0f;
 	
+	//			//Pitch轴：
+			Vision_RawData_Pitch_Angle = (float)VisionData.RawData.Pitch_Angle / 100.0f;
+				VisionData_Hand.Vision_RawData.Pitch_Angle = (float)VisionData.RawData.Pitch_Angle / 100.0f;
+
 if(abs(Vision_RawData_Pitch_Angle)>30)//PITCH轴接收到的值 绝对值 超过30,判断为错误 归零
 {
 	Vision_RawData_Pitch_Angle=0;
