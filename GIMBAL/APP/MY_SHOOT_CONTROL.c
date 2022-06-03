@@ -29,6 +29,9 @@ allow_auto_shoot auto_shoot_condition;
 int auto_shoot_condition_show;//自动射击条件展现
 
 bool JR_HEAT_renew=0;//进入枪口热量回复模式
+
+int M_2006_total_angle_1s_last=0;
+int real_shoot_1s=0;
 void shoot_control(void)
 {
 	if(in_END==0&&in_MID==1)
@@ -58,7 +61,7 @@ void shoot_control(void)
 	    auto_shoot_condition.weather_angle_error_less_than_1=0;	//角度误差小于一		
 	}
 	
-	if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<200)//热量没超过200
+	if(ext_power_heat_data.data.shooter_id2_17mm_cooling_heat<200)//热量没超过200
 	{
 		auto_shoot_condition.heat_allow=1;//热量允许
 	}
@@ -129,14 +132,19 @@ void shoot_control(void)
 							M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除
 
 					}	
-if(DR16.rc.ch4_DW>=200)//拨下
+if(DR16.rc.ch4_DW>=200)//拨下 M_2006_total_angle_1s_last
 			{	
 			DW_DOWN++;	
-			if(JR_HEAT_renew==1&&ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<100)//热量恢复到100以下
+				if(DW_DOWN>200&&DW_DOWN%1000==0)
+				{
+					real_shoot_1s=(M3508s[1].totalAngle-M_2006_total_angle_1s_last)/Driver_add;
+					M_2006_total_angle_1s_last=M3508s[1].totalAngle;
+				}
+			if(JR_HEAT_renew==1&&ext_power_heat_data.data.shooter_id2_17mm_cooling_heat<100)//热量恢复到100以下
 			{
 			JR_HEAT_renew=0;
 			}
-				if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<200&&JR_HEAT_renew==0)//热量没超过200,不在热量恢复模式下  //注意是枪管1的热量
+				if(ext_power_heat_data.data.shooter_id2_17mm_cooling_heat<200&&JR_HEAT_renew==0)//热量没超过200,不在热量恢复模式下  //注意是枪管1的热量
 				{
 							if(DW_DOWN==20)
 			M2006_targe_angle+=(Driver_add);//8*3=24
@@ -145,7 +153,7 @@ if(DR16.rc.ch4_DW>=200)//拨下
 				
 				
 				}
-				else if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat>=200)
+				else if(ext_power_heat_data.data.shooter_id2_17mm_cooling_heat>=200)
 				{
 				JR_HEAT_renew=1;//进入枪口热量恢复模式
 				
@@ -202,7 +210,7 @@ shoot_times_for_limit=0;
 		{
 			shoot_times_for_limit++;
 #if 0
-			if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<200)//热量没超过200
+			if(ext_power_heat_data.data.shooter_id2_17mm_cooling_heat<200)//热量没超过200
 			{
 			if (shoot_times_for_limit<50)
 			{
@@ -225,7 +233,7 @@ shoot_times_for_limit=0;
 
 			}
 		}
-			else if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat>=200)//热量超过200
+			else if(ext_power_heat_data.data.shooter_id2_17mm_cooling_heat>=200)//热量超过200
 		{
 						if (shoot_times_for_limit<100)
 			{

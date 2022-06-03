@@ -492,8 +492,8 @@ void USART6_IRQHandler(void)
 void UART7_IRQHandler(void)
 {
   /* USER CODE BEGIN UART7_IRQn 0 */
-	usart_7_times++;
-SENSOR_Handler(&huart7);
+	usart_7_times++;SENSOL_Handler(&huart7);
+
   /* USER CODE END UART7_IRQn 0 */
   HAL_UART_IRQHandler(&huart7);
   /* USER CODE BEGIN UART7_IRQn 1 */
@@ -507,9 +507,9 @@ SENSOR_Handler(&huart7);
 void UART8_IRQHandler(void)
 {
   /* USER CODE BEGIN UART8_IRQn 0 */
-	uart_8_times++;
+	uart_8_times++;SENSOR_Handler(&huart8);
+
 //	Vision_Handler(&huart8);
-//SENSOL_Handler(&huart8);
   /* USER CODE END UART8_IRQn 0 */
   HAL_UART_IRQHandler(&huart8);
   /* USER CODE BEGIN UART8_IRQn 1 */

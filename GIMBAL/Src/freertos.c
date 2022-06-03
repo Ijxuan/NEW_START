@@ -455,7 +455,7 @@ Tmr Svc        	0		<1%
         //获取电源电压
 			
         my_voltage = get_battery_voltage();
-			if(my_voltage<21&&my_voltage>20)
+			if(my_voltage<21.5&&my_voltage>20)
 			{
 			  		if(debug_times%5000==0)//5s运行一次
 					{
