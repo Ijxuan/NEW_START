@@ -28,6 +28,7 @@ bool weather_error_less_than_1=0;
 allow_auto_shoot auto_shoot_condition;
 int auto_shoot_condition_show;//自动射击条件展现
 
+bool JR_HEAT_renew=0;//进入枪口热量回复模式
 void shoot_control(void)
 {
 	if(in_END==0&&in_MID==1)
@@ -118,7 +119,7 @@ void shoot_control(void)
 	
 	if(DR16.rc.s_left==3)
 	{
-			if(DR16.rc.s_right==1||DR16.rc.s_right==3)
+			if(DR16.rc.s_right==1||DR16.rc.s_right==3)//左中手动档,右中和右上
 			{
 //		
 					if(DR16.rc.ch4_DW==0)//松手
@@ -131,10 +132,33 @@ void shoot_control(void)
 if(DR16.rc.ch4_DW>=200)//拨下
 			{	
 			DW_DOWN++;	
-		if(DW_DOWN==20)
-			M2006_targe_angle+=(Driver_add/4);//8*3=24
-				if(DW_DOWN%100==0&&DW_DOWN>200)
+			if(JR_HEAT_renew==1&&ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<100)//热量恢复到100以下
+			{
+			JR_HEAT_renew=0;
+			}
+				if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<200&&JR_HEAT_renew==0)//热量没超过200,不在热量恢复模式下  //注意是枪管1的热量
+				{
+							if(DW_DOWN==20)
+			M2006_targe_angle+=(Driver_add);//8*3=24
+						if(DW_DOWN%50==0&&DW_DOWN>200)//理论一秒20发
+			M2006_targe_angle+=Driver_add;//8*3=24			
+				
+				
+				}
+				else if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat>=200)
+				{
+				JR_HEAT_renew=1;//进入枪口热量恢复模式
+				
+				}
+				if(JR_HEAT_renew==1)
+				{
+									if(DW_DOWN%100==0&&DW_DOWN>200)//理论一秒10发
 			M2006_targe_angle+=Driver_add;//8*3=24		
+				}
+//		if(DW_DOWN==20)
+//			M2006_targe_angle+=(Driver_add/4);//8*3=24
+//				if(DW_DOWN%100==0&&DW_DOWN>200)
+//			M2006_targe_angle+=Driver_add;//8*3=24		
 				
 			}
 
@@ -143,9 +167,10 @@ if(DR16.rc.ch4_DW<=-100)//拨上
 			{
 								DW_UP++;//没用到了
 
-		if(DW_UP==100)
-			M2006_targe_angle+=(Driver_add/10);//8*3=24
-
+//		if(DW_UP==100)
+//			M2006_targe_angle+=(Driver_add/10);//8*3=24
+									if(DW_DOWN%50==0&&DW_DOWN>200)//理论一秒20发
+			M2006_targe_angle+=Driver_add;//8*3=24		
 
 				
 			}

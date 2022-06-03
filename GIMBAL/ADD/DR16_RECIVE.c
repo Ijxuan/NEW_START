@@ -830,6 +830,25 @@ if(1)
 			send_d_16[p++]=cloud_mode.control_mode_NOW*111111;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
+	#if 1//发送枪口热量数据 
+	p=0;
+			send_d_32[p++]=ext_power_heat_data.data.shooter_id1_17mm_cooling_heat*10000;//当前角度		1
+			send_d_32[p++]=JR_HEAT_renew*11111;//最终目标角度		2
+
+			send_d_32[p++]=Vision_RawData_Yaw_Angle*10000;//视觉原始数据		333333333333 
+
+			send_d_32[p++]= (DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle)*10000;// 4 之前用这个值做目标值
+
+			send_d_32[p++]=Vision_RawData_Yaw_Angle*10000;//P_OUT		5
+			send_d_32[p++]=Yaw_IMU_Angle_pid.Error*10000;//I_OUT	666666666666
+			send_d_32[p++]=total_yaw_change*10000;//D_OUT  	7 角度换的输出值,看有木有更大
+	p=0;
+			send_d_16[p++]=send_to_yaw;//输出电压      8
+
+			send_d_16[p++]=auto_shoot_condition_show;///*热量 角度误差允许 视觉发射指令是连续 不在轨道末端 所有条件全部满足*/       	9
+			send_d_16[p++]=cloud_mode.control_mode_NOW*111111;//输出电压		10
+														//保留到小数点后四位558 320 660   bjTlta
+#endif
 }
 	
 
