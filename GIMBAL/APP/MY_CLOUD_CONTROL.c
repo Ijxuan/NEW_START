@@ -37,10 +37,10 @@ void cloud_control(void)
 
 cloud_control_mode_choose();
  scan_cloud();
- if(DR16.rc.s_left!=3)
-{
-simulation_target_yaw=	DJIC_IMU.total_yaw;
-}
+// if(DR16.rc.s_left!=3)
+//{
+//simulation_target_yaw=	DJIC_IMU.total_yaw;
+//}
  if(DR16.rc.s_left==3)
 {
 	if(DR16.rc.s_right==1)//左中右上
@@ -106,15 +106,24 @@ void cloud_control_mode_choose(void)
 //	}
 	else
 	{
-			cloud_mode.control_mode_NOW=aoto_scan_mode;
-			cloud_mode.control_mode_LAST=vision_mode;
-			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Angle_pid);
-			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Speed_pid);	
+//			cloud_mode.control_mode_NOW=aoto_scan_mode;
+//			cloud_mode.control_mode_LAST=vision_mode;
+//			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Angle_pid);
+//			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Speed_pid);	
 
 #if YAW_TEXT==1
 if(DR16.rc.s_left==3&&DR16.rc.s_right==1)//左中右上
+{
 			cloud_mode.control_mode_NOW=vision_mode;
 			cloud_mode.control_mode_LAST=aoto_scan_mode;
+}
+else
+{
+			cloud_mode.control_mode_NOW=aoto_scan_mode;
+			cloud_mode.control_mode_LAST=vision_mode;
+			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Angle_pid);
+			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Speed_pid);
+}
 #endif		
 	}
 	
