@@ -43,7 +43,7 @@ simulation_target_yaw=	DJIC_IMU.total_yaw;
 }
  if(DR16.rc.s_left==3)
 {
-	if(DR16.rc.s_right==3)
+	if(DR16.rc.s_right==1)//◊Û÷–”“…œ
 	{
 	simulation_target_yaw+= 0.018f;   // 18∂»/1000∫¡√Î
 	}
@@ -109,7 +109,13 @@ void cloud_control_mode_choose(void)
 			cloud_mode.control_mode_NOW=aoto_scan_mode;
 			cloud_mode.control_mode_LAST=vision_mode;
 			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Angle_pid);
-			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Speed_pid);			
+			P_PID_Parameter_Clear(&VISION_Yaw_IMU_Speed_pid);	
+
+#if YAW_TEXT==1
+if(DR16.rc.s_left==3&&DR16.rc.s_right==1)//◊Û÷–”“…œ
+			cloud_mode.control_mode_NOW=vision_mode;
+			cloud_mode.control_mode_LAST=aoto_scan_mode;
+#endif		
 	}
 	
 	
@@ -184,9 +190,15 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 									if(DR16.rc.s_left==3)//YAW÷·øÿ÷∆µ≤Œª
 							{
 								if(cloud_mode.control_mode_NOW==aoto_scan_mode)//…®√ËPID
+								{
 							yaw_trage_angle-=(DR16.rc.ch0/660.0)/10.0;//YAW÷·“£øÿ∆˜øÿ÷∆
 								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
 								PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch;
+								}
+								if(cloud_mode.control_mode_NOW==vision_mode)//…®√ËPID
+								{
+								yaw_trage_angle=simulation_target_yaw;
+								}
 //							CH0_TOTAL_in_con+=	DR16.rc.ch0;
 //								if(DR16.rc.ch0!=0)
 //								dr16_controul_times++;
@@ -199,7 +211,7 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 				if(cloud_mode.control_mode_NOW==vision_mode)// ”æıPID
 				{
 //					yaw_trage_angle=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;//YAW÷·“£øÿ∆˜øÿ÷∆
-//					yaw_trage_angle=YAW_TRAGET_ANGLE_TEMP;//YAW÷· ”æıøÿ÷∆
+					yaw_trage_angle=YAW_TRAGET_ANGLE_TEMP;//YAW÷· ”æıøÿ÷∆
 													
 
 				}			
@@ -310,7 +322,7 @@ void imu_angle()
 //	PITCH_MIN_angle=DJIC_IMU.total_pitch+(7450-GM6020s[3].totalAngle)/8196.0*360.0;
 	
 	PITCH_MAX_angle=DJIC_IMU.total_pitch+(5080-GM6020s[3].totalAngle)/8191.0f*360.0f;
-	PITCH_MIN_angle=DJIC_IMU.total_pitch+(3900-GM6020s[3].totalAngle)/8191.0f*360.0f;
+	PITCH_MIN_angle=DJIC_IMU.total_pitch+(4300-GM6020s[3].totalAngle)/8191.0f*360.0f;//3900
 			allow_angle=	PITCH_MAX_angle-PITCH_MIN_angle;
 
 }

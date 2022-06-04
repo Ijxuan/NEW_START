@@ -27,7 +27,24 @@ Project File Date:  06/02/2022
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'GIMBAL'
-"ins_task\GIMBAL.axf" - 0 Error(s), 0 Warning(s).
+compiling MY_CLOUD_CONTROL.c...
+compiling Vision.c...
+..\Drivers\CMSIS\DSP\Include\arm_math.h(4865): warning:  #3108-D: attribute "__packed__" does not apply here
+      __SIMD32_TYPE *vstate;
+..\Drivers\CMSIS\DSP\Include\arm_math.h(4873): warning:  #3108-D: attribute "__packed__" does not apply here
+      vstate = __SIMD32_CONST(S->state);
+..\ADD\Vision.c: 2 warnings, 0 errors
+compiling DR16_RECIVE.c...
+..\Drivers\CMSIS\DSP\Include\arm_math.h(4865): warning:  #3108-D: attribute "__packed__" does not apply here
+      __SIMD32_TYPE *vstate;
+..\Drivers\CMSIS\DSP\Include\arm_math.h(4873): warning:  #3108-D: attribute "__packed__" does not apply here
+      vstate = __SIMD32_CONST(S->state);
+..\ADD\DR16_RECIVE.c: 2 warnings, 0 errors
+compiling freertos.c...
+linking...
+Program Size: Code=105424 RO-data=4672 RW-data=2092 ZI-data=56180  
+FromELF: creating hex file...
+"ins_task\GIMBAL.axf" - 0 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -50,7 +67,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.2.0
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

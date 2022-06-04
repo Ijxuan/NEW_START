@@ -239,8 +239,8 @@ void MX_FREERTOS_Init(void) {
 #endif
 
 #if PID_PITCH_IMU
-	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 170,1.43,50,//100, 1.5, 0,
-						 240, //误差大于这个值就积分分离  550 1.9 0   -20000
+	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 165,0.2,50,//100, 1.5, 0,
+						 4, //误差大于这个值就积分分离  550 1.9 0   -20000
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
@@ -501,7 +501,7 @@ void IMU_Send(void const * argument)
   /* USER CODE BEGIN IMU_Send */
 	portTickType xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t TimeIncrement = pdMS_TO_TICKS(1); //每十毫秒强制进入总控制
+	const TickType_t TimeIncrement = pdMS_TO_TICKS(2); //每十毫秒强制进入总控制
 	/* Infinite loop */
 	for (;;)
 	{
@@ -913,7 +913,7 @@ YAW_MOTION_STATE=1;//开启小陀螺检测
 				S_T_examine();
 		cloud_control();
 
-		if (GM6020s[3].totalAngle <= 3860 && send_to_pitch < 0)
+		if (GM6020s[3].totalAngle <= 4300 && send_to_pitch < 0)//3860
 			send_to_pitch = 0;
 		if (GM6020s[3].totalAngle >= 5130 && send_to_pitch > 0)
 			send_to_pitch = 0;

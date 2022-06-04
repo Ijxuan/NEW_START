@@ -297,7 +297,7 @@ shoot_times_for_limit=0;
 			}
 #endif
 #if 1//不在末端+误差小于1度
-						if (shoot_times_for_limit<333)
+						if (shoot_times_for_limit<50)
 			{
 					if(VisionData.RawData.Beat==1&&vision_shoot_times>0)//击打标志位为1并且连续收到4帧
 					{
@@ -328,13 +328,13 @@ shoot_times_for_limit=0;
 						}
 						VisionData.RawData.Beat=0;
 					}
-					if(SHOOT_STOP_time>100)
+					if(SHOOT_STOP_time>30)
 					{
 			M2006_targe_angle=M3508s[1].totalAngle;//连续收到10次停火指令 清除拨盘目标角度累计
 					}
 	
 			}
-			else if(shoot_times_for_limit>=333)
+			else if(shoot_times_for_limit>=50)
 			{
 				whether_shoot_in__this_period=0;
 			shoot_times_for_limit=0;

@@ -193,7 +193,7 @@ bool disable_for_test_CHASSIS=0;
 float my_voltage;
 
 int stay_in_track_end_times=0;
-
+int text_times=0;
 bool send_to_vision_1=0;
 /* USER CODE END 0 */
 

@@ -228,6 +228,7 @@ extern float my_voltage;
 extern int stay_in_track_end_times;
 
 extern bool send_to_vision_1;
+ extern int text_times;
 
 /* USER CODE END Private defines */
 

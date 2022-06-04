@@ -418,7 +418,7 @@ void NM_swj(void)
 
 			send_d_32[p++]=Vision_RawData_Yaw_Angle*10000;//P_OUT		5
 			send_d_32[p++]=Yaw_IMU_Angle_pid.Error*10000;//I_OUT	666666666666
-			send_d_32[p++]=total_yaw_change*10000;//D_OUT  	7 角度换的输出值,看有木有更大
+			send_d_32[p++]=Vision_RawData_Pitch_Angle*10000;//D_OUT  	7 角度换的输出值,看有木有更大
 	p=0;
 			send_d_16[p++]=send_to_yaw;//输出电压      8
 

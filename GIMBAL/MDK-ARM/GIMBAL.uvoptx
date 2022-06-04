@@ -163,7 +163,7 @@
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>send_to_yaw</ItemText>
+          <ItemText>send_to_yaw,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
@@ -428,7 +428,7 @@
         <Ww>
           <count>55</count>
           <WinNumber>1</WinNumber>
-          <ItemText>ext_shoot_data</ItemText>
+          <ItemText>ext_shoot_data,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>56</count>
@@ -444,6 +444,16 @@
           <count>58</count>
           <WinNumber>1</WinNumber>
           <ItemText>ext_shoot_data,0x10</ItemText>
+        </Ww>
+        <Ww>
+          <count>59</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>VISION_FROM_USART1,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>60</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>text_times</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
