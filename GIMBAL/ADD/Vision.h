@@ -182,6 +182,7 @@ typedef struct
 
 extern VisionData_t VisionData;
 extern VisionSend_Cloud_t Vision_Cloud;
+extern int mode_v;
 
 void Vision_DataReceive(uint8_t *data);
 void Vision_Handler(UART_HandleTypeDef *huart);

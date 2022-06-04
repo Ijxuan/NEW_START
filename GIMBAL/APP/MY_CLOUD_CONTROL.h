@@ -23,7 +23,7 @@
 //这个范围就继续减小吧
 #define GM6020_L_SMALL 500
 
-#define YAW_TEXT 1
+#define YAW_TEXT 0
 
 #if YAW_TEXT==1
 

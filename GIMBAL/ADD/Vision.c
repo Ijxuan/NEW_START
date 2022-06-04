@@ -263,7 +263,7 @@ static void Vision_DataSend(uint8_t *data)
 //	CDC_Transmit_FS(data,18);
 
 }
-
+int mode_v=5;
 //更新发送给视觉的数据,并发送
 void Update_Vision_SendData(void)
 {
@@ -307,7 +307,7 @@ void Update_Vision_SendData(void)
 		else
 		Vision_SendBuff[i][1] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
 			
-		Vision_SendBuff[i][2] = 5;//?
+		Vision_SendBuff[i][2] = mode_v;//?
 		if(YAW_MOTION_STATE==12)
 		{//检测到小陀螺
 		Vision_SendBuff[i][2] = 3;//?

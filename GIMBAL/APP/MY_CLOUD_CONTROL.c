@@ -45,7 +45,7 @@ cloud_control_mode_choose();
 {
 	if(DR16.rc.s_right==1)//左中右上
 	{
-	simulation_target_yaw+= 0.018f;   // 18度/1000毫秒
+//	simulation_target_yaw+= 0.036f;   // 18度/1000毫秒
 	}
 	else
 	{

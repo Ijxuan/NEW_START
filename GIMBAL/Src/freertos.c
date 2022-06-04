@@ -208,14 +208,14 @@ void MX_FREERTOS_Init(void) {
 #if VISION_PID_YAW_IMU
 
 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -1000, -6.5, 1100,//
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -800, -4.5, 800,//
 						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 5000, -5000, //积分限幅，也就是积分的输出范围
 						 29990, -29990);
 						 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 13, 0.02, 5,//10 0 16//越大越陡峭10
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 50, 0.04, 0,//10 0 16//越大越陡峭10
 						 5,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
