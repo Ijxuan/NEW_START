@@ -136,9 +136,15 @@ I (..\Arithmetic\User_math.h)(0x62975F28)
 I (..\Arithmetic\User_typedef.h)(0x62976839)
 I (..\Arithmetic\FPS_Calculate.h)(0x627E282A)
 I (..\Arithmetic\spinning_top_examine.h)(0x6290DEDE)
+<<<<<<< HEAD
 F (..\APP\MY_SHOOT_CONTROL.c)(0x629BBA3B)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\application -I ..\bsp\boards -I ..\components\algorithm -I ..\components\controller -I ..\components\devices -I ..\components\support -I ..\ADD -I ..\Arithmetic -I ..\APP -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ..\Drivers\CMSIS\DSP\Include-I.\RTE\_GIMBAL-IC:\Users\86189\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\86189\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="528" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -DARM_MATH_CM4 -D__FPU_USED="1U" -D__FPU_PRESENT="1U" -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_VFP="1" -DARM_MATH_CM4 -D__CC_ARM-o ins_task\my_shoot_control.o --omf_browse ins_task\my_shoot_control.crf --depend ins_task\my_shoot_control.d)
 I (..\APP\MY_SHOOT_CONTROL.h)(0x629B8358)
 I (../Inc/main.h)(0x629CEECE)
+=======
+F (..\APP\MY_SHOOT_CONTROL.c)(0x629973A3)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\application -I ..\bsp\boards -I ..\components\algorithm -I ..\components\controller -I ..\components\devices -I ..\components\support -I ..\ADD -I ..\Arithmetic -I ..\APP -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ..\Drivers\CMSIS\DSP\Include-I.\RTE\_GIMBAL-IC:\Users\86189\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\86189\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="528" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -DARM_MATH_CM4 -D__FPU_USED="1U" -D__FPU_PRESENT="1U" -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_VFP="1" -DARM_MATH_CM4 -D__CC_ARM-o ins_task\my_shoot_control.o --omf_browse ins_task\my_shoot_control.crf --depend ins_task\my_shoot_control.d)
+I (..\APP\MY_SHOOT_CONTROL.h)(0x62997329)
+I (../Inc/main.h)(0x629754D1)
+>>>>>>> 971cd628b41f815eb858682de808efed70a81328
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x61D04B19)
 I (../Inc/stm32f4xx_hal_conf.h)(0x629754D1)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x61D04B19)
@@ -748,9 +754,15 @@ I (..\bsp\boards\user_can.h)(0x61B4AC60)
 I (../Inc/can.h)(0x629754CF)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x61D04B01)
 I (..\ADD\M3508.h)(0x61B300E4)
+<<<<<<< HEAD
 F (..\ADD\DR16_RECIVE.c)(0x629FA77D)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\application -I ..\bsp\boards -I ..\components\algorithm -I ..\components\controller -I ..\components\devices -I ..\components\support -I ..\ADD -I ..\Arithmetic -I ..\APP -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ..\Drivers\CMSIS\DSP\Include-I.\RTE\_GIMBAL-IC:\Users\86189\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\86189\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="528" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -DARM_MATH_CM4 -D__FPU_USED="1U" -D__FPU_PRESENT="1U" -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_VFP="1" -DARM_MATH_CM4 -D__CC_ARM-o ins_task\dr16_recive.o --omf_browse ins_task\dr16_recive.crf --depend ins_task\dr16_recive.d)
 I (..\ADD\DR16_RECIVE.h)(0x629FA77D)
 I (../Inc/main.h)(0x629CEECE)
+=======
+F (..\ADD\DR16_RECIVE.c)(0x62997329)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\application -I ..\bsp\boards -I ..\components\algorithm -I ..\components\controller -I ..\components\devices -I ..\components\support -I ..\ADD -I ..\Arithmetic -I ..\APP -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ..\Drivers\CMSIS\DSP\Include-I.\RTE\_GIMBAL-IC:\Users\86189\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include-IC:\Users\86189\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="528" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -DARM_MATH_CM4 -D__FPU_USED="1U" -D__FPU_PRESENT="1U" -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__TARGET_FPU_VFP="1" -DARM_MATH_CM4 -D__CC_ARM-o ins_task\dr16_recive.o --omf_browse ins_task\dr16_recive.crf --depend ins_task\dr16_recive.d)
+I (..\ADD\DR16_RECIVE.h)(0x62975C1C)
+I (../Inc/main.h)(0x629754D1)
+>>>>>>> 971cd628b41f815eb858682de808efed70a81328
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x61D04B19)
 I (../Inc/stm32f4xx_hal_conf.h)(0x629754D1)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x61D04B19)
@@ -827,7 +839,11 @@ I (..\ADD\GM6020.h)(0x61CC4C78)
 I (..\application\calibrate_task.h)(0x629756ED)
 I (..\bsp\boards\bsp_buzzer.h)(0x626D2E2D)
 I (../Inc/tim.h)(0x629754D0)
+<<<<<<< HEAD
 I (..\APP\MY_SHOOT_CONTROL.h)(0x629B8358)
+=======
+I (..\APP\MY_SHOOT_CONTROL.h)(0x62997329)
+>>>>>>> 971cd628b41f815eb858682de808efed70a81328
 I (..\components\devices\bmi088driver.h)(0x62975C28)
 I (..\Arithmetic\spinning_top_examine.h)(0x6290DEDE)
 I (..\application\Vision_Control.h)(0x629767CC)
@@ -1456,7 +1472,11 @@ I (..\APP\MY_CLOUD_CONTROL.h)(0x629FA9D5)
 I (..\ADD\Vision.h)(0x629BD746)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
 I (..\Arithmetic\CRC.h)(0x60EF2058)
+<<<<<<< HEAD
 I (..\APP\MY_SHOOT_CONTROL.h)(0x629B8358)
+=======
+I (..\APP\MY_SHOOT_CONTROL.h)(0x62997329)
+>>>>>>> 971cd628b41f815eb858682de808efed70a81328
 I (..\ADD\BEEP_MY.h)(0x61E8D5D8)
 I (..\ADD\sound_effects_task.h)(0x61DEDACF)
 I (..\ADD\buzzer_TIM_init.h)(0x5F670EBF)
