@@ -110,6 +110,8 @@ float PITCH_MIN_angle=0;
 float allow_angle=0;//可动区间
 
 float PITCH_trage_angle=0;
+float PITCH_trage_angle_motor=4500.0;
+
 int PITCH_trage_speed=0;
 
 int can1_IT_TIMES=0;

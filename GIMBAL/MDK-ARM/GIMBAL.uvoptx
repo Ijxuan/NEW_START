@@ -450,6 +450,36 @@
           <WinNumber>1</WinNumber>
           <ItemText>mode_v</ItemText>
         </Ww>
+        <Ww>
+          <count>60</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>send_to_pitch,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>61</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>PITCH_IMU_Angle_pid</ItemText>
+        </Ww>
+        <Ww>
+          <count>62</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>PITCH_trage_angle_motor,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>63</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>PITCH_trage_speed,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>64</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>PITCH_Angle_pid</ItemText>
+        </Ww>
+        <Ww>
+          <count>65</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>send_to_yaw,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -796,6 +826,36 @@
           <count>68</count>
           <WinNumber>2</WinNumber>
           <ItemText>TEXT_targe_SPEED,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>69</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>\\GIMBAL\../ADD/GM6020.c\GM6020s,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>70</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>\\GIMBAL\../Src/main.c\send_to_pitch,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>71</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>\\GIMBAL\../Src/main.c\PITCH_trage_angle_motor</ItemText>
+        </Ww>
+        <Ww>
+          <count>72</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>in_END_L</ItemText>
+        </Ww>
+        <Ww>
+          <count>73</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>CHASSIS_place</ItemText>
+        </Ww>
+        <Ww>
+          <count>74</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>in_END_R</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>

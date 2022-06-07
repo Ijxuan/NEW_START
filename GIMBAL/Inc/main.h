@@ -148,6 +148,8 @@ extern float PITCH_MIN_angle;
 extern float allow_angle;//可动区间
 
 extern float PITCH_trage_angle;
+extern float PITCH_trage_angle_motor;
+
 extern int PITCH_trage_speed;
 extern int can1_IT_TIMES;
 
