@@ -428,7 +428,7 @@
         <Ww>
           <count>55</count>
           <WinNumber>1</WinNumber>
-          <ItemText>ext_shoot_data,0x0A</ItemText>
+          <ItemText>ext_shoot_data</ItemText>
         </Ww>
         <Ww>
           <count>56</count>

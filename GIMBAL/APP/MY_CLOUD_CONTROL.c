@@ -383,8 +383,8 @@ void imu_angle()
 
 void scan_cloud(void)
 {
-	if(DR16.rc.s_left==3)//控制挡位-扫描
-//			if(DR16.rc.s_left==1)//控制挡位-扫描
+//	if(DR16.rc.s_left==3)//控制挡位-扫描
+			if(DR16.rc.s_left==1)//控制挡位-扫描
 	{
 //		if(DR16.rc.s_right==3)//控制挡位-扫描开始
 		if(Armour_lose_time>1000)//视觉1秒没锁到装甲板-扫描开始
@@ -449,23 +449,19 @@ if(scan_time%scan_speed_YWA==0)//是扫描速度的整数倍  scan_percent_YAW在0到1000之
 #if 1
 if	(in_END_R==1)
 {
-	if(GM6020s[0].readAngle>4438&&GM6020s[0].readAngle<6000)//4700-4900
+	if(GM6020s[0].readAngle>4350&&GM6020s[0].readAngle<4900)//4700-4900
 	{
 				scan_i_YAW=1;//增大模式
 							Buzzer.mode = One_times;
 
 	}
-	if(GM6020s[0].readAngle>3000&&GM6020s[0].readAngle<=4438) //3700-4000
+	if(GM6020s[0].readAngle>3700&&GM6020s[0].readAngle<=4350) //3700-4000
 	{
 				scan_i_YAW=0;//减小模式
 							Buzzer.mode = One_times;
 
 	}
-//枪口指向右柱时6020角度为4438
-	
-	//枪口指向左柱时6020角度为476
 
-	
 //	if(GM6020s[0].readAngle>=4330&&GM6020s[0].readAngle<=4700)//4000-4700
 //	{
 //					scan_i_YAW=0;//增大模式
@@ -486,14 +482,14 @@ if	(in_END_R==1)
 }
 if	(in_END_L==1)
 {		
-	//476
-		if(GM6020s[0].readAngle>=0&&GM6020s[0].readAngle<2000)//500-1200
+	
+		if(GM6020s[0].readAngle>0&&GM6020s[0].readAngle<1200)//500-1200
 	{
 				scan_i_YAW=1;//增大模式
 							Buzzer.mode = One_times;
 
 	}
-	if(GM6020s[0].readAngle>6000&&GM6020s[0].readAngle<=8191) //7000-7700
+	if(GM6020s[0].readAngle>7000&&GM6020s[0].readAngle<8191) //7000-7700
 	{
 				scan_i_YAW=0;//减小模式
 							Buzzer.mode = One_times;

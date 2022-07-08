@@ -750,7 +750,7 @@ if(1)
 	
 			send_d_16[p++]=vision_shoot_times;//射击    指令次数      8
 			send_d_16[p++]=SHOOT_STOP_time;//停止射击   指令次数       	9
-			send_d_16[p++]=ext_power_heat_data.data.shooter_id2_17mm_cooling_heat;//枪口2热量		10
+			send_d_16[p++]=ext_power_heat_data.data.shooter_id1_17mm_cooling_heat;//枪口1热量		10
 
 #endif
 #if 0//发送摩擦轮数据  中
@@ -769,7 +769,7 @@ if(1)
 	p=0;
 			send_d_16[p++]=JS_RC_TIMES;//输出电压      8
 			send_d_16[p++]=send_to_SHOOT_L;//目标角度       	9
-			send_d_16[p++]=ext_power_heat_data.data.shooter_id2_17mm_cooling_heat;//当前角度		10
+			send_d_16[p++]=ext_power_heat_data.data.shooter_id1_17mm_cooling_heat;//当前角度		10
 
 #endif
 #if 0//发送左摩擦轮数据  
@@ -828,25 +828,6 @@ if(1)
 
 			send_d_16[p++]=auto_shoot_condition_show;///*热量 角度误差允许 视觉发射指令是连续 不在轨道末端 所有条件全部满足*/       	9
 			send_d_16[p++]=cloud_mode.control_mode_NOW*111111;//输出电压		10
-														//保留到小数点后四位558 320 660   bjTlta
-#endif
-	#if 1//发送枪口热量数据 
-	p=0;
-			send_d_32[p++]=ext_power_heat_data.data.shooter_id2_17mm_cooling_heat;//当前角度		1
-			send_d_32[p++]=JR_HEAT_renew*11111;//是否回复热量		2
-
-			send_d_32[p++]=real_shoot_1s*10000;//拨盘转了多少发		333333333333 
-
-			send_d_32[p++]= M3508s[1].totalAngle;// 4 之前用这个值做目标值
-
-			send_d_32[p++]=M2006_targe_angle;//P_OUT		5
-			send_d_32[p++]=0;//I_OUT	666666666666
-			send_d_32[p++]=0;//D_OUT  	7 角度换的输出值,看有木有更大
-	p=0;
-			send_d_16[p++]=0;//输出电压      8
-
-			send_d_16[p++]=0;///*热量 角度误差允许 视觉发射指令是连续 不在轨道末端 所有条件全部满足*/       	9
-			send_d_16[p++]=0;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
 }

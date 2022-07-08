@@ -467,7 +467,7 @@ void init_task(void const * argument)
 
 	__HAL_UART_ENABLE_IT(&huart8, UART_IT_IDLE);
 
-	USART_RX_DMA_ENABLE(&huart8, SENSOR_R_DataBuff, SENSOR_BuffSize);
+	USART_RX_DMA_ENABLE(&huart8, SENSOR_L_DataBuff, SENSOR_BuffSize);
 		
 		
 //传感器2		
@@ -476,7 +476,7 @@ void init_task(void const * argument)
 
 	__HAL_UART_ENABLE_IT(&huart7, UART_IT_IDLE);
 
-	USART_RX_DMA_ENABLE(&huart7,SENSOR_L_DataBuff , SENSOR_BuffSize);
+	USART_RX_DMA_ENABLE(&huart7, SENSOR_R_DataBuff, SENSOR_BuffSize);
 
 
 	//裁判系统
@@ -858,11 +858,6 @@ void Robot_Control(void const *argument)
 					disable_for_test=0;
 				}		
 				
-		if(disable_for_test==1) //测试用,便于云台底盘分开调试
-		{
-				send_to_chassis = 0;
-		}
-
 		task_controul_times++;
 		hurt_times_ago++;//伤害计时
 
@@ -891,6 +886,11 @@ if(DR16.s_left_last!=DR16.rc.s_left)
 }
 		DR16.s_left_last=DR16.rc.s_left;
 		DR16.s_right_last=DR16.rc.s_right;
+
+		if(disable_for_test==1) //测试用,便于云台底盘分开调试
+		{
+				send_to_chassis = 0;
+		}
 
 		if(CHASSIS_trage_speed>0&&send_to_chassis<0)
 			send_to_chassis=0;

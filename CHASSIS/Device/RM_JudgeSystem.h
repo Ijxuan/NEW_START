@@ -1548,6 +1548,10 @@ void LEDWhite_MeanDelete(void);
 /*白色总控制*/
 void White_ShowOn(void);
 void White_DeleteAll(void);
+
+unsigned char Get_CRC8_Check_Sum(unsigned char *pchMessage, unsigned int dwLength, unsigned char ucCRC8);
+uint16_t Get_CRC16_Check_Sum(uint8_t *pchMessage, uint32_t dwLength, uint16_t wCRC);
+
 /***************************************/
 
 //小地图交互信息  客户端接收信息 0x0305
@@ -1558,7 +1562,7 @@ void Judge_GetMessage(uint16_t Data_Length);
 
 extern RM_Judge_t Judge_Monitor;
 extern Judge_SendRobot_t Judge_SendRobot;
-
+//extern unsigned char CRC8_TAB[256];
 extern ext_game_status_t      ext_game_status;
 extern ext_game_result_t     ext_game_result;
 extern ext_game_robot_HP_t   ext_game_robot_HP;
