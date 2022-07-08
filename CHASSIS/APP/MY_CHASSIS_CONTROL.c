@@ -4,6 +4,8 @@
 #include "math.h"
 #include "rng.h"
 #include "RM_JudgeSystem.h"
+#include "COM_TO_PC.h"
+
 //往3508增大的方向是左边,接PA8
 //往3508减小的方向是右边,接PA9
 Ramp_Struct CHASSIS;
@@ -104,6 +106,7 @@ void CHASSIS_CONTROUL(void)
 	{					
 				if(CHASSIS_R_MIN_new==1&&CHASSIS_L_MAX_new==1	)	//只有当边界值更新完了才会  真正开始巡航	
 				{
+						 C_T_P.C_model.data='3';// 正常运行
 					
 				if(DR16.rc.ch4_DW<=-400)//拨上
 				{
@@ -125,13 +128,23 @@ void CHASSIS_CONTROUL(void)
 
 //				CHASSIS_trage_speed=0;//锁死//弹道测试后取消注释	
 				}
+				else
+				{
+						 C_T_P.C_model.data='2';// 手动
+				}
 	}
 					}
 			#endif
 //	if(DR16.rc.s_left==3||DR16.rc.s_left==1)//遥控器控制  左中间
 	if(DR16.rc.s_left==3)//遥控器控制  左中间
 	{
-	CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*break_FX*CHASSIS_MAX_SPEED;//遥控器给速度目标值 二选一		
+//	CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*break_FX*CHASSIS_MAX_SPEED;
+		//遥控器给速度目标值 二选一		带刹车自动变向
+		
+	CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*CHASSIS_MAX_SPEED;
+				 C_T_P.C_model.data='1';//初始化中
+
+	
 	}
 if(0)//加上速度的斜坡
 {	

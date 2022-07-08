@@ -21,6 +21,8 @@ typedef struct
 
 typedef struct 
 {
+	FPS_type YKQ;
+
 	FPS_type Vision;
 	FPS_type IMU_angle;
 	FPS_type IMU_Gyro;

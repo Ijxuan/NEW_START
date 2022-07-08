@@ -68,3 +68,5 @@ ins_task\my_shoot_control.o: ..\Arithmetic\CRC.h
 ins_task\my_shoot_control.o: ..\application\calibrate_task.h
 ins_task\my_shoot_control.o: ..\bsp\boards\bsp_buzzer.h
 ins_task\my_shoot_control.o: ../Inc/tim.h
+ins_task\my_shoot_control.o: ..\APP\MY_CLOUD_CONTROL.h
+ins_task\my_shoot_control.o: ..\ADD\GM6020.h

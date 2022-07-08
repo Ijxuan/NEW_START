@@ -59,3 +59,4 @@ freertos1\rm_judgesystem.o: ../Core/Inc/gpio.h
 freertos1\rm_judgesystem.o: ..\add\DR16_RECIVE.h
 freertos1\rm_judgesystem.o: ..\Arithmetic\my_positionPID_bate.h
 freertos1\rm_judgesystem.o: ..\Arithmetic\FPS_Calculate.h
+freertos1\rm_judgesystem.o: ..\add\IVC.h

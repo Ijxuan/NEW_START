@@ -50,6 +50,8 @@
 #include "CAN2_SEND.h"
 #include "Sensor.h"
 #include "BREAK.h"
+#include "IVC.h"
+#include "COM_TO_PC.h"
 
 //#include "task.h"
 
@@ -310,6 +312,13 @@ void DeBug(void const * argument)
 	{
 
 		CAN2_SEND_TASK_times++;
+		if(CAN2_SEND_TASK_times%150)
+		{
+			#if I_am_sender==1
+
+//		IVC_SEND();
+#endif		
+		}
 		if(CHASSIS_L_MAX_new==1&&CHASSIS_R_MIN_new==1)	
 	{//初始化完成才有末端判断
 		
@@ -561,13 +570,19 @@ void init_task(void const * argument)
 						 //                          float alpha,
 						 50, -50, //积分限幅，也就是积分的输出范围
 						 4300, -4300);
-	P_PID_Parameter_Init(&CHASSIS_MOTOR_SPEED_pid, 15, 0.5, 0,
+//	P_PID_Parameter_Init(&CHASSIS_MOTOR_SPEED_pid, 15, 0.5, 0,
+//						 500,
+//						 //						  float max_error, float min_error,
+//						 //                          float alpha,
+//						 10000, -10000,
+//						 14000, -14000); // Yaw_IMU_Angle_pid
+
+	P_PID_Parameter_Init(&CHASSIS_MOTOR_SPEED_pid, 5, 0, 0,
 						 500,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
 						 10000, -10000,
 						 14000, -14000); // Yaw_IMU_Angle_pid
-
 #endif
 
 	I_PID_Parameter_Init(&SHOOT_L_I_PID, 20, 0.5, 1,
@@ -724,7 +739,7 @@ void Robot_Sensor(void const *argument)
 	xLastWakeTime_2 = xTaskGetTickCount();
 	const TickType_t TimeIncrement_2 = pdMS_TO_TICKS(1); //每1毫秒强制进入
 
-
+com_to_pc_INIT();
 	/* Infinite loop */
 	for (;;)
 	{
@@ -768,7 +783,7 @@ if(ext_game_robot_state.data.robot_id== 107)//自己蓝色
 		
 }
  times_x++;
- if(times_x>2)
+ if(times_x>0)
  {
 				Get_Encoder_Value(&Chassis_Encoder, &htim5);
 	 
@@ -789,9 +804,10 @@ if(ext_game_robot_state.data.robot_id== 107)//自己蓝色
 		if (DR16.rc.s_right != 3) //是否上位机
 		{
 			times_i++;
-			if (times_i > 10) // 5ms发一次
+			if (times_i > 100) // 100ms发一次
 			{
-					  	   NM_swj();
+//					  	   NM_swj();
+				com_to_pc_control();
 				times_i = 0;
 			}
 		}
@@ -892,17 +908,23 @@ if(DR16.s_left_last!=DR16.rc.s_left)
 				send_to_chassis = 0;
 		}
 
-		if(CHASSIS_trage_speed>0&&send_to_chassis<0)
-			send_to_chassis=0;
-		if(CHASSIS_trage_speed<0&&send_to_chassis>0)
-			send_to_chassis=0;
+//		if(CHASSIS_trage_speed>0&&send_to_chassis<0)
+//			send_to_chassis=0;
+//		if(CHASSIS_trage_speed<0&&send_to_chassis>0)
+//			send_to_chassis=0;
 		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
 		{
 			CHASSIS_MOTOR_SPEED_pid.Integral=0;
 			send_to_chassis = 0;
 			CHASSIS_trage_speed=0;
 			send_to_break=0;
-			
+			send_to_break_text=0;
+		 C_T_P.C_model.data='0';
+				if (DR16.rc.ch4_DW >= 200)  //拨下
+				{
+				break_basic.STATE =0;
+				}
+
 		}
 
 		M3508s1_setCurrent(0, 0, send_to_break, send_to_chassis);

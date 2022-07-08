@@ -2,6 +2,8 @@
 #include "math.h"
 #include "rng.h"
 #include "RM_JudgeSystem.h"
+#include "COM_TO_PC.h"
+
 int speed_has_change=0;
 int last_Speed=0;
 int xunen_times=0;
@@ -44,10 +46,12 @@ if(speed_has_change==0)
 					
 								CHASSIS_trage_speed=-test_speed;
 				stop_CH_OP_BC_END=0;
+	C_T_P.C_motion.data='4';//自动_撞柱失能解除
 
 				}
 				else
 				{
+	C_T_P.C_motion.data='3';//自动_撞柱失能触发
 					
 						CHASSIS_trage_speed=-test_speed;
 			stop_CH_OP_BC_END=1;
@@ -61,6 +65,7 @@ else
 	stop_CH_OP_BC_END=0;
 //	CHASSIS_trage_angle=9900000;
 				CHASSIS_trage_speed=test_speed*Chassis_PowerLimit;
+	C_T_P.C_motion.data='4';//自动_撞柱失能解除
 
 }
 	if(	xunen_times>3000)//说明出了意外,肯定是卡死了,不管了,直接走
@@ -101,10 +106,12 @@ if(speed_has_change==0)
 	stop_CH_OP_BC_END=0;
 					CHASSIS_trage_speed=test_speed*Chassis_PowerLimit;
 //				CHASSIS_trage_speed=4000;
+	C_T_P.C_motion.data='4';//自动_撞柱失能解除
 
 				}
 				else
 				{
+	C_T_P.C_motion.data='3';//自动_撞柱失能触发
 					
 				CHASSIS_trage_speed=test_speed;
 			stop_CH_OP_BC_END=1;
@@ -125,6 +132,7 @@ else
 	stop_CH_OP_BC_END=0;
 //	CHASSIS_trage_angle=-9900000;
 					CHASSIS_trage_speed=-test_speed*Chassis_PowerLimit;
+	C_T_P.C_motion.data='4';//自动_撞柱失能解除
 
 }
 	if(	xunen_times>3000)//说明出了意外,肯定是卡死了,不管了,直接走
@@ -138,6 +146,7 @@ else
 			else//不在两个柱子之间
 			{
 //				xunen_percent=1.5;
+	C_T_P.C_motion.data='0';//自动_撞柱失能解除
 
 				stop_CH_OP_BC_END_times++;
 				if(stop_CH_OP_BC_END_times>2000)//避免蓄能没到时间就出了轨道边界判断

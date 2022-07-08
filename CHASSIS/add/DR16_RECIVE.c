@@ -111,7 +111,7 @@ void DR16_Process(uint8_t *pData)
 		DR16.rc.ch4_DW = 0;
 		CH_TOTAL+=DR16.rc.ch0 ;
 send_to_C=1;
-	
+Get_FPS(&FPS_ALL.YKQ.WorldTimes,&FPS_ALL.YKQ.FPS);
 //				if(DR16.rc.s_left==3)
 ////				targe_angle=-20000;
 //				if(DR16.rc.s_left==1)

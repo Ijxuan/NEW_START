@@ -107,7 +107,7 @@ void Updata_VisionData_Hand(void)
 		VisionData.DataUpdate_Flag = 0;
 
 		//视觉深度：单位mm
-		VisionData_Hand.Vision_RawData.Depth = VisionData.RawData.Depth;
+//		VisionData_Hand.Vision_RawData.Depth = VisionData.RawData.Depth;
 
 //		if (Cloud.real_way == IMU)//上次是视觉控制,这次切换成陀螺仪控制
 //		{
@@ -136,12 +136,12 @@ void Updata_VisionData_Hand(void)
 //			}
 //		}
 		//数据更新成功，但是却无识别到装甲板,保存上一刻的数据
-		//即使接收到错误数据还是保存上一刻的数据
-		//保证切换时更加丝滑
-		if (VisionData.RawData.Depth == 0 || VisionData.RawData.Armour == 0 || VisionData.Offline_Flag == 1)
+		//即使接收到错误数据还是保存上一刻的数据   			VisionData_Hand.Vision_RawData.Depth = 0.0f;
+
+		//保证切换时更加丝滑    VisionData.RawData.Depth == 0 ||
+		if ( VisionData.RawData.Armour == 0 || VisionData.Offline_Flag == 1)
 		{
 			//角度保存为上一刻的值
-			VisionData_Hand.Vision_RawData.Depth = 0.0f;
 			VisionData_Hand.Vision_RawData.Yaw_Angle = 0.0f;
 			VisionData_Hand.Vision_RawData.Pitch_Angle = 0.0f;
 

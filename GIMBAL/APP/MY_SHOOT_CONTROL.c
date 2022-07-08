@@ -6,9 +6,11 @@
 #include "my_positionPID_bate.h"
 #include "Vision.h"
 #include "calibrate_task.h"
+#include "MY_CLOUD_CONTROL.h"
 
 
 #define SHOOT_SPEED_HIGH 6700//射速 高
+
 int shoot_speed_text=6750;
 int SHOOT=0;
 int SHOOT_from_V=0;
@@ -28,6 +30,7 @@ bool weather_error_less_than_1=0;
 allow_auto_shoot auto_shoot_condition;
 int auto_shoot_condition_show;//自动射击条件展现
 
+bool heat_in_renew=0;
 void shoot_control(void)
 {
 	if(in_END==0&&in_MID==1)
@@ -57,7 +60,7 @@ void shoot_control(void)
 	    auto_shoot_condition.weather_angle_error_less_than_1=0;	//角度误差小于一		
 	}
 	
-	if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<200)//热量没超过200
+	if(ext_power_heat_data.data.shooter_id2_17mm_cooling_heat<200)//热量没超过200
 	{
 		auto_shoot_condition.heat_allow=1;//热量允许
 	}
@@ -65,8 +68,14 @@ void shoot_control(void)
 	{
 		auto_shoot_condition.heat_allow=0;//热量允许		
 	}
-	
-	
+		if(ext_power_heat_data.data.shooter_id2_17mm_cooling_heat>=200&&heat_in_renew==0)//热量没超过200
+		{
+			heat_in_renew=1;
+		}
+		if(heat_in_renew==1&&ext_power_heat_data.data.shooter_id2_17mm_cooling_heat<100)
+		{
+		heat_in_renew=0;
+		}
 	if(auto_shoot_condition.heat_allow==1/*热量允许*/
 	 &&auto_shoot_condition.weather_angle_error_less_than_1==1	/*角度误差小于一*/ 
 	 &&auto_shoot_condition.vision_shoot_is_continuous==1/*视觉发射指令是连续的*/
@@ -89,7 +98,7 @@ void shoot_control(void)
 	if(auto_shoot_condition.not_in_track_end==1)
 		auto_shoot_condition_show+=1000;
 	if(auto_shoot_condition.ALL_condition_satisfaction==1)
-		auto_shoot_condition_show+=10000;
+		auto_shoot_condition_show+=10000;//DEBUG
 	
 			if(DR16.rc.s_left==2)//遥控器左下 激光瞄准控制
 			{	
@@ -98,6 +107,7 @@ void shoot_control(void)
 						if(DR16.rc.ch4_DW<=-100)//拨上
 			{		
             HAL_GPIO_WritePin(RED_GPIO_Port,RED_Pin,GPIO_PIN_RESET);
+      Buzzer.mode = Zero_times;
 
 			}
 			if(DR16.rc.ch4_DW>=200)//拨下
@@ -126,15 +136,16 @@ void shoot_control(void)
 						DW_FREE++;
 						DW_UP=0;DW_DOWN=0;
 							M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除
-
 					}	
 if(DR16.rc.ch4_DW>=200)//拨下
 			{	
 			DW_DOWN++;	
 		if(DW_DOWN==20)
-			M2006_targe_angle+=(Driver_add/4);//8*3=24
+						M2006_targe_angle+=Driver_add*2;//8*3=24		
+
+//			M2006_targe_angle+=(Driver_add/4);//8*3=24
 				if(DW_DOWN%100==0&&DW_DOWN>200)
-			M2006_targe_angle+=Driver_add;//8*3=24		
+			M2006_targe_angle+=Driver_add*3;//8*3=24		
 				
 			}
 
@@ -162,7 +173,8 @@ if(DR16.rc.ch4_DW<=-100)//拨上
 
 //									if(DR16.rc.ch4_DW<=-100)//拨上
 //			{		
-	if(DR16.rc.s_right==3||DR16.rc.s_right==2)
+//	if(DR16.rc.s_right==3||DR16.rc.s_right==2)
+	if(DR16.rc.s_right==2)
 	{
 M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除
 shoot_times_for_limit=0;
@@ -172,7 +184,26 @@ shoot_times_for_limit=0;
 		{
 			targe_shoot_number=JS_RC_TIMES+every_shoot_number;
 		}
+		if(DR16.rc.s_right==3)//在进入全自动前加了一个手动
+		{
+			if(DR16.rc.ch4_DW<=50&&DR16.rc.ch4_DW>=-50)//拨下
+			{
+			DW_DOWN=0;
+			}
+			
+if(DR16.rc.ch4_DW>=200)//拨下
+			{	
+			DW_DOWN++;	
+		if(DW_DOWN==20)
+						M2006_targe_angle+=Driver_add;//8*3=24		
 
+//			M2006_targe_angle+=(Driver_add/4);//8*3=24
+				if(DW_DOWN%250==0&&DW_DOWN>500)
+			M2006_targe_angle+=Driver_add*1;//8*3=24	 6	
+				
+			}
+			
+		}
 		if(DR16.rc.s_right==1)
 		{
 			shoot_times_for_limit++;
@@ -297,7 +328,10 @@ shoot_times_for_limit=0;
 			}
 #endif
 #if 1//不在末端+误差小于1度
-						if (shoot_times_for_limit<333)
+
+if(heat_in_renew==0)//热量没在回复,一秒20发
+{
+						if (shoot_times_for_limit<1000)
 			{
 					if(VisionData.RawData.Beat==1&&vision_shoot_times>0)//击打标志位为1并且连续收到4帧
 					{
@@ -312,9 +346,107 @@ shoot_times_for_limit=0;
 						}
 						if(disable_for_test_CHASSIS==0)
 						{
-						if(in_MID==1&&weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
+								if(key_message.game_state_progress==4)
+	{
+		if(key_message.our_outpost_is_live==1)
+		
+		{//前哨战存活
+//								if(in_MID==1&&weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
+								if(weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
+//去掉了在在轨道末端不能开火的限制条件,
+			{
+														M2006_targe_angle+=Driver_add*1;//8*3=24  4*1 打一发
+//													VisionData.RawData.Beat=0;
+
+						whether_shoot_in__this_period=1;
+								}
+		
+		}
+		else
+		{
+									if(weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
+									{
+//		if(CHASSIS_place[1]==0)
+//		{
+									M2006_targe_angle+=Driver_add*10;//8*3=24  打一发
+//													VisionData.RawData.Beat=0;
+
+						whether_shoot_in__this_period=1;
+
+		
+//		}
+		if(CHASSIS_place[1]==1&&fabs(DJIC_IMU.total_pitch-jia_ZJ_PITCH)>3.5)
+		{
+//											M2006_targe_angle+=Driver_add*10;//8*3=24  打一发
+//													VisionData.RawData.Beat=0;
+
+						whether_shoot_in__this_period=1;
+		}
+										}
+		}
+	}
+//						if(in_MID==1&&weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
+//						{
+//						M2006_targe_angle+=Driver_add*10;//8*3=24  打一发
+////													VisionData.RawData.Beat=0;
+
+//						whether_shoot_in__this_period=1;
+//						}
+					    }
+						else if(disable_for_test_CHASSIS==1)
 						{
-						M2006_targe_angle+=Driver_add;//8*3=24  打一发
+//													if(whether_shoot_in__this_period==0)//不在末端in_MID==1&&
+
+						if(weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
+						{
+//							if(CHASSIS_place[1]==0)
+//							{
+									M2006_targe_angle+=Driver_add*10;//8*3=24  打一发  500ms一周期  一秒10发 一秒4发
+//													VisionData.RawData.Beat=0;
+
+						whether_shoot_in__this_period=1;	
+							
+//-							if(fabs(DJIC_IMU.total_pitch-jia_ZJ_PITCH)>3.5&&CHASSIS_place[1]==1)
+							
+//{							M2006_targe_angle+=Driver_add*5;//8*3=24  打一发
+//													VisionData.RawData.Beat=0;
+
+//						whether_shoot_in__this_period=1;
+//}
+						}	
+						}
+//						VisionData.RawData.Beat=0;
+					}
+//]=-
+	
+			}
+			else if(shoot_times_for_limit>=1000)
+			{
+				whether_shoot_in__this_period=0;
+			shoot_times_for_limit=0;
+			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
+			}
+}
+else if(heat_in_renew==1)//热量限制
+{
+						if (shoot_times_for_limit<1000)
+			{
+					if(VisionData.RawData.Beat==1&&vision_shoot_times>0)//击打标志位为1并且连续收到4帧
+					{
+						SHOOT_from_V++;
+						if(VISION_Yaw_IMU_Angle_pid.Error>2||VISION_Yaw_IMU_Angle_pid.Error<-2)
+						{
+						weather_error_less_than_1=0;	
+						}
+						else//误差绝对值小于1
+						{
+						weather_error_less_than_1=1;	
+						}
+						if(disable_for_test_CHASSIS==0)
+						{
+						if(weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
+						{
+						M2006_targe_angle+=Driver_add*10;//8*3=24  打一发
 						whether_shoot_in__this_period=1;
 						}
 					    }
@@ -322,24 +454,28 @@ shoot_times_for_limit=0;
 						{
 						if(weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
 						{
-						M2006_targe_angle+=Driver_add;//8*3=24  打一发
+						M2006_targe_angle+=Driver_add*10;//8*3=24  打一发
 						whether_shoot_in__this_period=1;
+												VisionData.RawData.Beat=0;
+
 						}	
 						}
-						VisionData.RawData.Beat=0;
+//						VisionData.RawData.Beat=0;
 					}
-					if(SHOOT_STOP_time>100)
-					{
-			M2006_targe_angle=M3508s[1].totalAngle;//连续收到10次停火指令 清除拨盘目标角度累计
-					}
+//					if(SHOOT_STOP_time>30)
+//					{
+//			M2006_targe_angle=M3508s[1].totalAngle;//连续收到10次停火指令 清除拨盘目标角度累计
+//					}
 	
 			}
-			else if(shoot_times_for_limit>=333)
+			else if(shoot_times_for_limit>=1000)
 			{
 				whether_shoot_in__this_period=0;
 			shoot_times_for_limit=0;
 			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
 			}
+
+}
 #endif
 #if 0
 						if (shoot_times_for_limit<500)

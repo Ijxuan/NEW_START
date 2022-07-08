@@ -52,7 +52,7 @@ void break_init(void) {
       BREAK_SPEED_pid.Max_result = 2000;
       BREAK_SPEED_pid.Min_result = -2000;
       M2006_targe_angle = M3508s[BREAK_ID].totalAngle + 999;
-      if (M2006_init_times > 200)  //给200*3=600ms 用来起步
+      if (M2006_init_times > 500)  //给200*3=600ms 用来起步
       {
         if (abs(M2006_init_change_angle) < 200)  //角度变化小于200
         {
@@ -67,7 +67,7 @@ void break_init(void) {
       BREAK_SPEED_pid.Max_result = 2000;
       BREAK_SPEED_pid.Min_result = -2000;
       M2006_targe_angle = M3508s[BREAK_ID].totalAngle - 999;
-      if (M2006_init_times > 200)  //给200*3=600ms 用来起步
+      if (M2006_init_times > 500)  //给200*3=600ms 用来起步
       {
         if (abs(M2006_init_change_angle) < 200)  //角度变化小于200
         {
@@ -175,7 +175,10 @@ M2006_targe_speed=P_PID_bate(&BREAK_ANGLE_pid,M2006_targe_angle,M3508s[BREAK_ID]
 	
 	
 send_to_break=P_PID_bate(&BREAK_SPEED_pid,M2006_targe_speed,M3508s[BREAK_ID].realSpeed);
+//	M2006_targe_angle_text+=DR16.rc.ch1/10;
+//	M2006_targe_speed=P_PID_bate(&BREAK_ANGLE_pid,M2006_targe_angle_text,M3508s[BREAK_ID].totalAngle);//M2006_targe_speed应该大于0
 
+//send_to_break_text=P_PID_bate(&BREAK_SPEED_pid,M2006_targe_speed,M3508s[BREAK_ID].realSpeed);
 }
 
 

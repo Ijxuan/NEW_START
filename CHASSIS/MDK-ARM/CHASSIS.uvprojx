@@ -717,6 +717,16 @@
               <FileType>1</FileType>
               <FilePath>..\add\Sensor.c</FilePath>
             </File>
+            <File>
+              <FileName>IVC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\add\IVC.c</FilePath>
+            </File>
+            <File>
+              <FileName>COM_TO_PC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\add\COM_TO_PC.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

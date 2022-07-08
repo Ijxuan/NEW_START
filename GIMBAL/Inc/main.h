@@ -108,6 +108,7 @@ void Error_Handler(void);
 
 //#define OLED_RST_Pin GPIO_PIN_10
 //#define OLED_RST_GPIO_Port GPIOB
+#define SHOOT_HIGH_HEAT_TEXT 0// 高热量 
 
 extern bool ins_ok;
 extern int controul_times;
@@ -148,6 +149,8 @@ extern float PITCH_MIN_angle;
 extern float allow_angle;//可动区间
 
 extern float PITCH_trage_angle;
+extern float PITCH_trage_angle_motor;
+
 extern int PITCH_trage_speed;
 extern int can1_IT_TIMES;
 
@@ -169,6 +172,8 @@ extern int STATUS_complete_update_TIMES;
 extern int HEAT_complete_update_TIMES;//裁判系统热量信息更新成功次数
 extern int place_complete_update_TIMES;//裁判系统热量信息更新成功次数
 
+extern int HP_complete_update_TIMES;//裁判系统状态信息更新成功次数
+extern int GAME_STATE_update_TIMES;//裁判系统比赛状态信息更新成功次数
 
 extern int DDR16_PART_ONE_TIMES;
 extern int DDR16_PART_TWO_TIMES;
@@ -228,6 +233,28 @@ extern float my_voltage;
 extern int stay_in_track_end_times;
 
 extern bool send_to_vision_1;
+ extern int text_times;
+
+ extern int hurt_times_ago;
+ extern int laoliu_gjiwo_times_ago;//老六攻击我
+
+extern float jia_ZJ_YAW;
+extern float jia_ZJ_PITCH;
+ extern bool vision_beats_give_to_jia;
+
+/*假装甲要用到GEBIN*/
+extern  int8_t whether_use_fake_armor;
+ extern int fake_armor_init_angle_6020;
+extern int fake_armor_init_place_encoder;
+ extern int fake_armor_vertical_place_encoder;
+
+extern int fake_armor_init_vision_deepth;/*mm*/
+extern int fake_armor_vertica_distance;/*垂直距离mm*/
+extern float fake_armor_now_angle_IMU;
+extern float YAW_TRAGET_ANGLE_TEMP_FAKE_MOTO;
+extern float YAW_TRAGET_ANGLE_TEMP_FAKE_IMU;
+
+extern float send_to_pitch_before;
 
 /* USER CODE END Private defines */
 

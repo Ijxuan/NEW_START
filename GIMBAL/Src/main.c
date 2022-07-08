@@ -110,6 +110,8 @@ float PITCH_MIN_angle=0;
 float allow_angle=0;//可动区间
 
 float PITCH_trage_angle=0;
+float PITCH_trage_angle_motor=4500.0;
+
 int PITCH_trage_speed=0;
 
 int can1_IT_TIMES=0;
@@ -131,9 +133,13 @@ int STATUS_PART_TWO_TIMES=0;
 int STATUS_PART_THREE_TIMES=0;
 int STATUS_PART_FOUR_TIMES=0;
 int STATUS_complete_update_TIMES=0;//裁判系统状态信息更新成功次数
+
+int HP_complete_update_TIMES=0;//裁判系统状态信息更新成功次数
+
 int HEAT_complete_update_TIMES=0;//裁判系统热量信息更新成功次数
 int place_complete_update_TIMES=0;//裁判系统热量信息更新成功次数
 
+int GAME_STATE_update_TIMES=0;//裁判系统比赛状态信息更新成功次数
 
 int DDR16_PART_ONE_TIMES=0;
 int DDR16_PART_TWO_TIMES=0;
@@ -193,8 +199,32 @@ bool disable_for_test_CHASSIS=0;
 float my_voltage;
 
 int stay_in_track_end_times=0;
-
+int text_times=0;
 bool send_to_vision_1=0;
+
+int hurt_times_ago=100000;
+int laoliu_gjiwo_times_ago=100000;//老六攻击我
+float jia_ZJ_YAW=0;
+float jia_ZJ_PITCH=-40.0;
+bool vision_beats_give_to_jia=0;
+
+/*假装甲要用到GEBIN*/
+ int8_t whether_use_fake_armor=0;
+int fake_armor_init_angle_6020=0;
+int fake_armor_init_place_encoder=0;
+int fake_armor_vertical_place_encoder=0;
+
+int fake_armor_init_vision_deepth=0;/*mm*/
+int fake_armor_vertica_distance=0;/*垂直距离mm*/
+
+float fake_armor_now_angle_IMU=0.0;
+
+float YAW_TRAGET_ANGLE_TEMP_FAKE_MOTO;
+float YAW_TRAGET_ANGLE_TEMP_FAKE_IMU;
+
+float send_to_pitch_before=0;
+/*假装甲要用到END*/
+
 /* USER CODE END 0 */
 
 /**

@@ -91,6 +91,8 @@ extern int CHASSIS_trage_angle;//底盘的目标角度
 extern int send_to_SHOOT_R;//发送给右发射摩擦轮的数据
 extern int send_to_SHOOT_L;//发送给左发射摩擦轮的数据
 extern int send_to_driver;//发送给拨盘电机的数据
+extern int send_to_break_text;//发送给底盘的数据
+extern long M2006_targe_angle_text;
 
 extern int CHASSIS_MAX_SPEED;//底盘最大速度
 

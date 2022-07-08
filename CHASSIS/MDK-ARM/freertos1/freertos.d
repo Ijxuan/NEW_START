@@ -81,3 +81,5 @@ freertos1\freertos.o: ..\APP\CHASSIS_CONTROL_2.h
 freertos1\freertos.o: ..\BSP\CAN2_SEND.h
 freertos1\freertos.o: ..\add\Sensor.h
 freertos1\freertos.o: ..\APP\BREAK.h
+freertos1\freertos.o: ..\add\IVC.h
+freertos1\freertos.o: ..\add\COM_TO_PC.h

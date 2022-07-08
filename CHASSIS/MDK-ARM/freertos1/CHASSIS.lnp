@@ -60,6 +60,8 @@
 "freertos1\dr16_can2_send.o"
 "freertos1\can2_send.o"
 "freertos1\sensor.o"
+"freertos1\ivc.o"
+"freertos1\com_to_pc.o"
 "freertos1\my_positionpid_bate.o"
 "freertos1\my_incrementpid_bate.o"
 "freertos1\crc.o"

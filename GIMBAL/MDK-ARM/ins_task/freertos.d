@@ -61,6 +61,17 @@ ins_task\freertos.o: ..\bsp\boards\bsp_buzzer.h
 ins_task\freertos.o: ../Inc/tim.h
 ins_task\freertos.o: ..\application\INS_task.h
 ins_task\freertos.o: ..\application\led_flow_task.h
+ins_task\freertos.o: ../Inc/usbd_cdc_if.h
+ins_task\freertos.o: ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h
+ins_task\freertos.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
+ins_task\freertos.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h
+ins_task\freertos.o: ../Inc/usbd_conf.h
+ins_task\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+ins_task\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+ins_task\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+ins_task\freertos.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h
+ins_task\freertos.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
+ins_task\freertos.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
 ins_task\freertos.o: ..\components\devices\Debug_DataScope.h
 ins_task\freertos.o: ../Inc/usart.h
 ins_task\freertos.o: ..\components\devices\DJI_IMU.h
@@ -75,7 +86,6 @@ ins_task\freertos.o: ..\Arithmetic\my_positionPID_bate.h
 ins_task\freertos.o: ..\ADD\GM6020.h
 ins_task\freertos.o: ..\APP\MY_CLOUD_CONTROL.h
 ins_task\freertos.o: ..\ADD\Vision.h
-ins_task\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ins_task\freertos.o: ..\Arithmetic\CRC.h
 ins_task\freertos.o: ..\APP\MY_SHOOT_CONTROL.h
 ins_task\freertos.o: ..\ADD\BEEP_MY.h
@@ -83,7 +93,6 @@ ins_task\freertos.o: ..\ADD\sound_effects_task.h
 ins_task\freertos.o: ..\ADD\buzzer_TIM_init.h
 ins_task\freertos.o: ..\ADD\bsp_buzzer_driver.h
 ins_task\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
-ins_task\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ins_task\freertos.o: ..\Arithmetic\FPS_Calculate.h
 ins_task\freertos.o: ..\bsp\boards\bsp_adc.h
 ins_task\freertos.o: ..\ADD\oled.h

@@ -88,7 +88,7 @@ uint8_t Vision_SendBuff[5][18] = {'S', '0', '7', '0', '0', '0', '0', '0', '0', '
 bool shoot_last=0;
 void Vision_DataReceive(uint8_t *data)
 {
-	#if 1
+	#if 0
 	//进行CRC校验
 	uint8_t CRCBuffer = Checksum_CRC8(data, 13 - 2);
 
@@ -159,34 +159,59 @@ YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;
 	//视觉离线检测位
 	VisionData.Offline_Detec++;
 	#endif
-		#if 0
+		#if 1
 			//进行CRC校验
-	uint8_t CRCBuffer = Checksum_CRC8(data, 15 - 2);
-
+	uint8_t CRCBuffer = Checksum_CRC8(data+1, 15 - 5);
+text_times++;
 	//将视觉发送过来的13个8位数据遍历一遍
-	for (uint8_t i = 0; i < 15; i++)
+	for (uint8_t i = 0; i < 13; i++)
 	{
 		VisionData.RawData.VisionRawData[i] = data[i];
 	}
 		//				//Yaw轴：单位 角度° 转成 机械角度(码盘值)
-			Vision_RawData_Yaw_Angle = (float)VisionData.RawData.Yaw_Angle / 100.0f;
+			Vision_RawData_Yaw_Angle =-1.0f* (float)VisionData.RawData.Yaw_Angle ;
 //			//Pitch轴：
-			Vision_RawData_Pitch_Angle = (float)VisionData.RawData.Pitch_Angle / 100.0f;
+			Vision_RawData_Pitch_Angle = (float)VisionData.RawData.Pitch_Angle ;
+	#if SHOOT_HIGH_HEAT_TEXT
+VisionData.RawData.Armour=1;
+VisionData.RawData.Beat=1;
+	Vision_RawData_Pitch_Angle=0;
+	Vision_RawData_Yaw_Angle=0;
+#endif
 	
+	
+	#if USE_MOTOR_angle==1
+
+//	if(DR16.rc.s_left==1)
+	PITCH_TRAGET_ANGLE_TEMP=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191;
+PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191;
+
+#endif
+	#if USE_MOTOR_angle==0
+PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch-Vision_RawData_Pitch_Angle;
+
+
+#endif
+YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;
 	if(abs(Vision_RawData_Pitch_Angle)>30)//PITCH轴接收到的值 绝对值 超过30,判断为错误 归零
 {
 	Vision_RawData_Pitch_Angle=0;
 }
+    vision_beats_give_to_jia=VisionData.RawData.Beat;
 	if(VisionData.RawData.Beat==1&&shoot_last==1)//连续两帧,从第二帧开始累加
 	vision_shoot_times++;
 	else
 	vision_shoot_times=0;
 	
+		shoot_last=VisionData.RawData.Beat;
+
 	if (CRCBuffer == VisionData.RawData.crc)
 	crc_right=1;
 	else 
 	crc_right=0;
 	
+		Get_FPS(&FPS_ALL.Vision.WorldTimes,   &FPS_ALL.Vision.FPS);
+
 		if (VisionData.RawData.Start_Tag != 'S' || VisionData.RawData.End_Tag != 'E')
 	{
 		vision_rc_error++;
@@ -198,6 +223,8 @@ YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;
 	{
 		vision_rc_right++;
 	}
+		//视觉离线检测位
+	VisionData.Offline_Detec++;
 		#endif
 
 }
@@ -257,7 +284,7 @@ static void Vision_DataSend(uint8_t *data)
 //	CDC_Transmit_FS(data,18);
 
 }
-
+int mode_v=6;
 //更新发送给视觉的数据,并发送
 void Update_Vision_SendData(void)
 {
@@ -301,12 +328,12 @@ void Update_Vision_SendData(void)
 		else
 		Vision_SendBuff[i][1] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
 			
-		Vision_SendBuff[i][2] = 5;//?
+		Vision_SendBuff[i][2] = mode_v;//?
 		if(YAW_MOTION_STATE==12)
 		{//检测到小陀螺
-		Vision_SendBuff[i][2] = 3;//?
+		Vision_SendBuff[i][2] = 5;//?
 		}
-		
+		//2  5  陀螺 6预测  1基础自瞄  
 //		if(stay_in_track_end_times>50&&stay_in_track_end_times<150)//在轨道末端,并且不超过1.5秒,超过1.5s可能是在轨道末端失能了
 //		{
 //		Vision_SendBuff[i][2] = 1;		//关掉预测

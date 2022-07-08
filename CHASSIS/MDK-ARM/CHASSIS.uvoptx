@@ -582,6 +582,136 @@
           <WinNumber>2</WinNumber>
           <ItemText>test_speed,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>40</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>IVC_RC_DATA_2,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>41</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>IVC_SEND_DATA_2,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>42</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>break_basic</ItemText>
+        </Ww>
+        <Ww>
+          <count>43</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>send_to_break,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>44</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>M3508s,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>45</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>BREAK_ANGLE_pid</ItemText>
+        </Ww>
+        <Ww>
+          <count>46</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>CHASSIS_MOTOR_SPEED_pid</ItemText>
+        </Ww>
+        <Ww>
+          <count>47</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>M3508s</ItemText>
+        </Ww>
+        <Ww>
+          <count>48</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>zdcsjc</ItemText>
+        </Ww>
+        <Ww>
+          <count>49</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>CHASSIS_MAX_SPEED,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>50</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>CHASSIS_MOTOR_SPEED_pid,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>51</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>init_times,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>52</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>CHASSIS_R_MIN_new</ItemText>
+        </Ww>
+        <Ww>
+          <count>53</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>CHASSIS_trage_speed,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>54</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>CHASSIS_L_MAX_new</ItemText>
+        </Ww>
+        <Ww>
+          <count>55</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>send_to_chassis,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>56</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>stop_CH_OP_BC_LESS</ItemText>
+        </Ww>
+        <Ww>
+          <count>57</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>stop_CH_OP_BC_END</ItemText>
+        </Ww>
+        <Ww>
+          <count>58</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>stop_CH_OP_BC_BREAK</ItemText>
+        </Ww>
+        <Ww>
+          <count>59</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Random_CHASSIS_CHOOSE</ItemText>
+        </Ww>
+        <Ww>
+          <count>60</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Cruise_CHASSIS_CHOOSE</ItemText>
+        </Ww>
+        <Ww>
+          <count>61</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>CHASSIS_R_MIN_by_ENCODER,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>62</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Chassis_Encoder.totalLine,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>63</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>send_data,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>64</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>send_total_bit</ItemText>
+        </Ww>
+        <Ww>
+          <count>65</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>send_begin</ItemText>
+        </Ww>
       </WatchWindow2>
       <MemoryWindow1>
         <Mm>
@@ -597,7 +727,7 @@
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
-        <aLwin>1</aLwin>
+        <aLwin>0</aLwin>
         <aCover>0</aCover>
         <aSer1>0</aSer1>
         <aSer2>0</aSer2>
@@ -1429,6 +1559,30 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+    <File>
+      <GroupNumber>7</GroupNumber>
+      <FileNumber>62</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\add\IVC.c</PathWithFileName>
+      <FilenameWithoutPath>IVC.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>7</GroupNumber>
+      <FileNumber>63</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\add\COM_TO_PC.c</PathWithFileName>
+      <FilenameWithoutPath>COM_TO_PC.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
   </Group>
 
   <Group>
@@ -1439,7 +1593,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>62</FileNumber>
+      <FileNumber>64</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1451,7 +1605,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>63</FileNumber>
+      <FileNumber>65</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1463,7 +1617,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>64</FileNumber>
+      <FileNumber>66</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1475,7 +1629,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>65</FileNumber>
+      <FileNumber>67</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1487,7 +1641,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>66</FileNumber>
+      <FileNumber>68</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1499,7 +1653,7 @@
     </File>
     <File>
       <GroupNumber>8</GroupNumber>
-      <FileNumber>67</FileNumber>
+      <FileNumber>69</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1519,7 +1673,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>68</FileNumber>
+      <FileNumber>70</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -1539,7 +1693,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>10</GroupNumber>
-      <FileNumber>69</FileNumber>
+      <FileNumber>71</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>

@@ -79,13 +79,13 @@ typedef struct
 
 } XY_t;
 
-//#pragma pack(1)
+#pragma pack(1)
 
 typedef struct
 {
 	struct
 	{
-		#if 1
+		#if 0
 		union
 		{
 			struct
@@ -117,7 +117,7 @@ typedef struct
 		float Pitch_Angle;				//Pitch轴的角度
 		float Depth;					//深度
 	#endif
-	#if 0
+	#if 1
 			union
 		{
 			struct
@@ -132,14 +132,14 @@ typedef struct
 
 		float Pitch_Angle;				//Pitch轴的角度 7 8 9 10
 				
+
+//        uint16_t  Depth;                             //   12 13
+
 				uint8_t crc; //CRC校验位  uint16_t               11
-
-        uint16_t  Depth;                             //   12 13
-
 
 				char End_Tag; //帧尾                 14
 			};
-			uint8_t VisionRawData[15];
+			uint8_t VisionRawData[13];
 		};
 	
 	#endif
@@ -154,7 +154,7 @@ typedef struct
 	uint32_t FPS;							//帧率
 
 } VisionData_t;
-//#pragma pack()
+#pragma pack()
 //#pragma pack(1)
 
 //视觉发送数据结构体
@@ -182,6 +182,7 @@ typedef struct
 
 extern VisionData_t VisionData;
 extern VisionSend_Cloud_t Vision_Cloud;
+extern int mode_v;
 
 void Vision_DataReceive(uint8_t *data);
 void Vision_Handler(UART_HandleTypeDef *huart);

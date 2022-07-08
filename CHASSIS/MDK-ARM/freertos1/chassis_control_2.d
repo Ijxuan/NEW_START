@@ -65,3 +65,4 @@ freertos1\chassis_control_2.o: ../Core/Inc/tim.h
 freertos1\chassis_control_2.o: ../Core/Inc/usart.h
 freertos1\chassis_control_2.o: ../Core/Inc/gpio.h
 freertos1\chassis_control_2.o: ..\Arithmetic\FPS_Calculate.h
+freertos1\chassis_control_2.o: ..\add\COM_TO_PC.h

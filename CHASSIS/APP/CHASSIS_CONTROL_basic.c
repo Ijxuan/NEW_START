@@ -8,7 +8,7 @@
 #define HW_SWITCH_JR 2000//¹âµçµÄ¼ì²â¾àÀë  2000  500
 #define GD_LONG 999999
 #define track_long 84500//31000Îª¶Ì¹ìµÀ  84500Îª³¤¹ìµÀ   -4548 80741
-#define inspect_times 200 
+#define inspect_times 100 
 int init_times=0;
 int Encoder_last=0;
 
@@ -93,17 +93,17 @@ else if(state_Infrared_R_is_ok==0&&state_Infrared_L_is_ok==0)  //Á½¸ö¹âµç´«¸ĞÆ÷×
 	init_times++;
 					if(DR16.rc.s_left==1)//×óÉÏµµÎ»      //¹âµçÃ»¼ì²âµ½ÓÃµÄÊÇÕâÌ×PID,¸Ä±äµÄÊÇÄ¿±ê½Ç¶È
 					{
-		if(init_times>666)//¸øÒ»ÃëÖÓÓÃÀ´Æğ²½
+		if(init_times>666)//¸ø666*3msÃëÖÓÓÃÀ´Æğ²½            0706 1
 		{
-	if(init_times%inspect_times==0)//200ms¼ì²âÒ»´Î
+	if(init_times%inspect_times==0)//300ms¼ì²âÒ»´Î
 	{
 //		if(send_to_chassis_special<0)
-		ENCODER_CHANGE=Chassis_Encoder.totalLine-Encoder_last;
+		ENCODER_CHANGE=Chassis_Encoder.totalLine-Encoder_last;   //0706 2
 		if(CHASSIS_R_MIN_new==0)
 		{
 			if(abs(ENCODER_CHANGE)<2000)
 			{	
-				CHASSIS_R_MIN_new=1;
+				CHASSIS_R_MIN_new=1;   //0706   3
 //								CHASSIS_R_MIN_by_ENCODER=Chassis_Encoder.totalLine      -reverse_by_ENCODER;
 								CHASSIS_R_MIN_by_ENCODER=Chassis_Encoder.totalLine;//¼ÇÂ¼ÏÂµ±Ç°Öµ×÷ÎªÓÒ±ß½ç/×îĞ¡Öµ
 
@@ -243,16 +243,16 @@ void star_and_new()
 //				{	
 //					
 //				}
-							CHASSIS_MOTOR_SPEED_pid.Max_result=16000;
-			CHASSIS_MOTOR_SPEED_pid.Min_result=-16000;
+							CHASSIS_MOTOR_SPEED_pid.Max_result=10000;
+			CHASSIS_MOTOR_SPEED_pid.Min_result=-10000;
 		}
 		else if(CHASSIS_L_MAX_new==0)//×ó±ßµÄµÄ´«¸ĞÆ÷»¹Ã»¼ì²âµ½
 		{
 			
 //		send_to_chassis_special=send_to_chassis_JUST_MOVE;//ÒÑ¸ÕºÃ¶¯ÆğÀ´µÄËÙ¶ÈÏò×ó±ß½ç/×î´óÖµ±ß½çÔË¶¯
 				CHASSIS_trage_speed=1500;	
-				CHASSIS_MOTOR_SPEED_pid.Max_result=1900;
-			CHASSIS_MOTOR_SPEED_pid.Min_result=-1900;
+				CHASSIS_MOTOR_SPEED_pid.Max_result=10000;
+			CHASSIS_MOTOR_SPEED_pid.Min_result=-10000;
 //				if(DR16.rc.s_left==1)//×óÉÏµµÎ»      //¹âµçÃ»¼ì²âµ½ÓÃµÄÊÇÕâÌ×PID,¸Ä±äµÄÊÇÄ¿±ê½Ç¶È
 //				{	
 //					
@@ -264,9 +264,7 @@ void star_and_new()
 			CHASSIS_MOTOR_SPEED_pid.Min_result=-14000;	
 			
 		}
-		
-		
-		
+	
 		use_special_send=1;
 	}
 }

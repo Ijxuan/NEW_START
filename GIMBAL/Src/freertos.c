@@ -31,6 +31,8 @@
 
 #include "INS_task.h"
 #include "led_flow_task.h"
+#include "usbd_cdc_if.h"
+
 #include "Debug_DataScope.h"
 #include "DJI_IMU.h"
 #include "bsp_buzzer.h"
@@ -51,6 +53,8 @@
 #include "oled.h"
 #include "spinning_top_examine.h"
 #include "Vision_Control.h"
+#include "MY_CLOUD_CONTROL.h"
+//#include "usbd_cdc_if.h"
 
 /* USER CODE END Includes */
 
@@ -158,18 +162,18 @@ void MX_FREERTOS_Init(void) {
 						 2000, -2000,
 						 7000, -7000);
 
-	I_PID_Parameter_Init(&SHOOT_L_I_PID, 29, 0.35, 17,
+	I_PID_Parameter_Init(&SHOOT_L_I_PID, 28, 0.35, 15,
 						 8700, 7000, -7000,
 						 0.5,
 						 14000, -14000,
-						 16000, -16000); //摩擦轮电机
+						 16000, -16000); //摩擦轮电机 37 0.35 13
 
 	//
-	I_PID_Parameter_Init(&SHOOT_R_I_PID, 22, 0.35, 19,
+	I_PID_Parameter_Init(&SHOOT_R_I_PID, 28, 0.35, 15,
 						 8700, 7000, -7000,
 						 0.5,
 						 14000, -14000,
-						 16000, -16000); //摩擦轮电机
+						 16000, -16000); //摩擦轮电机28 0.35 15 
 						 //23 0.5 19
 						 //22 0.35 19
 
@@ -190,14 +194,14 @@ void MX_FREERTOS_Init(void) {
 #endif
 
 #if PID_YAW_IMU
-	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -1000, -6.5, 1100,//
+	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -800, -4, 800,//
 						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
-						 5000, -5000, //积分限幅，也就是积分的输出范围
-						 29990, -29990);
+						 0, -0, //积分限幅，也就是积分的输出范围
+						 29000, -29000);
 						 
-	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 5, 0, 0,//10 0 16//越大越陡峭10
+	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 8, 0, 0,//10 0 16//越大越陡峭10
 						 100,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
@@ -208,15 +212,15 @@ void MX_FREERTOS_Init(void) {
 #if VISION_PID_YAW_IMU
 
 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -1000, -6.5, 1100,//
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -800, -4.5, 800,//
 						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 5000, -5000, //积分限幅，也就是积分的输出范围
-						 29990, -29990);
+						 29000, -29000);
 						 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 13, 0.02, 5,//10 0 16//越大越陡峭10
-						 5,
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 14, 0.06, 0,//10 0 16//越大越陡峭10
+						 2.8,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
 						 600, -600,
@@ -224,7 +228,7 @@ void MX_FREERTOS_Init(void) {
 
 #endif
 #if PID_PITCH_MOTOR
-	P_PID_Parameter_Init(&PITCH_Angle_pid, 1, 0, 0,
+	P_PID_Parameter_Init(&PITCH_Angle_pid, 0.4, 0, 0,
 						 0, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
@@ -238,23 +242,45 @@ void MX_FREERTOS_Init(void) {
 						 29000, -29000); // Yaw_IMU_Angle_pid
 #endif
 
-#if PID_PITCH_IMU
-	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 170,1.43,50,//100, 1.5, 0,
-						 240, //误差大于这个值就积分分离  550 1.9 0   -20000
+#if 0//没电参数
+	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 200,0.4,0,//100, 1.5, 0,
+						 15, //误差大于这个值就积分分离  550 1.9 0   -20000
 						 //	float max_error, float min_error,
 						 //                          float alpha,
-						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
-						 28000, -28000);
-	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,18 //15  //0.7  12
-	, 0, 0,
-						 0,
+						 3000, -3000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
+						 29000, -29000);
+	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,12 //15  //0.7  12
+	, 0.1, 0,
+						 2.5,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
-						 0, 0,
+						 300, -300,
 						 500, -500); // Yaw_IMU_Angle_pid   15    500 -500
 
 #endif
+#if PID_PITCH_IMU
+//	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 150,0.3,0,//100, 1.5, 0,
+//						 25, //误差大于这个值就积分分离  550 1.9 0   -20000
+//						 //	float max_error, float min_error,
+//						 //                          float alpha,
+//						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
+//						 29000, -29000);
 
+	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 170,0.75,-200,//100, 1.5, 0,
+						 100, //误差大于这个值就积分分离  550 1.9 0   -20000
+						 //	float max_error, float min_error,
+						 //                          float alpha,
+						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
+						 29000, -29000);
+	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,12 //15  //0.7  12
+	, 0.08, 0,
+						 2.5,
+						 //						  float max_error, float min_error,
+						 //                          float alpha,
+						 300, -300,
+						 500, -500); // Yaw_IMU_Angle_pid   15    500 -500
+
+#endif
 Vision_Control_Init();//卡尔曼参数初始化
 
   /* USER CODE END Init */
@@ -277,6 +303,8 @@ Vision_Control_Init();//卡尔曼参数初始化
 	__HAL_UART_ENABLE_IT(&huart6, UART_IT_IDLE);
 
 	USART_RX_DMA_ENABLE(&huart6, Vision_DataBuff, Vision_BuffSize);
+					ext_robot_hurt.data.hurt_type=10;//避免初始值为0误识别
+
 //DJIC_IMU.pitch_turnCounts=-1;
 	//CAN2_Filter0 初始化 使能
 //	  HAL_Delay(1000);
@@ -380,13 +408,18 @@ __weak void test_task(void const * argument)
  * @retval None
  */
 //fp32 voltage;
-
+	uint8_t text_send[5];
+	char text_e[5]="A432B";
 /* USER CODE END Header_Debug */
 void Debug(void const * argument)
 {
   /* USER CODE BEGIN Debug */
 	int debug_times=0;
 	char error_e[5]="error";
+
+	uint16_t range_i=0;
+	uint16_t give_i=0;
+
 /* 
 char RunTimeInfo[400];		//保存任务运行时间信息
 任务名\t\t\t运行时间\t运行所占百分比
@@ -408,7 +441,9 @@ Tmr Svc        	0		<1%
 	{
 		debug_times++;
 		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
-		{
+		{	
+			NM_swj();
+
 			//					USART1->DR = '2';
 			//					TRY[0]='0';
 			//										TRY[1]='1';
@@ -418,7 +453,7 @@ Tmr Svc        	0		<1%
 					{
 		if(debug_times%10==0)//上位机发送频率
 						{
-														NM_swj();
+							//10ms一次
 //			printf("好");
 						}
 					}
@@ -426,7 +461,35 @@ Tmr Svc        	0		<1%
 					
 		}	
 
-						
+		
+		if(debug_times%100==0)//上位机发送频率
+		{
+		range_i++;
+		if(range_i==1)
+		{
+		text_e[0]='a';
+		text_e[1]='9';
+		text_e[2]='8';
+		text_e[3]='7';
+		text_e[4]='b';
+
+		}
+		if(range_i==2)
+		{
+		text_e[0]='c';
+		text_e[1]='1';
+		text_e[2]='2';
+		text_e[3]='3';
+		text_e[4]='d';
+		range_i=0;
+		}
+		for(give_i=0;give_i<5;give_i++)
+		{
+		text_send[give_i]=(char )(text_e[give_i]);
+		}			
+			
+//			CDC_Transmit_FS(&text_send[0],5);
+		}	
 						
 		if(DR16.rc.s_left == 1)
 		{
@@ -454,7 +517,7 @@ Tmr Svc        	0		<1%
 		        //get battery voltage
         //获取电源电压
 			
-        my_voltage = get_battery_voltage();
+//        my_voltage = get_battery_voltage();
 			if(my_voltage<21&&my_voltage>20)
 			{
 			  		if(debug_times%5000==0)//5s运行一次
@@ -467,9 +530,9 @@ Tmr Svc        	0		<1%
 		}
   		if(debug_times%1000==0)//1s运行一次
 		{
-		    oled_clear(Pen_Clear);
-oled_printf(1,1,error_e);
-	    oled_refresh_gram();
+//		    oled_clear(Pen_Clear);
+//oled_printf(1,1,error_e);
+//	    oled_refresh_gram();
 	
 		}
 		  
@@ -484,6 +547,24 @@ oled_printf(1,1,error_e);
 		
 		
 //BEEP_TEXT();		
+		
+		  laoliu_gjiwo_times_ago++;//老六攻击我
+		hurt_times_ago++;
+				if(ext_robot_hurt.data.hurt_type==0)
+		{
+			if(ext_robot_hurt.data.armor_id==0||ext_robot_hurt.data.armor_id==1)
+			{
+				hurt_times_ago=0;//被击中了
+			
+			if(ext_robot_hurt.data.armor_id==1)//背面装甲板受击
+			{
+			laoliu_gjiwo_times_ago=0;//老六攻击我
+			
+			}
+				ext_robot_hurt.data.hurt_type=10;
+			}
+
+		}
 		osDelay(1);
 	}
   /* USER CODE END Debug */
@@ -501,7 +582,7 @@ void IMU_Send(void const * argument)
   /* USER CODE BEGIN IMU_Send */
 	portTickType xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t TimeIncrement = pdMS_TO_TICKS(1); //每十毫秒强制进入总控制
+	const TickType_t TimeIncrement = pdMS_TO_TICKS(2); //每十毫秒强制进入总控制
 	/* Infinite loop */
 	for (;;)
 	{
@@ -525,7 +606,7 @@ void IMU_Send(void const * argument)
 
 #endif
 Update_Vision_SendData();
-//		VISION_Disconnect_test++;
+		VISION_Disconnect_test++;
 		if(VISION_Disconnect_test==1000)//一秒检测一次
 		{
 			if(VisionData.Offline_Detec>10)//一秒接受10次不过分吧
@@ -534,7 +615,7 @@ Update_Vision_SendData();
 			{
 				VisionData.Offline_Detec=0;
 				VisionData.DataUpdate_Flag=0;//标志位置零
-				VisionData.RawData.Beat=0;//击打置零
+//				VisionData.RawData.Beat=0;//击打置零
 				VisionData.RawData.Armour=0;//识别置零
 				VisionData.RawData.Pitch_Angle=0;
 				VisionData.RawData.Yaw_Angle=0;
@@ -582,6 +663,15 @@ int i=0;
 				IMU_Cal_Status_Reivece(CAN2_Rx_Structure);
 			}
 			
+						if (CAN2_Rx_Structure.CAN_RxMessage.StdId == ENCODER_ID)
+			{//编码器位置信息解包
+				
+								for(i=0;i<8;i++)
+				{
+				Chassis_Encoder_new.data.dataBuff[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+				Chassis_Encoder_new.infoUpdateFlag++;
+			}
 			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == PLACE_SEND_ID)
 			{//底盘位置信息解包
 				
@@ -633,6 +723,64 @@ int i=0;
 					Get_FPS(&FPS_ALL.CHASSIS_PLACE.WorldTimes,   &FPS_ALL.CHASSIS_PLACE.FPS);
 
 			}
+			
+						if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_HP_ID_ONE)
+			{
+				//HP数据解包1
+				for(i=0;i<8;i++)
+				{
+				ext_game_robot_HP.data.dataBuff[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+				STATUS_PART_ONE_TIMES++;
+
+			}
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_HP_ID_TWO)
+			{
+				//HP数据解包2
+				for(i=0;i<8;i++)
+				{
+				ext_game_robot_HP.data.dataBuff[i+8]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+
+				}
+				STATUS_PART_TWO_TIMES++;
+
+			}
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_HP_ID_THREE)
+			{
+				//HP数据解包3
+				for(i=0;i<8;i++)
+				{
+				ext_game_robot_HP.data.dataBuff[i+16]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+				STATUS_PART_THREE_TIMES++;
+			}	
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_HP_ID_FOUR)
+			{
+				//HP数据解包4
+				for(i=0;i<8;i++)
+				{
+				ext_game_robot_HP.data.dataBuff[i+24]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+HP_complete_update_TIMES++;
+				}	
+			
+				if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_HGAME_STATE_ID_ONE)
+			{
+				//热量数据解包1
+				for(i=0;i<8;i++)
+				{
+				ext_game_status.data.dataBuff[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+			}
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_HGAME_STATE_ID_TWO)
+			{
+				//热量数据解包2
+				for(i=0;i<8;i++)
+				{
+				ext_game_status.data.dataBuff[i+8]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+				GAME_STATE_update_TIMES++;
+			}		
 			
 			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_SEND_HEAT_ID_ONE)
 			{
@@ -861,9 +1009,21 @@ M2006_targe_angle=M3508s[1].totalAngle;//清除拨盘目标角度累计
 yaw_trage_angle=DJIC_IMU.total_yaw;
 	PITCH_trage_angle = DJIC_IMU.total_pitch;
 YAW_MOTION_STATE=1;//开启小陀螺检测
+
+//key_message.game_state_progress=4;
+//ext_game_status.data.game_progress=4;
+//key_message.our_outpost_is_live=1;
 	/* Infinite loop */
 	for (;;)
 	{
+			#if SHOOT_HIGH_HEAT_TEXT
+		vision_shoot_times=100;
+VisionData.RawData.Armour=1;
+VisionData.RawData.Beat=1;
+	Vision_RawData_Pitch_Angle=0;
+	Vision_RawData_Yaw_Angle=0;
+#endif
+
 						Vision_Control_Cloud();
 
 		
@@ -909,35 +1069,39 @@ YAW_MOTION_STATE=1;//开启小陀螺检测
 				}
 				
 				
+				
+				
 				controul_times++;
 				S_T_examine();
 		cloud_control();
 
-		if (GM6020s[3].totalAngle <= 3860 && send_to_pitch < 0)
+		if (GM6020s[3].totalAngle <= 3860 && send_to_pitch < 0)//3860
 			send_to_pitch = 0;
 		if (GM6020s[3].totalAngle >= 5130 && send_to_pitch > 0)
 			send_to_pitch = 0;
 		//云台的pitch轴正直是往上的
 		////8017-7044
+//			send_to_yaw = 0;
+
 
 		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
 		{	
-			send_to_yaw = 0;
-
 			send_to_pitch = 0;
+			send_to_yaw = 0;
 
 			PITCH_trage_angle=DJIC_IMU.total_pitch;
 			yaw_trage_angle=DJIC_IMU.total_yaw;
+			PITCH_trage_angle_motor=GM6020s[3].totalAngle;
 			//还不够，使能瞬间会抖一下，应该还要清楚I的累加，以后有时间再写
 		}
 		if(disable_for_test==1)
 		{
-			send_to_yaw = 0;
 
 			send_to_pitch = 0;			
+				send_to_yaw = 0;
 			
 		}
-		
+	
 		GM6020_SetVoltage(send_to_yaw,0 , 0, send_to_pitch); //云台  send_to_pitch
 //		GM6020_SetVoltage(0,0 , 0, 0); //云台  send_to_pitch
 
@@ -977,11 +1141,13 @@ DJIC_IMU.yaw_turnCounts=0;
 		}
 				if(disable_for_test==1)
 		{
-			send_to_SHOOT_L = 0;
-			send_to_SHOOT_R = 0;		
+								send_to_SHOOT_L = 0;
+			send_to_SHOOT_R = 0;	
 						send_to_2006 = 0;
 
 		}
+
+
 		M3508s1_setCurrent(0, send_to_2006, send_to_SHOOT_R, send_to_SHOOT_L);//send_to_SHOOT_L阻力大
 //		M3508s1_setCurrent(0, 0,TEST_Current_R ,TEST_Current_L );  //end_to_SHOOT_R给正降得慢
         //                                    +                 -

@@ -140,15 +140,16 @@ int CHASSIS_trage_angle=0;
 float PITCH_MAX_angle=0;
 float PITCH_MIN_angle=0;
 
-int CHASSIS_MAX_SPEED=4700;
+int CHASSIS_MAX_SPEED=6500;
 
 int break_FX=-1;
 
 int send_to_yaw=0;//发送给yaw轴的数据
 int send_to_pitch=0;//发送给pitch轴的数据
 int send_to_chassis=0;//发送给底盘的数据
+int send_to_break_text=0;//发送给底盘的数据
 int send_to_chassis_special=0;//发送给底盘的数据
-
+long M2006_targe_angle_text=0;
 bool use_special_send=0;
 int send_to_SHOOT_R=0;//发送给右发射摩擦轮的数据  +
 int send_to_SHOOT_L=0;//发送给左发射摩擦轮的数据  -
@@ -288,6 +289,7 @@ int main(void)
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
+	
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */

@@ -11,12 +11,21 @@
 #define DR16_Angle_SENDID 0x101
 
 #define PLACE_SEND_ID 0x144
-
+#define ENCODER_ID 0x152
 
 #define DJI_C_Angle_SENDID 0x195
 #define DJI_C_Gyro_SENDID 0x165
 //陀螺仪校准 接收ID 
 #define IMU_CAL_REIID 0x096
+
+#define JS_SEND_HGAME_STATE_ID_ONE 0x150
+#define JS_SEND_HGAME_STATE_ID_TWO 0x151
+
+#define JS_SEND_HP_ID_ONE 0x146
+#define JS_SEND_HP_ID_TWO 0x147
+#define JS_SEND_HP_ID_THREE 0x148
+#define JS_SEND_HP_ID_FOUR 0x149
+
 
 #define JS_SEND_STATUS_ID_ONE 0x138
 #define JS_SEND_STATUS_ID_TWO 0x139

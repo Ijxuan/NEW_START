@@ -9,6 +9,8 @@
  ****************************************************************************************************
  */
 #include "RM_JudgeSystem.h"
+#include "IVC.h"
+
 //Robot_Commute[6] == '1' ---- '5'
 /****************************************2020赛季裁判系统******************************************/
 #if JUDGE_VERSION == JUDGE_20
@@ -1075,7 +1077,7 @@ uint16_t wExpected;
 
 //crc8 generator polynomial:G(x)=x8+x5+x4+1
 const unsigned char CRC8_INIT = 0xff;
-const unsigned char CRC8_TAB[256] =
+ const unsigned char CRC8_TAB[256] =
 	{
 		0x00,
 		0x5e,
@@ -1684,11 +1686,19 @@ void Judge_GetMessage(uint16_t Data_Length)
 			case Judge_Robot_Communicate: //机器人信息交互(还有一种写法就是直接case内容ID 不case命令码)
 				if (Verify_CRC16_Check_Sum(JudgeSystem_rxBuff + n, JudgeLength_Robot_Commute))
 				{
-					memcpy(&Robot_Commute, &JudgeSystem_rxBuff[n + 7], sizeof(uint8_t[26]));
+//					memcpy(&IVC_RC_DATA_2.data.dataBuff, &JudgeSystem_rxBuff[n + 7], sizeof(uint8_t[8]));
 					n += JudgeLength_Robot_Commute;
 				}
 				else
 					n++;
+				if((JudgeSystem_rxBuff[n + 7] | JudgeSystem_rxBuff[n + 8] << 8)==0x201)
+				{
+
+				}
+//				memcpy(&IVC_RC_DATA_2.data.dataBuff, &JudgeSystem_rxBuff[n + 7], sizeof(uint8_t[8]));
+
+				IVC_RC_DATA_2.InfoUpdataFlag++;
+
 				break;
 			default:
 				n++;

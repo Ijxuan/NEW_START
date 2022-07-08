@@ -58,3 +58,12 @@ ins_task\spinning_top_examine.o: ..\ADD\Vision.h
 ins_task\spinning_top_examine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ins_task\spinning_top_examine.o: ../Inc/usart.h
 ins_task\spinning_top_examine.o: ..\Arithmetic\CRC.h
+ins_task\spinning_top_examine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+ins_task\spinning_top_examine.o: ..\Arithmetic\User_typedef.h
+ins_task\spinning_top_examine.o: ..\Arithmetic\FPS_Calculate.h
+ins_task\spinning_top_examine.o: ..\APP\MY_CLOUD_CONTROL.h
+ins_task\spinning_top_examine.o: ..\ADD\GM6020.h
+ins_task\spinning_top_examine.o: ..\bsp\boards\user_can.h
+ins_task\spinning_top_examine.o: ../Inc/can.h
+ins_task\spinning_top_examine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+ins_task\spinning_top_examine.o: ..\Arithmetic\my_positionPID_bate.h
