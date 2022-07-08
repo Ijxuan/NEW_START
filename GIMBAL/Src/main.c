@@ -110,8 +110,6 @@ float PITCH_MIN_angle=0;
 float allow_angle=0;//可动区间
 
 float PITCH_trage_angle=0;
-float PITCH_trage_angle_motor=4500.0;
-
 int PITCH_trage_speed=0;
 
 int can1_IT_TIMES=0;
@@ -195,7 +193,7 @@ bool disable_for_test_CHASSIS=0;
 float my_voltage;
 
 int stay_in_track_end_times=0;
-int text_times=0;
+
 bool send_to_vision_1=0;
 /* USER CODE END 0 */
 

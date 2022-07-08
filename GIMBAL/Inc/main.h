@@ -148,8 +148,6 @@ extern float PITCH_MIN_angle;
 extern float allow_angle;//可动区间
 
 extern float PITCH_trage_angle;
-extern float PITCH_trage_angle_motor;
-
 extern int PITCH_trage_speed;
 extern int can1_IT_TIMES;
 
@@ -230,7 +228,6 @@ extern float my_voltage;
 extern int stay_in_track_end_times;
 
 extern bool send_to_vision_1;
- extern int text_times;
 
 /* USER CODE END Private defines */
 

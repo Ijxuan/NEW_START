@@ -13,7 +13,7 @@
 #define PID_YAW_IMU 1 //是否开启陀螺仪的PID
 #define VISION_PID_YAW_IMU 1 //是否开启视觉陀螺仪的PID
 
-#define PID_PITCH_MOTOR 1 //是否开启电机的PITCH轴PID  0关闭
+#define PID_PITCH_MOTOR 0 //是否开启电机的PITCH轴PID  0关闭
 #define PID_PITCH_IMU 1 //是否开启陀螺仪的PITCH轴PID  0关闭
 #define PID_CHASSIS_MOTOR 0//是否开启电机的底盘PID  0关闭
 typedef struct

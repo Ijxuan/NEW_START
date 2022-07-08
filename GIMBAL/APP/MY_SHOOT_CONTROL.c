@@ -28,7 +28,6 @@ bool weather_error_less_than_1=0;
 allow_auto_shoot auto_shoot_condition;
 int auto_shoot_condition_show;//自动射击条件展现
 
-bool heat_in_renew=0;
 void shoot_control(void)
 {
 	if(in_END==0&&in_MID==1)
@@ -66,14 +65,8 @@ void shoot_control(void)
 	{
 		auto_shoot_condition.heat_allow=0;//热量允许		
 	}
-		if(ext_power_heat_data.data.shooter_id2_17mm_cooling_heat>=200&&heat_in_renew==0)//热量没超过200
-		{
-			heat_in_renew=1;
-		}
-		if(heat_in_renew==1&&ext_power_heat_data.data.shooter_id2_17mm_cooling_heat<100)
-		{
-		heat_in_renew=0;
-		}
+	
+	
 	if(auto_shoot_condition.heat_allow==1/*热量允许*/
 	 &&auto_shoot_condition.weather_angle_error_less_than_1==1	/*角度误差小于一*/ 
 	 &&auto_shoot_condition.vision_shoot_is_continuous==1/*视觉发射指令是连续的*/
@@ -304,10 +297,7 @@ shoot_times_for_limit=0;
 			}
 #endif
 #if 1//不在末端+误差小于1度
-
-if(heat_in_renew==0)
-{
-						if (shoot_times_for_limit<50)
+						if (shoot_times_for_limit<333)
 			{
 					if(VisionData.RawData.Beat==1&&vision_shoot_times>0)//击打标志位为1并且连续收到4帧
 					{
@@ -338,66 +328,18 @@ if(heat_in_renew==0)
 						}
 						VisionData.RawData.Beat=0;
 					}
-					if(SHOOT_STOP_time>30)
+					if(SHOOT_STOP_time>100)
 					{
 			M2006_targe_angle=M3508s[1].totalAngle;//连续收到10次停火指令 清除拨盘目标角度累计
 					}
 	
 			}
-			else if(shoot_times_for_limit>=50)
+			else if(shoot_times_for_limit>=333)
 			{
 				whether_shoot_in__this_period=0;
 			shoot_times_for_limit=0;
 			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
 			}
-}
-else if(heat_in_renew==1)
-{
-						if (shoot_times_for_limit<100)
-			{
-					if(VisionData.RawData.Beat==1&&vision_shoot_times>0)//击打标志位为1并且连续收到4帧
-					{
-						SHOOT_from_V++;
-						if(VISION_Yaw_IMU_Angle_pid.Error>1.5||VISION_Yaw_IMU_Angle_pid.Error<-1.5)
-						{
-						weather_error_less_than_1=0;	
-						}
-						else//误差绝对值小于1
-						{
-						weather_error_less_than_1=1;	
-						}
-						if(disable_for_test_CHASSIS==0)
-						{
-						if(in_MID==1&&weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
-						{
-						M2006_targe_angle+=Driver_add;//8*3=24  打一发
-						whether_shoot_in__this_period=1;
-						}
-					    }
-						else if(disable_for_test_CHASSIS==1)
-						{
-						if(weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
-						{
-						M2006_targe_angle+=Driver_add;//8*3=24  打一发
-						whether_shoot_in__this_period=1;
-						}	
-						}
-						VisionData.RawData.Beat=0;
-					}
-					if(SHOOT_STOP_time>30)
-					{
-			M2006_targe_angle=M3508s[1].totalAngle;//连续收到10次停火指令 清除拨盘目标角度累计
-					}
-	
-			}
-			else if(shoot_times_for_limit>=100)
-			{
-				whether_shoot_in__this_period=0;
-			shoot_times_for_limit=0;
-			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
-			}
-
-}
 #endif
 #if 0
 						if (shoot_times_for_limit<500)

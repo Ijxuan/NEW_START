@@ -55,12 +55,6 @@ int vision_is_lock_in_1s=0;//一秒内是锁定状态
 int over_time=9999;
 void S_T_examine(void)
 {
-	
-	
-	
-	
-	
-	
 	if(DR16.rc.s_left==1)
 	{
 	examine_run_times++;//这个档有自瞄

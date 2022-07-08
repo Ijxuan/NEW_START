@@ -23,15 +23,6 @@
 //这个范围就继续减小吧
 #define GM6020_L_SMALL 500
 
-#define YAW_TEXT 0
-#define USE_PITCH_BC 0
-
-#if YAW_TEXT==1
-
-
-#endif
-#define USE_MOTOR_angle 0
-
 void cloud_control(void);
 
 void cloud_control_mode_choose(void);
@@ -61,33 +52,15 @@ bool control_mode_LAST;
 extern cloud_control_mode cloud_mode;
 
 
-typedef struct
-{
-int game_state_progress;/*0：未开始比赛；
-? 1：准备阶段；
-? 2：自检阶段；
-? 3：5s 倒计时；
-? 4：对战中；
-? 5：比赛结算中
-	*/
-int this_progress_remain_time;/*当前阶段剩余时间，单位 */
-	
-bool red_outpost_is_live;
-bool blue_outpost_is_live;	
-bool our_outpost_is_live;
-} CHASSIS_KEY;
-
 extern		 bool scan_i_PITCH;
 extern		 int scan_percent_PITCH;//0到1000,百分比
 extern		 int scan_time;
 extern	 float YAW_TRAGET_ANGLE_TEMP;
 extern float PITCH_TRAGET_ANGLE_TEMP;
-extern bool simulation_target_yaw_is_stop;
 
 extern		 int scan_percent_YAW;//0到1000,百分比
 extern	 float YAW_START_ANGLE;//S扫描开始时YAW轴角度
 extern int arrive_targe_angle;
-extern  bool our_outpost_is_live;
 
 #endif
 //MY_CLOUD_COUNTROUL

@@ -21,7 +21,6 @@ extern int if_Driver_arrive_angle;
 extern long M2006_targe_angle;
 extern bool weather_error_less_than_1;
 extern int auto_shoot_condition_show;//自动射击条件展现
-extern bool JR_HEAT_renew;//进入枪口热量回复模式
 
 #endif
 

@@ -190,14 +190,14 @@ void MX_FREERTOS_Init(void) {
 #endif
 
 #if PID_YAW_IMU
-	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -800, -4, 800,//
+	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -1000, -6.5, 1100,//
 						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
-						 0, -0, //积分限幅，也就是积分的输出范围
-						 29000, -29000);
+						 5000, -5000, //积分限幅，也就是积分的输出范围
+						 29990, -29990);
 						 
-	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 8, 0, 0,//10 0 16//越大越陡峭10
+	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 5, 0, 0,//10 0 16//越大越陡峭10
 						 100,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
@@ -208,15 +208,15 @@ void MX_FREERTOS_Init(void) {
 #if VISION_PID_YAW_IMU
 
 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -800, -4.5, 800,//
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -1000, -6.5, 1100,//
 						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 5000, -5000, //积分限幅，也就是积分的输出范围
-						 29000, -29000);
+						 29990, -29990);
 						 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 14, 0.06, 0,//10 0 16//越大越陡峭10
-						 2.8,
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 13, 0.02, 5,//10 0 16//越大越陡峭10
+						 5,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
 						 600, -600,
@@ -224,7 +224,7 @@ void MX_FREERTOS_Init(void) {
 
 #endif
 #if PID_PITCH_MOTOR
-	P_PID_Parameter_Init(&PITCH_Angle_pid, 3, 0, 0,
+	P_PID_Parameter_Init(&PITCH_Angle_pid, 1, 0, 0,
 						 0, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
@@ -238,38 +238,23 @@ void MX_FREERTOS_Init(void) {
 						 29000, -29000); // Yaw_IMU_Angle_pid
 #endif
 
-#if 0//没电参数
-	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 200,0.4,0,//100, 1.5, 0,
-						 15, //误差大于这个值就积分分离  550 1.9 0   -20000
-						 //	float max_error, float min_error,
-						 //                          float alpha,
-						 3000, -3000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
-						 29000, -29000);
-	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,12 //15  //0.7  12
-	, 0.1, 0,
-						 2.5,
-						 //						  float max_error, float min_error,
-						 //                          float alpha,
-						 300, -300,
-						 500, -500); // Yaw_IMU_Angle_pid   15    500 -500
-
-#endif
 #if PID_PITCH_IMU
-	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 150,0.3,0,//100, 1.5, 0,
-						 25, //误差大于这个值就积分分离  550 1.9 0   -20000
+	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 170,1.43,50,//100, 1.5, 0,
+						 240, //误差大于这个值就积分分离  550 1.9 0   -20000
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
-						 29000, -29000);
-	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,12 //15  //0.7  12
-	, 0.08, 0,
-						 2.5,
+						 28000, -28000);
+	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,18 //15  //0.7  12
+	, 0, 0,
+						 0,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
-						 300, -300,
+						 0, 0,
 						 500, -500); // Yaw_IMU_Angle_pid   15    500 -500
 
 #endif
+
 Vision_Control_Init();//卡尔曼参数初始化
 
   /* USER CODE END Init */
@@ -516,7 +501,7 @@ void IMU_Send(void const * argument)
   /* USER CODE BEGIN IMU_Send */
 	portTickType xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t TimeIncrement = pdMS_TO_TICKS(2); //每十毫秒强制进入总控制
+	const TickType_t TimeIncrement = pdMS_TO_TICKS(1); //每十毫秒强制进入总控制
 	/* Infinite loop */
 	for (;;)
 	{
@@ -924,29 +909,25 @@ YAW_MOTION_STATE=1;//开启小陀螺检测
 				}
 				
 				
-				
-				
 				controul_times++;
 				S_T_examine();
 		cloud_control();
 
-		if (GM6020s[3].totalAngle <= 3860 && send_to_pitch < 0)//3860
+		if (GM6020s[3].totalAngle <= 3860 && send_to_pitch < 0)
 			send_to_pitch = 0;
 		if (GM6020s[3].totalAngle >= 5130 && send_to_pitch > 0)
 			send_to_pitch = 0;
 		//云台的pitch轴正直是往上的
 		////8017-7044
-//			send_to_yaw = 0;
-
 
 		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
 		{	
-			send_to_pitch = 0;
 			send_to_yaw = 0;
+
+			send_to_pitch = 0;
 
 			PITCH_trage_angle=DJIC_IMU.total_pitch;
 			yaw_trage_angle=DJIC_IMU.total_yaw;
-			PITCH_trage_angle_motor=GM6020s[3].totalAngle;
 			//还不够，使能瞬间会抖一下，应该还要清楚I的累加，以后有时间再写
 		}
 		if(disable_for_test==1)
