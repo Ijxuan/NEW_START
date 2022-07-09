@@ -69,3 +69,33 @@ Tmr Svc        	0		<1%
 imuTask        	62044		1%
 Can2_Rei_Task  	1		<1%
 CAN1           	0		<1%
+
+注释掉视觉串口发送后:
+任务名\t\t\t运行时间\t运行所占百分比		
+
+Debug_Task     	114		<1%
+IDLE           	70208		78%
+cali           	8311		9%
+led            	46		<1%
+IMU_Send_Task  	58		<1%
+test           	4		<1%
+Task_Robot_Cont	9573		10%
+CAN1           	1		<1%
+imuTask        	1570		1%
+Tmr Svc        	0		<1%
+Can2_Rei_Task  	0		<1%
+
+使用DMA视觉串口发送后:
+任务名\t\t\t运行时间\t运行所占百分比
+Debug_Task     	571		<1%
+IDLE           	222460		76%
+cali           	29245		10%
+led            	405		<1%
+IMU_Send_Task  	334		<1%
+test           	49		<1%
+Task_Robot_Cont	31416		10%
+Tmr Svc        	0		<1%
+imuTask        	5524		1%
+Can2_Rei_Task  	1		<1%
+CAN1           	0		<1%
+

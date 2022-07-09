@@ -265,11 +265,12 @@ static void Vision_DataSend(uint8_t *data)
 //		USART6->DR = data[i];
 //	}
 	
-		for (uint8_t i = 0; i < 13; i++)
-	{
-		while ((USART6->SR & 0X40) == 0);
-		USART6->DR = data[i];
-	}//三PIN接口
+//		for (uint8_t i = 0; i < 13; i++)
+//	{
+//		while ((USART6->SR & 0X40) == 0);
+//		USART6->DR = data[i];
+//	}//三PIN接口
+		HAL_UART_Transmit_DMA(&huart6,&data[0],13);
 	
 	
 //		for (uint8_t i = 0; i < 13; i++)
@@ -289,7 +290,7 @@ int mode_v=6;
 void Update_Vision_SendData(void)
 {
 	uint8_t i=3;
-
+#if 0
 	if(0)
 {	
 	Vision_ID_Type_Init();
@@ -319,6 +320,45 @@ void Update_Vision_SendData(void)
 
 	}
 }	
+	if(0)
+{
+	for (uint8_t i = 0; i < 5; i++)
+	{
+						Vision_SendBuff[i][0] = 'S';
+
+
+		//云台Yaw轴的角度偏差 float -> uint8_t
+		Vision_SendBuff[i][1] = Vision_Cloud.VisionSend_t.Angle_Error_Data[0];
+		Vision_SendBuff[i][2] = Vision_Cloud.VisionSend_t.Angle_Error_Data[1];
+		Vision_SendBuff[i][3] = Vision_Cloud.VisionSend_t.Angle_Error_Data[2];
+		Vision_SendBuff[i][4] = Vision_Cloud.VisionSend_t.Angle_Error_Data[3];
+		//云台Pitch轴的角度偏差
+		Vision_SendBuff[i][5] = Vision_Cloud.VisionSend_t.Angle_Error_Data[4];
+		Vision_SendBuff[i][6] = Vision_Cloud.VisionSend_t.Angle_Error_Data[5];
+		Vision_SendBuff[i][7] = Vision_Cloud.VisionSend_t.Angle_Error_Data[6];
+		Vision_SendBuff[i][8] = Vision_Cloud.VisionSend_t.Angle_Error_Data[7];
+
+		//首支枪管的速度限制
+		if(STATUS_complete_update_TIMES>1)
+		Vision_SendBuff[i][9] = ext_game_robot_state.data.shooter_id1_17mm_speed_limit;
+		else
+		Vision_SendBuff[i][9] = 30;
+		
+				if(STATUS_complete_update_TIMES>1)
+		Vision_SendBuff[i][10] = ext_game_robot_state.data.robot_id;
+		else
+		Vision_SendBuff[i][10] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
+			
+		Vision_SendBuff[i][11] = 5;//?
+				//模式：0默认 1自瞄 2大神符 3哨兵 4基地
+        //'5'哨兵专用  视频录制
+		
+		Vision_SendBuff[i][12] = 'E';
+
+	}
+}	
+#endif
+	
 	if(1)
 {
 //	for (uint8_t i = 0; i < 5; i++)
@@ -367,43 +407,7 @@ void Update_Vision_SendData(void)
 
 //	}
 }	
-	if(0)
-{
-	for (uint8_t i = 0; i < 5; i++)
-	{
-						Vision_SendBuff[i][0] = 'S';
 
-
-		//云台Yaw轴的角度偏差 float -> uint8_t
-		Vision_SendBuff[i][1] = Vision_Cloud.VisionSend_t.Angle_Error_Data[0];
-		Vision_SendBuff[i][2] = Vision_Cloud.VisionSend_t.Angle_Error_Data[1];
-		Vision_SendBuff[i][3] = Vision_Cloud.VisionSend_t.Angle_Error_Data[2];
-		Vision_SendBuff[i][4] = Vision_Cloud.VisionSend_t.Angle_Error_Data[3];
-		//云台Pitch轴的角度偏差
-		Vision_SendBuff[i][5] = Vision_Cloud.VisionSend_t.Angle_Error_Data[4];
-		Vision_SendBuff[i][6] = Vision_Cloud.VisionSend_t.Angle_Error_Data[5];
-		Vision_SendBuff[i][7] = Vision_Cloud.VisionSend_t.Angle_Error_Data[6];
-		Vision_SendBuff[i][8] = Vision_Cloud.VisionSend_t.Angle_Error_Data[7];
-
-		//首支枪管的速度限制
-		if(STATUS_complete_update_TIMES>1)
-		Vision_SendBuff[i][9] = ext_game_robot_state.data.shooter_id1_17mm_speed_limit;
-		else
-		Vision_SendBuff[i][9] = 30;
-		
-				if(STATUS_complete_update_TIMES>1)
-		Vision_SendBuff[i][10] = ext_game_robot_state.data.robot_id;
-		else
-		Vision_SendBuff[i][10] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
-			
-		Vision_SendBuff[i][11] = 5;//?
-				//模式：0默认 1自瞄 2大神符 3哨兵 4基地
-        //'5'哨兵专用  视频录制
-		
-		Vision_SendBuff[i][12] = 'E';
-
-	}
-}	
 		//根据攻击的模式，发给视觉
 //		switch (Robots_Control.AttackTarget)
 //		{

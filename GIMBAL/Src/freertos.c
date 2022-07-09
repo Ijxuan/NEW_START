@@ -410,7 +410,6 @@ __weak void test_task(void const * argument)
 //fp32 voltage;
 	uint8_t text_send[5];
 	char text_e[5]="A432B";
-char RunTimeInfo[400];		//保存任务运行时间信息
 
 /* USER CODE END Header_Debug */
 void Debug(void const * argument)
@@ -423,6 +422,8 @@ void Debug(void const * argument)
 	uint16_t give_i=0;
 
 /* 
+	char RunTimeInfo[400];		//保存任务运行时间信息
+
 char RunTimeInfo[400];		//保存任务运行时间信息
 任务名\t\t\t运行时间\t运行所占百分比
 Debug_Task     	427		<1%     反馈给上位机
@@ -467,10 +468,10 @@ CAN1           	0		<1%
 	/* Infinite loop */
 	for (;;)
 	{
-		debug_times++;
+		debug_times++;			NM_swj();
+
 		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
 		{	
-//			NM_swj();
 
 			//					USART1->DR = '2';
 			//					TRY[0]='0';
