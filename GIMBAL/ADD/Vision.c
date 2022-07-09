@@ -288,7 +288,8 @@ int mode_v=6;
 //更新发送给视觉的数据,并发送
 void Update_Vision_SendData(void)
 {
-	
+	uint8_t i=3;
+
 	if(0)
 {	
 	Vision_ID_Type_Init();
@@ -320,8 +321,8 @@ void Update_Vision_SendData(void)
 }	
 	if(1)
 {
-	for (uint8_t i = 0; i < 5; i++)
-	{
+//	for (uint8_t i = 0; i < 5; i++)
+//	{
 						Vision_SendBuff[i][0] = 'S';
 		if(STATUS_complete_update_TIMES>1)
 		Vision_SendBuff[i][1] = ext_game_robot_state.data.robot_id;
@@ -364,7 +365,7 @@ void Update_Vision_SendData(void)
 		
 		Vision_SendBuff[i][12] = 'E';
 
-	}
+//	}
 }	
 	if(0)
 {

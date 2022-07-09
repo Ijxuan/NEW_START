@@ -141,7 +141,7 @@ header file. */
 /*                                FreeRTOS与运行时间和任务状态收集有关的配置选项                                 */
 /***************************************************************************************************************/
 /* 
-
+*/
 #define configGENERATE_RUN_TIME_STATS	        1                       //为1时启用运行时间统计功能
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()  ConfigureTimeForRunTimeStats()//定时器3提供时间统计的时基，频率为10K，即周期为100us
 extern volatile unsigned long long FreeRTOSRunTimeTicks;
@@ -153,7 +153,7 @@ extern volatile unsigned long long FreeRTOSRunTimeTicks;
                                                                         //prvWriteNameToBuffer(),vTaskList(),
                                                                         //vTaskGetRunTimeStats()
 #define FREERTOS_TASK_TIME	                                                                        
-*/
+
 /* USER CODE END 1 */
 
 /* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS

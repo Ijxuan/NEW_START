@@ -55,3 +55,17 @@ typedef   signed short     int int16_t;            两个字节
 		int16_t ch1;//pitch
 		int16_t ch2;//left_right
 		int16_t ch3;//forward_back
+
+
+0708  任务运行时间统计:
+Debug_Task     	5814		<1%
+led            	5804		<1%
+IDLE           	885108		27%
+IMU_Send_Task  	1764361		54%
+cali           	157311		4%
+test           	554		<1%
+Task_Robot_Cont	350312		10%
+Tmr Svc        	0		<1%
+imuTask        	62044		1%
+Can2_Rei_Task  	1		<1%
+CAN1           	0		<1%

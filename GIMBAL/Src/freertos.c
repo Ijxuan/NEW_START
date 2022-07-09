@@ -410,6 +410,8 @@ __weak void test_task(void const * argument)
 //fp32 voltage;
 	uint8_t text_send[5];
 	char text_e[5]="A432B";
+char RunTimeInfo[400];		//保存任务运行时间信息
+
 /* USER CODE END Header_Debug */
 void Debug(void const * argument)
 {
@@ -434,6 +436,32 @@ Can2_Rei_Task  	463		<1%       CAN2接收
 imuTask        	13982		2%    陀螺仪任务
 CAN1           	49718		7%    CAN1接收
 Tmr Svc        	0		<1%
+		
+任务名\t\t\t运行时间\t运行所占百分比		
+Debug_Task     	4706		<1%
+IDLE           	720445		27%
+IMU_Send_Task  	1436986		54%
+cali           	127828		4%
+led            	4709		<1%
+test           	457		<1%
+Task_Robot_Cont	285106		10%
+Tmr Svc        	0		<1%
+imuTask        	50511		1%
+Can2_Rei_Task  	1		<1%
+CAN1           	0		<1%
+
+Debug_Task     	5814		<1%
+led            	5804		<1%
+IDLE           	885108		27%
+IMU_Send_Task  	1764361		54%
+cali           	157311		4%
+test           	554		<1%
+Task_Robot_Cont	350312		10%
+Tmr Svc        	0		<1%
+imuTask        	62044		1%
+Can2_Rei_Task  	1		<1%
+CAN1           	0		<1%
+
 		*/
 //		buzzer_control.work = TRUE; 
 	/* Infinite loop */
@@ -442,7 +470,7 @@ Tmr Svc        	0		<1%
 		debug_times++;
 		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
 		{	
-			NM_swj();
+//			NM_swj();
 
 			//					USART1->DR = '2';
 			//					TRY[0]='0';
@@ -539,10 +567,13 @@ Tmr Svc        	0		<1%
 
 		  
    #ifdef FREERTOS_TASK_TIME
+		  		if(debug_times%1000==0)//1s运行一次
+				{
 				memset(RunTimeInfo,0,400);				//信息缓冲区清零
 
 			vTaskGetRunTimeStats(RunTimeInfo);		//获取任务运行时间信息
 		  HAL_UART_Transmit_DMA(&huart1, (uint8_t *)&RunTimeInfo, 400);	
+				}
 #endif	  
 		
 		
