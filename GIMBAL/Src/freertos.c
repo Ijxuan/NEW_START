@@ -228,7 +228,7 @@ void MX_FREERTOS_Init(void) {
 
 #endif
 #if PID_PITCH_MOTOR
-	P_PID_Parameter_Init(&PITCH_Angle_pid, 0.4, 0, 0,
+	P_PID_Parameter_Init(&PITCH_Angle_pid, 0.45, 0, 0,
 						 0, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
@@ -266,7 +266,7 @@ void MX_FREERTOS_Init(void) {
 //						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
 //						 29000, -29000);
 
-	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 170,0.75,-200,//100, 1.5, 0,
+	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 190,0.9,-200,//100, 1.5, 0,
 						 100, //误差大于这个值就积分分离  550 1.9 0   -20000
 						 //	float max_error, float min_error,
 						 //                          float alpha,

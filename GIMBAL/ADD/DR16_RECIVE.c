@@ -361,7 +361,7 @@ void NM_swj(void)
 			send_d_16[p++]=0;//输出电压		10
 														//保留到小数点后四位
 #endif
-	#if 0//发送云台数据  YAW 视觉
+	#if 1//发送云台数据  YAW 视觉
 	p=0;
 			send_d_32[p++]=DJIC_IMU.total_yaw*1000;//当前角度		1
 			send_d_32[p++]=yaw_trage_angle*1000;//最终目标角度		2
@@ -371,9 +371,9 @@ void NM_swj(void)
 
 			//DJIC_IMU.Gyro_y*1000000
 //DJIC_IMU.pitch
-			send_d_32[p++]= VisionData.RawData.Armour*1111;//I_OUT 4		4PID_YES
+			send_d_32[p++]= VISION_Yaw_IMU_Speed_pid.Target*10000;//I_OUT 4		4PID_YES
 
-			send_d_32[p++]=VisionData.RawData.Depth*10;//P_OUT		5
+			send_d_32[p++]=VISION_Yaw_IMU_Speed_pid.Measure*10000;//P_OUT		5
 			send_d_32[p++]=DJIC_IMU.total_pitch*-50000;//I_OUT		6
 			send_d_32[p++]=VisionData.RawData.Beat*1111;//D_OUT  	7
 	p=0;
@@ -385,10 +385,10 @@ void NM_swj(void)
 #endif
 	#if 0//发送陀螺仪温度数据 YAW 陀螺仪
 	p=0;
-			send_d_32[p++]=TEMPERATURE_is_OK*2000000+2000000;//当前角度		1
+			send_d_32[p++]=Yaw_IMU_Speed_pid.Target*10000;//当前角度		1
 			send_d_32[p++]=DJIC_IMU.total_yaw*10000;//最终目标角度		2
 
-			send_d_32[p++]=TEMPERATURE_PID_OUT;//视觉数据		333333333333 
+			send_d_32[p++]=Yaw_IMU_Speed_pid.Measure*10000;//视觉数据		333333333333 
 //				send_d_32[p++]=PID_YES*1000;//P_OUT		3 
 
 			//DJIC_IMU.Gyro_y*1000000
@@ -405,7 +405,7 @@ void NM_swj(void)
 			send_d_16[p++]=40*10;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
-#if USE_MOTOR_angle==1
+#if USE_MOTOR_angle==0
 
 //发送云台数据 YAW 陀螺仪 666
 	p=0;
