@@ -194,7 +194,7 @@ void cloud_control_mode_choose(void)
 	{
 //		if(VisionData.RawData.Armour==1)
 
-		if(Armour_lose_time>=3)//丢失3帧装甲
+		if(Armour_lose_time>=200)//丢失200帧装甲 退出扫描开始自瞄
 		{
 			cloud_mode.control_mode_NOW=aoto_scan_mode;
 			cloud_mode.control_mode_LAST=vision_mode;
@@ -440,10 +440,12 @@ void PITCH_PID()
 //								if(VisionData.RawData.Armour==1)
 //							PITCH_trage_angle=DJIC_IMU.total_pitch-Vision_RawData_Pitch_Angle;//YAW轴遥控器控制
 												if(cloud_mode.control_mode_NOW==vision_mode)//视觉PID
+												{
 								PITCH_trage_angle=PITCH_TRAGET_ANGLE_TEMP;
 //								else
 //								PITCH_trage_angle+=(DR16.rc.ch1/660.0)*0.4;//YAW轴遥控器控制
 							PITCH_trage_angle_motor=PITCH_TRAGET_ANGLE_TEMP_EM;
+												}
 							}
 
 					P_PID_bate(&PITCH_IMU_Angle_pid, PITCH_trage_angle,DJIC_IMU.total_pitch);//GM6020s[EMID].totalAngle readAngle
@@ -457,7 +459,7 @@ PITCH_trage_angle_motor=3900;
 					#if USE_MOTOR_angle==1
 					PITCH_trage_speed=PITCH_Angle_pid.result;//外环的结果给内环  二选一
 
-							send_to_pitch_before=(PITCH_trage_angle_motor-3871.5)*600.26/53.912-7542;
+							send_to_pitch_before=(GM6020s[3].totalAngle-3871.5)*600.26/53.912-7542;
 /*y (前馈输出)= 600.26*[(机械角度-3871.5)/53.912] - 7542*/
 #endif		
 												#if USE_MOTOR_angle==0
@@ -573,7 +575,7 @@ void scan_cloud(void)
 			if(DR16.rc.s_left==1)//控制挡位-扫描
 	{
 //		if(DR16.rc.s_right==3)//控制挡位-扫描开始
-		if(Armour_lose_time>1500)//视觉0.5秒没锁到装甲板-扫描开始
+		if(Armour_lose_time>1500)//视觉150ms没锁到装甲板-开始扫描
 		{
 		 int scan_speed_PITCH=1;//PITCH轴扫描速度,最小为1
 		int scan_speed_YWA=14;//YAW轴扫描速度,最小为1
@@ -810,6 +812,8 @@ if	(in_END_L==1)
 	}
 }
 #endif			
+
+
 PITCH_trage_angle=PITCH_MIN_angle+(allow_angle)*0.8f*(scan_percent_PITCH/500.0f);//PITCH
 yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0f);//YAW轴转一圈多一点
 								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
@@ -820,21 +824,24 @@ yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0f);//YAW轴转一圈多一
 		else //视觉锁到装甲板-扫描结束
 		{
 			scan_time=0;
-		if(Armour_lose_time>1400)//控制挡位-扫描开始
+		if(Armour_lose_time>1400)//控制挡位-扫描开始  丢失超过1.4秒 将扫描目标值变成当前角度,方便丝滑切换扫描模式
+		{
 YAW_START_ANGLE=DJIC_IMU.total_yaw;//丝滑开始扫描
-scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*500	;	
+//scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*500	;	
 scan_percent_YAW=0;	
-		
+		scan_percent_PITCH=(GM6020s[3].totalAngle-3900)/1180.0f*500	;//用电机角度	
+		}
 		}
 
 	}
 	else//不在扫描档位
 	{
 		PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle;
+		scan_percent_PITCH=(GM6020s[3].totalAngle-3900)/1180.0f*500	;//用电机角度		
 
 		scan_time=0;
 		YAW_START_ANGLE=DJIC_IMU.total_yaw;//丝滑开始扫描
-		scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	;	
+//		scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*1000	;
 scan_percent_YAW=0;
 	}
 		
