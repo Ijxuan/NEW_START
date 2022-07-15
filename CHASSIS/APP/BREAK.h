@@ -30,5 +30,6 @@ extern BREAK_e break_basic;
 extern long M2006_targe_angle;
 extern int M2006_targe_speed;
 extern int send_to_break ;
+extern bool start_use_break;//使用刹车,这是标志位
 
 #endif

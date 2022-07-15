@@ -11,6 +11,10 @@ int M2006_init_times = 0;            //初始化 计时
 int M2006_init_change_angle = 0;     //初始化 角度变化量
 int M2006_init_totalAngle_last = 0;  //初始化 上一时刻角度值
 
+
+bool start_use_break=0;//使用刹车,这是标志位
+
+
 /*
 P_PID_t BREAK_ANGLE_pid;//刹车PID
 P_PID_t BREAK_SPEED_pid;
@@ -39,6 +43,7 @@ void break_init(void) {
   else if (DR16.rc.s_left == 3 &&
              DR16.rc.s_right == 2)  //手动 初始化刹车,此时 摩擦轮速度为0
   {
+	  /* 手动开启初始化 (单独判断遥控器)
     if (DR16.rc.ch4_DW >= 200)  //拨下
     {
       if (break_basic.STATE == 0)  //未初始化
@@ -47,7 +52,17 @@ void break_init(void) {
         M2006_init_times = 0;  //开始初始化就清0
       }
     }
-    if (break_basic.STATE == 1)  //刹车最大值没有准备好.正在初始化最大值
+	  */
+	        if (break_basic.STATE == 0)  //未初始化
+      {
+		  if(start_use_break==1)
+		  {
+        break_basic.STATE = 1;
+        M2006_init_times = 0;  //开始初始化就清0
+			  
+		  }
+      }
+    else if (break_basic.STATE == 1)  //刹车最大值没有准备好.正在初始化最大值
     {
       BREAK_SPEED_pid.Max_result = 2000;
       BREAK_SPEED_pid.Min_result = -2000;
@@ -62,7 +77,8 @@ void break_init(void) {
           M2006_init_times = 0;
         }
       }
-    } else if (break_basic.STATE == 2)  //正在初始化最小值
+    }
+	else if (break_basic.STATE == 2)  //正在初始化最小值
     {
       BREAK_SPEED_pid.Max_result = 2000;
       BREAK_SPEED_pid.Min_result = -2000;
@@ -95,12 +111,82 @@ void break_init(void) {
 
 
 void break_control(void) {
+	if (DR16.rc.s_left  == 3 &&
+		DR16.rc.s_right == 2) 
+{
+		if(DR16.rc.ch4_DW>300)//拨下到一半
+		{
+	start_use_break=1;	
+		}
+		else
+		{
+	start_use_break=0;	
+		}
+}
+	
 break_init();
 
-	if(DR16.rc.s_left == 3)
+	if(DR16.rc.s_left == 3)//左中挡位
 	{
 if(break_basic.STATE == 3)  //初始化全部完成
 {	
+	if(start_use_break==0)
+	{
+	M2006_targe_angle=	break_basic.BREAK_MID;	
+				stop_CH_OP_BC_BREAK=0;	
+		stop_CH_OP_BC_BREAK_times=0;//强制停止刹车流程
+				if(DR16.rc.ch3==0)//彻底松手了
+	{
+	break_FX=-1;
+	}
+	
+	}
+	
+	if(start_use_break==1)//手动挡且拨下
+	{
+		if(stop_CH_OP_BC_BREAK_times==0)//time清零才能开始下一次刹车 一次刹车的周期由这个值控制
+	{	stop_CH_OP_BC_BREAK_times=1;	
+		stop_CH_OP_BC_BREAK=1;//开始失能
+	
+	}	
+	
+	}	
+	
+	if(stop_CH_OP_BC_BREAK_times!=0)
+	{
+	stop_CH_OP_BC_BREAK_times++;
+	}
+
+	if(	M3508s[3].realSpeed>1000)
+	{
+	M2006_targe_angle=	break_basic.BREAK_MAX+200;
+	}
+	if(	M3508s[3].realSpeed<-1000)
+	{
+	M2006_targe_angle=	break_basic.BREAK_MIN-200;
+	}//自动决定刹车方向
+	if(stop_CH_OP_BC_BREAK_times==45)
+	{
+	break_FX=-break_FX;//使能前将目标速度取反
+	}
+			if(stop_CH_OP_BC_BREAK_times>50)//超过300ms,取消底盘失能,
+	{
+				stop_CH_OP_BC_BREAK=0;		
+	}
+	
+			if(stop_CH_OP_BC_BREAK_times>250)//超过500ms,刹车回中
+	{
+	M2006_targe_angle=	break_basic.BREAK_MID;
+	stop_CH_OP_BC_BREAK=0;		
+	}
+		
+	
+	if(stop_CH_OP_BC_BREAK_times>500)//过了500*3ms后才会开始下一次刹车
+	{
+	stop_CH_OP_BC_BREAK_times=0;
+	}
+
+	/*单纯判度遥控器的值
 	if(DR16.rc.ch4_DW>=-100&&DR16.rc.ch4_DW<=100)
 	{
 	M2006_targe_angle=	break_basic.BREAK_MID;	
@@ -147,7 +233,7 @@ stop_CH_OP_BC_BREAK_times=0;
 	{
 	break_FX=-1;
 	}
-	
+	*/
 }	
 	}
 

@@ -138,10 +138,10 @@ void CHASSIS_CONTROUL(void)
 //	if(DR16.rc.s_left==3||DR16.rc.s_left==1)//遥控器控制  左中间
 	if(DR16.rc.s_left==3)//遥控器控制  左中间
 	{
-//	CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*break_FX*CHASSIS_MAX_SPEED;
+	CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*break_FX*CHASSIS_MAX_SPEED;
 		//遥控器给速度目标值 二选一		带刹车自动变向
 		
-	CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*CHASSIS_MAX_SPEED;
+//	CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*CHASSIS_MAX_SPEED;
 				 C_T_P.C_model.data='1';//初始化中
 
 	
