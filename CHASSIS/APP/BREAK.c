@@ -171,11 +171,11 @@ if(break_basic.STATE == 3)  //初始化全部完成
 				{
 	if(	M3508s[3].realSpeed>1000)
 	{
-	M2006_targe_angle=	break_basic.BREAK_MAX+200;
+	M2006_targe_angle=	break_basic.BREAK_MAX+3000;
 	}
 	if(	M3508s[3].realSpeed<-1000)
 	{
-	M2006_targe_angle=	break_basic.BREAK_MIN-200;
+	M2006_targe_angle=	break_basic.BREAK_MIN-3000;
 	}//自动决定刹车方向					
 				}
 			if(stop_CH_OP_BC_BREAK_times>200)//超过500ms,刹车回中
