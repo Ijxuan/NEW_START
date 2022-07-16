@@ -67,7 +67,7 @@ void break_init(void) {
       BREAK_SPEED_pid.Max_result = 2000;
       BREAK_SPEED_pid.Min_result = -2000;
       M2006_targe_angle = M3508s[BREAK_ID].totalAngle + 999;
-      if (M2006_init_times > 500)  //给200*3=600ms 用来起步
+      if (M2006_init_times > 200)  //给200*3=600ms 用来起步
       {
         if (abs(M2006_init_change_angle) < 200)  //角度变化小于200
         {
@@ -83,7 +83,7 @@ void break_init(void) {
       BREAK_SPEED_pid.Max_result = 2000;
       BREAK_SPEED_pid.Min_result = -2000;
       M2006_targe_angle = M3508s[BREAK_ID].totalAngle - 999;
-      if (M2006_init_times > 500)  //给200*3=600ms 用来起步
+      if (M2006_init_times > 200)  //给200*3=600ms 用来起步
       {
         if (abs(M2006_init_change_angle) < 200)  //角度变化小于200
         {
@@ -150,21 +150,14 @@ if(break_basic.STATE == 3)  //初始化全部完成
 	
 	}	
 	
-	}	
+	
 	
 	if(stop_CH_OP_BC_BREAK_times!=0)
 	{
 	stop_CH_OP_BC_BREAK_times++;
 	}
 
-	if(	M3508s[3].realSpeed>1000)
-	{
-	M2006_targe_angle=	break_basic.BREAK_MAX+200;
-	}
-	if(	M3508s[3].realSpeed<-1000)
-	{
-	M2006_targe_angle=	break_basic.BREAK_MIN-200;
-	}//自动决定刹车方向
+
 	if(stop_CH_OP_BC_BREAK_times==45)
 	{
 	break_FX=-break_FX;//使能前将目标速度取反
@@ -174,18 +167,30 @@ if(break_basic.STATE == 3)  //初始化全部完成
 				stop_CH_OP_BC_BREAK=0;		
 	}
 	
-			if(stop_CH_OP_BC_BREAK_times>250)//超过500ms,刹车回中
+				if(stop_CH_OP_BC_BREAK_times<50&&stop_CH_OP_BC_BREAK_times>0)//
+				{
+	if(	M3508s[3].realSpeed>1000)
+	{
+	M2006_targe_angle=	break_basic.BREAK_MAX+200;
+	}
+	if(	M3508s[3].realSpeed<-1000)
+	{
+	M2006_targe_angle=	break_basic.BREAK_MIN-200;
+	}//自动决定刹车方向					
+				}
+			if(stop_CH_OP_BC_BREAK_times>200)//超过500ms,刹车回中
 	{
 	M2006_targe_angle=	break_basic.BREAK_MID;
 	stop_CH_OP_BC_BREAK=0;		
 	}
 		
 	
-	if(stop_CH_OP_BC_BREAK_times>500)//过了500*3ms后才会开始下一次刹车
+	if(stop_CH_OP_BC_BREAK_times>2000)//过了500*3ms后才会开始下一次刹车
 	{
 	stop_CH_OP_BC_BREAK_times=0;
 	}
-
+	
+	}
 	/*单纯判度遥控器的值
 	if(DR16.rc.ch4_DW>=-100&&DR16.rc.ch4_DW<=100)
 	{
@@ -261,10 +266,18 @@ M2006_targe_speed=P_PID_bate(&BREAK_ANGLE_pid,M2006_targe_angle,M3508s[BREAK_ID]
 	
 	
 send_to_break=P_PID_bate(&BREAK_SPEED_pid,M2006_targe_speed,M3508s[BREAK_ID].realSpeed);
+	
+	
 //	M2006_targe_angle_text+=DR16.rc.ch1/10;
 //	M2006_targe_speed=P_PID_bate(&BREAK_ANGLE_pid,M2006_targe_angle_text,M3508s[BREAK_ID].totalAngle);//M2006_targe_speed应该大于0
 
 //send_to_break_text=P_PID_bate(&BREAK_SPEED_pid,M2006_targe_speed,M3508s[BREAK_ID].realSpeed);
+//	
+//	if(send_to_break_text>4000)//测试参数时避免撞机械限位，堵转烧电机  限制一下
+//	{send_to_break_text=4000;}
+//		if(send_to_break_text<-4000)
+//	{send_to_break_text=-4000;}
+	
 }
 
 
