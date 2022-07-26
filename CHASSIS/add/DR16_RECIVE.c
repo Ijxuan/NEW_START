@@ -576,7 +576,7 @@ if(0)
 			send_d_16[p++]=send_to_pitch;			//随机数		发送给yaw轴电机
 
 #endif
-#if 1//发送底盘功率数据//底盘输出电压 单位 毫伏
+#if 0//发送底盘功率数据//底盘输出电压 单位 毫伏
 /*
 			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
       uint16_t chassis_current; //底盘输出电流 单位 毫安
@@ -657,7 +657,7 @@ if(0)
 			//随机数		发送给yaw轴电机
 
 #endif
-#if 0//m2006电机测试
+#if 1//m2006电机测试
 /*
 			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
       uint16_t chassis_current; //底盘输出电流 单位 毫安
@@ -673,14 +673,41 @@ if(0)
 
 			send_d_32[p++]=BREAK_ANGLE_pid.I_Output;//底盘功率缓冲 4		4PID_YES
 
-			send_d_32[p++]=M2006_targe_angle;//P_OUT		5
+			send_d_32[p++]=M2006_targe_angle_text;//P_OUT		5
 			send_d_32[p++]=M3508s[2].totalAngle;//I_OUT		6
 			send_d_32[p++]=M3508s[2].realSpeed;//D_OUT  	7
 	p=0;
 			send_d_16[p++]=M2006_targe_speed;//在一个区域停留的时间      8
 
 			send_d_16[p++]=send_to_break;//fps       	9 				M3508s[3].
-			send_d_16[p++]=M3508s[2].realCurrent;
+			send_d_16[p++]=0;
+			//随机数		发送给yaw轴电机
+
+#endif
+#if 0//上位机测试  发送频率!!!
+/*
+			uint16_t chassis_volt; //底盘输出电压 单位 毫伏
+      uint16_t chassis_current; //底盘输出电流 单位 毫安
+      float chassis_power;//底盘输出功率 单位 W 瓦
+      uint16_t chassis_power_buffer;//底盘功率缓冲 单位 J 焦耳 备注：飞坡根据规则增加至 250J
+	  */
+
+	p=0;
+			send_d_32[p++]=0;//底盘输出电压 单位 毫伏
+			send_d_32[p++]=0;//底盘输出电流 单位 W 瓦    2
+
+			send_d_32[p++]=0;//底盘输出功率
+
+			send_d_32[p++]=0;//底盘功率缓冲 4		4PID_YES
+
+			send_d_32[p++]=0;//P_OUT		5
+			send_d_32[p++]=M2006_targe_speed;//I_OUT		6
+			send_d_32[p++]=0;//D_OUT  	7
+	p=0;
+			send_d_16[p++]=0;//在一个区域停留的时间      8
+
+			send_d_16[p++]=0;//fps       	9 				M3508s[3].
+			send_d_16[p++]=0;
 			//随机数		发送给yaw轴电机
 
 #endif

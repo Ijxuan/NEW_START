@@ -64,10 +64,10 @@ void break_init(void) {
       }
     else if (break_basic.STATE == 1)  //刹车最大值没有准备好.正在初始化最大值
     {
-      BREAK_SPEED_pid.Max_result = 2000;
-      BREAK_SPEED_pid.Min_result = -2000;
+      BREAK_SPEED_pid.Max_result = 4000;
+      BREAK_SPEED_pid.Min_result = -4000;
       M2006_targe_angle = M3508s[BREAK_ID].totalAngle + 999;
-      if (M2006_init_times > 200)  //给200*3=600ms 用来起步
+      if (M2006_init_times > 400)  //给200*3=600ms 用来起步
       {
         if (abs(M2006_init_change_angle) < 200)  //角度变化小于200
         {
@@ -80,10 +80,10 @@ void break_init(void) {
     }
 	else if (break_basic.STATE == 2)  //正在初始化最小值
     {
-      BREAK_SPEED_pid.Max_result = 2000;
-      BREAK_SPEED_pid.Min_result = -2000;
+      BREAK_SPEED_pid.Max_result = 4000;
+      BREAK_SPEED_pid.Min_result = -4000;
       M2006_targe_angle = M3508s[BREAK_ID].totalAngle - 999;
-      if (M2006_init_times > 200)  //给200*3=600ms 用来起步
+      if (M2006_init_times > 400)  //给200*3=600ms 用来起步
       {
         if (abs(M2006_init_change_angle) < 200)  //角度变化小于200
         {
@@ -117,16 +117,31 @@ void break_control(void) {
 		if(DR16.rc.ch4_DW>300)//拨下到一半
 		{
 	start_use_break=1;	
+
 		}
+		
 		else
 		{
 	start_use_break=0;	
 		}
+		/*手刹start*/
+		if(break_basic.STATE == 3)  //初始化全部完成
+		{
+		if(DR16.rc.ch4_DW>300)//拨下到一半
+	M2006_targe_angle=	break_basic.BREAK_MAX+10000;
+		else if(DR16.rc.ch4_DW<-300)//拨下到一半
+	M2006_targe_angle=	break_basic.BREAK_MIN-10000;
+		else
+		{
+			M2006_targe_angle=	break_basic.BREAK_MID;
+		}
+		}
+		/*手刹END*/
 }
 	
 break_init();
 
-	if(DR16.rc.s_left == 3)//左中挡位
+	if(DR16.rc.s_left == 10)//左中挡位
 	{
 if(break_basic.STATE == 3)  //初始化全部完成
 {	
@@ -171,11 +186,11 @@ if(break_basic.STATE == 3)  //初始化全部完成
 				{
 	if(	M3508s[3].realSpeed>1000)
 	{
-	M2006_targe_angle=	break_basic.BREAK_MAX+3000;
+	M2006_targe_angle=	break_basic.BREAK_MAX+10000;
 	}
 	if(	M3508s[3].realSpeed<-1000)
 	{
-	M2006_targe_angle=	break_basic.BREAK_MIN-3000;
+	M2006_targe_angle=	break_basic.BREAK_MIN-10000;
 	}//自动决定刹车方向					
 				}
 			if(stop_CH_OP_BC_BREAK_times>200)//超过500ms,刹车回中

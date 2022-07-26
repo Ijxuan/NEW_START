@@ -136,7 +136,7 @@ void CHASSIS_CONTROUL(void)
 				}
 				else
 				{
-						 C_T_P.C_model.data='2';// 手动
+						 C_T_P.C_model.data='2';// 自动_初始化中
 				}
 	}
 					}
@@ -148,7 +148,7 @@ void CHASSIS_CONTROUL(void)
 		//遥控器给速度目标值 二选一		带刹车自动变向
 		
 //	CHASSIS_trage_speed=(DR16.rc.ch3*1.0/660.0)*CHASSIS_MAX_SPEED;
-				 C_T_P.C_model.data='1';//初始化中
+				 C_T_P.C_model.data='1';//手动
 
 	
 	}
@@ -551,7 +551,12 @@ Encoder_t Chassis_Encoder;
 void Get_Encoder_Value(Encoder_t* Chassis_Encoder,TIM_HandleTypeDef* htim_ab)
 {
 	
-	Chassis_Encoder->realValue_AB = (short)__HAL_TIM_GET_COUNTER(htim_ab);
+//	Chassis_Encoder->realValue_AB = (short)__HAL_TIM_GET_COUNTER(htim_ab);
+	Chassis_Encoder->realValue_AB+=M3508_3ms_change/50;	
+	if(Chassis_Encoder->realValue_AB>4096)
+		Chassis_Encoder->realValue_AB=0;
+	if(Chassis_Encoder->realValue_AB<0)
+		Chassis_Encoder->realValue_AB=4096;	
 	
 	if(Chassis_Encoder->realValue_AB - Chassis_Encoder->lastValue_AB < -3600)
 	{
@@ -566,6 +571,7 @@ void Get_Encoder_Value(Encoder_t* Chassis_Encoder,TIM_HandleTypeDef* htim_ab)
 	
 	Chassis_Encoder->lastValue_AB = Chassis_Encoder->realValue_AB;
 	M3508_3ms_change=M3508s[3].totalAngle-M3508_3ms_ago;
+
 	ENCODER_SPEED=Chassis_Encoder->totalLine-Chassis_Encoder->TargerLine;
 //	ENCODER_ADD=Chassis_Encoder->realValue_AB-Chassis_Encoder->lastValue_AB;
 	if(M3508_3ms_change!=0)//在运动

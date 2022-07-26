@@ -50,9 +50,25 @@
     {1.0f, 0.0f, 0.0f},                     \
     {0.0f, 0.0f, -1.0f}                      \
 
+	
+	#if use_new_gimbal==0
 float text_BOARD_INSTALL[3][3]= {   {0.0f, 1.0f, 0.0f},                    
     {-1.0f, 0.0f, 0.0f},                     
     {0.0f, 0.0f, 1.0f}  };
+
+	#endif
+#if use_new_gimbal==1
+	/*
+float text_BOARD_INSTALL[3][3]= {   {0.0f, -1.0f, 0.0f},                    
+    {1.0f, 0.0f, 0.0f},                     
+    {0.0f, 0.0f, -1.0f}  };
+	*/
+float text_BOARD_INSTALL[3][3]= {   {0.0f, 1.0f, 0.0f},                    
+    {-1.0f, 0.0f, 0.0f},                     
+    {0.0f, 0.0f, 1.0f}  };	
+	#endif	
+	
+
 #define IST8310_BOARD_INSTALL_SPIN_MATRIX   \
     {1.0f, 0.0f, 0.0f},                     \
     {0.0f, 1.0f, 0.0f},                     \
@@ -647,14 +663,40 @@ void Updata_Hand_Euler_Gyro_Data(void)
 	
 		//角度
 	DJIC_IMU.yaw = (float)INS_angle[0] * Angle_turn_Radian*-1.0f ;		//将弧度转为度
+	/*
 	DJIC_IMU.pitch = (float)INS_angle[1] * Angle_turn_Radian ; //(-180° ~ 180°)+ 180.0f
 		DJIC_IMU.Row = (float)INS_angle[2] * Angle_turn_Radian ;		//将弧度转为度
-
+	*/
+#if use_new_gimbal==0
+	DJIC_IMU.pitch = (float)INS_angle[1] * Angle_turn_Radian ; //(-180° ~ 180°)+ 180.0f
+		DJIC_IMU.Row = (float)INS_angle[2] * Angle_turn_Radian ;		//将弧度转为度
+	#endif
+#if use_new_gimbal==1
+	/*
+		DJIC_IMU.Row	 = (float)INS_angle[2] * Angle_turn_Radian ; //(-180° ~ 180°)+ 180.0f
+ DJIC_IMU.pitch= (float)INS_angle[1] * Angle_turn_Radian ;		//将弧度转为度
+ */
+ 	DJIC_IMU.pitch = (float)INS_angle[1] * Angle_turn_Radian ; //(-180° ~ 180°)+ 180.0f
+		DJIC_IMU.Row = (float)INS_angle[2] * Angle_turn_Radian ;		//将弧度转为度
+	#endif	
+	
 //	Vision_Cloud.VisionSend_t.YawAngle_Error=DJIC_IMU.yaw;
 //	Vision_Cloud.VisionSend_t.PitchAngle_Error=DJIC_IMU.pitch;
+
+#if use_new_gimbal==0
 	//角速度
 	DJIC_IMU.Gyro_z = INS_gyro[2] * Angle_turn_Radian*-1.0f;//这是yaw轴的
 	DJIC_IMU.Gyro_y = INS_gyro[1] * Angle_turn_Radian;//这是pitch轴的
+	#endif
+#if use_new_gimbal==1
+	//角速度
+	/*
+	DJIC_IMU.Gyro_z = INS_gyro[2] * Angle_turn_Radian*-1.0f;//这是yaw轴的
+	DJIC_IMU.Gyro_y = INS_gyro[0] * Angle_turn_Radian;//这是pitch轴的
+	*/
+		DJIC_IMU.Gyro_z = INS_gyro[2] * Angle_turn_Radian*-1.0f;//这是yaw轴的
+	DJIC_IMU.Gyro_y = INS_gyro[1] * Angle_turn_Radian;//这是pitch轴的
+#endif	
 //	Vision_Cloud.VisionSend_t.YawAngle_Error=DJIC_IMU.Gyro_z;
 //	Vision_Cloud.VisionSend_t.PitchAngle_Error=DJIC_IMU.Gyro_y;
 
@@ -694,7 +736,7 @@ void Updata_Hand_Euler_Gyro_Data(void)
 	DJIC_IMU.last_Row = DJIC_IMU.Row;
 	
 	
-		Vision_Cloud.VisionSend_t.YawAngle_Error=DJIC_IMU.yaw;
+		Vision_Cloud.VisionSend_t.YawAngle_Error=DJIC_IMU.total_yaw;
 	Vision_Cloud.VisionSend_t.PitchAngle_Error=DJIC_IMU.pitch;
 }
 

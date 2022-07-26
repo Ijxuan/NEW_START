@@ -141,11 +141,11 @@ if(DR16.rc.ch4_DW>=200)//拨下
 			{	
 			DW_DOWN++;	
 		if(DW_DOWN==20)
-						M2006_targe_angle+=Driver_add*2;//8*3=24		
+						M2006_targe_angle+=Driver_add*1;//8*3=24		
 
 //			M2006_targe_angle+=(Driver_add/4);//8*3=24
-				if(DW_DOWN%100==0&&DW_DOWN>200)
-			M2006_targe_angle+=Driver_add*3;//8*3=24		
+				if(DW_DOWN%100==0&&DW_DOWN>500)
+			M2006_targe_angle+=Driver_add*1;//8*3=24		
 				
 			}
 
@@ -581,7 +581,11 @@ send_to_2006=I_PID_Regulation(&Driver_I_PID,M2006_targe_speed,M3508s[1].realSpee
 		
 					if(DR16.rc.s_left==1)//遥控器控制  左上
      	{				
+			if(DR16.rc.s_right==1||DR16.rc.s_right==3)//遥控器控制  左上
 			SHOOT_L_speed=-6800;//自瞄摩擦轮速度
+			if(DR16.rc.s_right==2)//遥控器控制  左上
+			SHOOT_L_speed=0;//自瞄摩擦轮速度
+
 		}
 		
 		

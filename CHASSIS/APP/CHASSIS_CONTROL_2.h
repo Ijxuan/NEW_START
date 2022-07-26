@@ -26,4 +26,8 @@ extern int test_speed;
 
 #endif
 
+
+void XNQ_TEXT(void);
+void XNQ_CHANGE(void);
+
 #endif

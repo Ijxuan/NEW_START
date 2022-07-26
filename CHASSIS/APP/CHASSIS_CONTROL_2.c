@@ -68,7 +68,7 @@ else
 	C_T_P.C_motion.data='4';//自动_撞柱失能解除
 
 }
-	if(	xunen_times>3000)//说明出了意外,肯定是卡死了,不管了,直接走
+	if(	xunen_times>500)//说明出了意外,肯定是卡死了,不管了,直接走
 	{
 	stop_CH_OP_BC_END=0;
 //	CHASSIS_trage_angle=9900000;
@@ -78,9 +78,6 @@ else
 			}
 			
 else if(Chassis_Encoder.totalLine>(CHASSIS_L_MAX_by_ENCODER-reverse_by_ENCODER))
-
-//			else if(M3508s[3].totalAngle>(ENCODER_L_MAX-10000))//
-//			else if(HWswitch_L==0&&M3508s[3].totalAngle>(CHASSIS_L_MAX-3000))//
 			{
 				
 								CHASSIS_trage_speed_last=-test_speed;
@@ -135,7 +132,7 @@ else
 	C_T_P.C_motion.data='4';//自动_撞柱失能解除
 
 }
-	if(	xunen_times>3000)//说明出了意外,肯定是卡死了,不管了,直接走
+	if(	xunen_times>500)//说明出了意外,肯定是卡死了,不管了,直接走
 	{
 	stop_CH_OP_BC_END=0;
 //	CHASSIS_trage_angle=-9900000;
@@ -149,7 +146,7 @@ else
 	C_T_P.C_motion.data='0';//自动_撞柱失能解除
 
 				stop_CH_OP_BC_END_times++;
-				if(stop_CH_OP_BC_END_times>2000)//避免蓄能没到时间就出了轨道边界判断
+				if(stop_CH_OP_BC_END_times>500)//避免蓄能没到时间就出了轨道边界判断
 				{
 					stop_CH_OP_BC_END=0;//
 					CHASSIS_trage_speed=CHASSIS_trage_speed_last;
@@ -193,9 +190,18 @@ bool just_arrive_targe_speed(int targe_speed)
 #endif
 
 
+void XNQ_TEXT(void)
+{
 
 
+}
 
+void XNQ_CHANGE(void)
+{
+
+CHASSIS_R_XNQ_by_ENCODER=Chassis_Encoder.totalLine+100;
+
+}
 
 
 

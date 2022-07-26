@@ -212,14 +212,14 @@ void MX_FREERTOS_Init(void) {
 #if VISION_PID_YAW_IMU
 
 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -800, -4.5, 800,//
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -1000, -4.5, 800,//
 						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 5000, -5000, //积分限幅，也就是积分的输出范围
-						 29000, -29000);
+						 9000, -9000);
 						 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 14, 0.06, 0,//10 0 16//越大越陡峭10
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 12, 0.06, 0,//10 0 16//越大越陡峭10
 						 2.8,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
@@ -227,6 +227,8 @@ void MX_FREERTOS_Init(void) {
 						 1000, -1000); // Yaw_IMU_Angle_pid
 
 #endif
+
+#if use_new_gimbal==0
 #if PID_PITCH_MOTOR
 	P_PID_Parameter_Init(&PITCH_Angle_pid, 0.45, 0, 0,
 						 0, //误差大于这个值就积分分离
@@ -241,6 +243,27 @@ void MX_FREERTOS_Init(void) {
 						 10000, -10000,	 //积分限幅，也就是积分的输出范围
 						 29000, -29000); // Yaw_IMU_Angle_pid
 #endif
+
+#endif
+#if use_new_gimbal==1
+#if PID_PITCH_MOTOR
+	P_PID_Parameter_Init(&PITCH_Angle_pid, 0.7, 0.05, 0,
+						 0, //误差大于这个值就积分分离
+						 //	float max_error, float min_error,
+						 //                          float alpha,
+						 220, -220, //积分限幅，也就是积分的输出范围
+						 220, -220);
+	P_PID_Parameter_Init(&PITCH_Speed_pid, 300, 1, 0,
+						 120,
+						 //						  float max_error, float min_error,
+						 //                          float alpha,
+						 10000, -10000,	 //积分限幅，也就是积分的输出范围
+						 29000, -29000); // Yaw_IMU_Angle_pid
+#endif
+#endif	
+		
+
+
 
 #if 0//没电参数
 	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 200,0.4,0,//100, 1.5, 0,
@@ -468,8 +491,9 @@ CAN1           	0		<1%
 	/* Infinite loop */
 	for (;;)
 	{
-		debug_times++;			NM_swj();
-
+		debug_times++;	
+		NM_swj();
+Get_FPS(&FPS_ALL.DEBUG.WorldTimes,&FPS_ALL.DEBUG.FPS);
 		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
 		{	
 
@@ -1041,7 +1065,7 @@ M2006_targe_angle=M3508s[1].totalAngle;//清除拨盘目标角度累计
 yaw_trage_angle=DJIC_IMU.total_yaw;
 	PITCH_trage_angle = DJIC_IMU.total_pitch;
 YAW_MOTION_STATE=1;//开启小陀螺检测
-
+PITCH_trage_angle_motor=GM6020s[3].totalAngle;
 //key_message.game_state_progress=4;
 //ext_game_status.data.game_progress=4;
 //key_message.our_outpost_is_live=1;
@@ -1107,10 +1131,21 @@ VisionData.RawData.Beat=1;
 				S_T_examine();
 		cloud_control();
 
+				
+#if use_new_gimbal==0
 		if (GM6020s[3].totalAngle <= 3860 && send_to_pitch < 0)//3860
 			send_to_pitch = 0;
 		if (GM6020s[3].totalAngle >= 5130 && send_to_pitch > 0)
+			send_to_pitch = 0;			
+#endif
+				#if use_new_gimbal==1
+
+		if (GM6020s[3].totalAngle <= 5150 && send_to_pitch < 0)//3860
 			send_to_pitch = 0;
+		if (GM6020s[3].totalAngle >= 6550 && send_to_pitch > 0)
+			send_to_pitch = 0;
+#endif
+			
 		//云台的pitch轴正直是往上的
 		////8017-7044
 //			send_to_yaw = 0;

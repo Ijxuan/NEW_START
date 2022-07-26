@@ -17,7 +17,7 @@ CHASSIS_KEY key_message;
 
 Encoder_new_t Chassis_Encoder_new;
 
-
+/*5100-6255  5150-6150*/
 int in_end_times=0;
 
 #if USE_PITCH_BC==1
@@ -254,7 +254,7 @@ else
 bool YAW_TARGE_ANGLE_ADD=1;
 int arrive_targe_angle=0;
 int TEXT_targe_SPEED=400;
-
+int8_t ch0_z_f=1;
 void YAW_PID()
 {
 	
@@ -322,7 +322,11 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 
 								if(cloud_mode.control_mode_NOW==aoto_scan_mode)//扫描PID
 								{
-							yaw_trage_angle-=(DR16.rc.ch0/660.0)/2.0;//YAW轴遥控器控制
+									if(DR16.rc.ch0>0)
+										ch0_z_f=1;
+									if(DR16.rc.ch0<0)
+										ch0_z_f=-1;
+							yaw_trage_angle-=(DR16.rc.ch0/660.0)*(DR16.rc.ch0/660.0)*ch0_z_f/0.6;//YAW轴遥控器控制
 								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
 								PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch;
 									PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle;
@@ -386,7 +390,7 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 
 					yaw_trage_speed=VISION_Yaw_IMU_Angle_pid.result;//外环的结果给内环  二选一
 //					yaw_trage_speed=(DR16.rc.ch3*1.0/660.0)*10000;//遥控器给速度目标值 二选一
-							
+//							yaw_trage_speed=Vision_RawData_Yaw_Angle ;
 					P_PID_bate(&VISION_Yaw_IMU_Speed_pid, yaw_trage_speed,DJIC_IMU.Gyro_z);	
 		                   send_to_yaw=VISION_Yaw_IMU_Speed_pid.result;
 				
@@ -408,6 +412,9 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 	
 }
 
+
+int8_t ch1_z_f=1;
+
 void PITCH_PID()
 {
 //	#if PID_PITCH_MOTOR      //PITCH轴电机角度
@@ -427,7 +434,11 @@ void PITCH_PID()
 //	#if PID_PITCH_IMU		//PITCH轴陀螺仪
 							if(DR16.rc.s_left==3)//PITCH轴控制挡位
 							{
-							PITCH_trage_angle+=(DR16.rc.ch1*1.0/660.0)*0.4;//遥控器给速度目标值 二选一
+								if(DR16.rc.ch1>0)
+									ch1_z_f=1;
+								if(DR16.rc.ch1<0)
+									ch1_z_f=-1;
+							PITCH_trage_angle+=(DR16.rc.ch1*1.0/660.0)*(DR16.rc.ch1*1.0/660.0)*ch1_z_f*0.3;//遥控器给速度目标值 二选一
                             PITCH_trage_angle_motor+=(DR16.rc.ch1*1.0/660.0)*1.0;
  ////							if(DR16.rc.ch4_DW<=-400)//拨上
 ////							PITCH_trage_angle=PITCH_MAX_angle-10;
@@ -450,18 +461,36 @@ void PITCH_PID()
 
 					P_PID_bate(&PITCH_IMU_Angle_pid, PITCH_trage_angle,DJIC_IMU.total_pitch);//GM6020s[EMID].totalAngle readAngle
 //陀螺仪的速度值会有小数
+							
+#if use_new_gimbal==0
 							if(PITCH_trage_angle_motor>5080)
 PITCH_trage_angle_motor=5080;
 							if(PITCH_trage_angle_motor<3900)
 PITCH_trage_angle_motor=3900;
+	#endif
+#if use_new_gimbal==1
+							if(PITCH_trage_angle_motor>6500)
+PITCH_trage_angle_motor=6500;
+							if(PITCH_trage_angle_motor<5330)
+PITCH_trage_angle_motor=5330;
+	#endif								
+
 					P_PID_bate(&PITCH_Angle_pid, PITCH_trage_angle_motor,GM6020s[3].totalAngle);//GM6020s[EMID].totalAngle readAngle
 
 					#if USE_MOTOR_angle==1
 					PITCH_trage_speed=PITCH_Angle_pid.result;//外环的结果给内环  二选一
 
-							send_to_pitch_before=(GM6020s[3].totalAngle-3871.5)*600.26/53.912-7542;
 /*y (前馈输出)= 600.26*[(机械角度-3871.5)/53.912] - 7542*/
-#endif		
+							
+#if use_new_gimbal==0
+	send_to_pitch_before=(GM6020s[3].totalAngle-3871.5)*600.26/53.912-7542;
+
+#endif
+#if use_new_gimbal==1
+send_to_pitch_before=0;
+#endif	
+							
+					#endif		
 												#if USE_MOTOR_angle==0
 					PITCH_trage_speed=PITCH_IMU_Angle_pid.result;//外环的结果给内环  二选一
 
@@ -477,6 +506,9 @@ send_to_pitch=send_to_pitch_before+PITCH_IMU_Speed_pid.result;
 							{send_to_pitch=29000;}
 							if(send_to_pitch<-29000)
 							{send_to_pitch=-29000;}
+							
+							
+							
 #if USE_PITCH_BC==1
 							if(PITCH_trage_angle_motor<4492&&PITCH_trage_angle_motor>3899)
 send_to_pitch=PITCH_IMU_Speed_pid.result+
@@ -497,10 +529,17 @@ void imu_angle()
 //	PITCH_MAX_angle=DJIC_IMU.total_pitch+(7990-GM6020s[3].totalAngle)/8196.0*360.0;
 //	PITCH_MIN_angle=DJIC_IMU.total_pitch+(7450-GM6020s[3].totalAngle)/8196.0*360.0;
 	
+
+#if use_new_gimbal==0
 	PITCH_MAX_angle=DJIC_IMU.total_pitch+(5080-GM6020s[3].totalAngle)/8191.0f*360.0f;
 	PITCH_MIN_angle=DJIC_IMU.total_pitch+(3900-GM6020s[3].totalAngle)/8191.0f*360.0f;//3900
 			allow_angle=	PITCH_MAX_angle-PITCH_MIN_angle;
-
+#endif
+#if use_new_gimbal==1
+	PITCH_MAX_angle=DJIC_IMU.total_pitch+(6500-GM6020s[3].totalAngle)/8191.0f*360.0f;
+	PITCH_MIN_angle=DJIC_IMU.total_pitch+(5330-GM6020s[3].totalAngle)/8191.0f*360.0f;//3900
+			allow_angle=	PITCH_MAX_angle-PITCH_MIN_angle;	
+#endif
 }
 
 //2022-4-14:
@@ -577,7 +616,7 @@ void scan_cloud(void)
 //		if(DR16.rc.s_right==3)//控制挡位-扫描开始
 		if(Armour_lose_time>1500)//视觉150ms没锁到装甲板-开始扫描
 		{
-		 int scan_speed_PITCH=1;//PITCH轴扫描速度,最小为1
+		 int scan_speed_PITCH=5;//PITCH轴扫描速度,最小为1
 		int scan_speed_YWA=14;//YAW轴扫描速度,最小为1
 
 
@@ -820,6 +859,12 @@ yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0f);//YAW轴转一圈多一
 								PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch;
 								PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle;
 
+#if use_new_gimbal==0
+PITCH_trage_angle_motor=3900+1180*(scan_percent_PITCH/500.0f);
+#endif
+#if use_new_gimbal==1
+PITCH_trage_angle_motor=5150+1180*(scan_percent_PITCH/500.0f);
+#endif	
 		}
 		else //视觉锁到装甲板-扫描结束
 		{
@@ -829,7 +874,12 @@ yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0f);//YAW轴转一圈多一
 YAW_START_ANGLE=DJIC_IMU.total_yaw;//丝滑开始扫描
 //scan_percent_PITCH=	(DJIC_IMU.total_pitch-PITCH_MIN_angle)/allow_angle*500	;	
 scan_percent_YAW=0;	
-		scan_percent_PITCH=(GM6020s[3].totalAngle-3900)/1180.0f*500	;//用电机角度	
+#if use_new_gimbal==0
+scan_percent_PITCH=(GM6020s[3].totalAngle-3900)/1180.0f*500	;//用电机角度	
+#endif
+#if use_new_gimbal==1
+scan_percent_PITCH=(GM6020s[3].totalAngle-5150)/1180.0f*500	;//用电机角度	
+#endif	
 		}
 		}
 

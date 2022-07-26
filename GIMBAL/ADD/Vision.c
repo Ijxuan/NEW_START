@@ -86,6 +86,10 @@ uint8_t Vision_SendBuff[5][18] = {'S', '0', '7', '0', '0', '0', '0', '0', '0', '
 
 //视觉接收函数
 bool shoot_last=0;
+
+float YAW_BC_VALUE=0;	
+float YAW_BC_now=0;								  
+								  
 void Vision_DataReceive(uint8_t *data)
 {
 	#if 0
@@ -184,7 +188,7 @@ VisionData.RawData.Beat=1;
 
 //	if(DR16.rc.s_left==1)
 	PITCH_TRAGET_ANGLE_TEMP=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191;
-PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191;
+PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191.0;
 
 #endif
 	#if USE_MOTOR_angle==0
@@ -192,7 +196,18 @@ PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch-Vision_RawData_Pitch_Angle;
 
 
 #endif
-YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;
+
+if(Vision_RawData_Yaw_Angle>1.0)
+YAW_BC_now=YAW_BC_VALUE;
+if(Vision_RawData_Yaw_Angle<0.3&&Vision_RawData_Yaw_Angle>-0.3)
+{
+YAW_BC_now=0;
+}
+if(Vision_RawData_Yaw_Angle<-1.0)
+YAW_BC_now=-YAW_BC_VALUE;
+	
+
+YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle+YAW_BC_now;
 	if(abs(Vision_RawData_Pitch_Angle)>30)//PITCH轴接收到的值 绝对值 超过30,判断为错误 归零
 {
 	Vision_RawData_Pitch_Angle=0;
@@ -370,10 +385,10 @@ void Update_Vision_SendData(void)
 		Vision_SendBuff[i][1] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
 			
 		Vision_SendBuff[i][2] = mode_v;//?
-		if(YAW_MOTION_STATE==12)
-		{//检测到小陀螺
-		Vision_SendBuff[i][2] = 5;//?
-		}
+//		if(YAW_MOTION_STATE==12)
+//		{//检测到小陀螺
+//		Vision_SendBuff[i][2] = 5;//?
+//		}
 		//2  5  陀螺 6预测  1基础自瞄  
 //		if(stay_in_track_end_times>50&&stay_in_track_end_times<150)//在轨道末端,并且不超过1.5秒,超过1.5s可能是在轨道末端失能了
 //		{

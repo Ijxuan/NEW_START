@@ -248,7 +248,7 @@
         <Ww>
           <count>19</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Vision_SendBuff</ItemText>
+          <ItemText>Vision_SendBuff,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>20</count>

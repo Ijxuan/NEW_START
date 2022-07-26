@@ -130,6 +130,10 @@ extern int ENCODER_ARRIVE_MIN;//编码器抵达的最小值
 
 extern int32_t CHASSIS_L_MAX_by_ENCODER;//变向用的左边界值
 extern int32_t CHASSIS_R_MIN_by_ENCODER;//变向用的右边界值
+
+extern int32_t CHASSIS_L_XNQ_by_ENCODER;//左边的虚拟墙值
+extern int32_t CHASSIS_R_XNQ_by_ENCODER;//右边的虚拟墙值
+
 extern int reverse_by_ENCODER; //变向提前值
 
 extern int driver_targe_speed;//拨盘的目标速度
