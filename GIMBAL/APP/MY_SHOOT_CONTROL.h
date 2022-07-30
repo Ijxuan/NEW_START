@@ -3,6 +3,8 @@
 #include "main.h"
 
 void shoot_control(void);
+void shoot_control_V2(void);
+
 void driver_plate_control(void);
 
 typedef struct

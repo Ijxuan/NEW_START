@@ -212,14 +212,14 @@ void MX_FREERTOS_Init(void) {
 #if VISION_PID_YAW_IMU
 
 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -1000, -4.5, 800,//
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Speed_pid, -900, -4.5, 800,//
 						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 5000, -5000, //积分限幅，也就是积分的输出范围
 						 9000, -9000);
 						 
-	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 12, 0.06, 0,//10 0 16//越大越陡峭10
+	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 10, 0.085, 0,//10 0 16//越大越陡峭10
 						 2.8,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
@@ -492,8 +492,15 @@ CAN1           	0		<1%
 	for (;;)
 	{
 		debug_times++;	
-		NM_swj();
 Get_FPS(&FPS_ALL.DEBUG.WorldTimes,&FPS_ALL.DEBUG.FPS);
+		
+				if(debug_times%10==0)//上位机发送频率
+						{
+							NM_swj();
+
+							//10ms一次
+//			printf("好");
+						}
 		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
 		{	
 
@@ -504,11 +511,7 @@ Get_FPS(&FPS_ALL.DEBUG.WorldTimes,&FPS_ALL.DEBUG.FPS);
 			//	HAL_UART_Transmit_DMA(&huart1,&TRY[0],2);
 						if (cali_sensor[0].cali_done == CALIED_FLAG && cali_sensor[0].cali_cmd == 0)
 					{
-		if(debug_times%10==0)//上位机发送频率
-						{
-							//10ms一次
-//			printf("好");
-						}
+
 					}
 //		
 					
@@ -1193,8 +1196,8 @@ VisionData.RawData.Beat=1;
 		// send_to_SHOOT_R=I_PID_Regulation(&SHOOT_R_I_PID,SHOOT_L_speed,M3508s[2].realSpeed);
 		//
 
-		shoot_control();
-	
+//		shoot_control();
+	shoot_control_V2();
 		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
 		{
 			//						send_to_chassis=0;

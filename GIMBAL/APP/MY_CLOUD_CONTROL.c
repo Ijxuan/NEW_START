@@ -616,8 +616,8 @@ void scan_cloud(void)
 //		if(DR16.rc.s_right==3)//控制挡位-扫描开始
 		if(Armour_lose_time>1500)//视觉150ms没锁到装甲板-开始扫描
 		{
-		 int scan_speed_PITCH=5;//PITCH轴扫描速度,最小为1
-		int scan_speed_YWA=14;//YAW轴扫描速度,最小为1
+		 int scan_speed_PITCH=2;//PITCH轴扫描速度,最小为1
+		int scan_speed_YWA=35;//YAW轴扫描速度,最小为1
 
 
 		static bool scan_i_YAW=0;
@@ -863,7 +863,7 @@ yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0f);//YAW轴转一圈多一
 PITCH_trage_angle_motor=3900+1180*(scan_percent_PITCH/500.0f);
 #endif
 #if use_new_gimbal==1
-PITCH_trage_angle_motor=5150+1180*(scan_percent_PITCH/500.0f);
+PITCH_trage_angle_motor=5500+1000*(scan_percent_PITCH/500.0f);
 #endif	
 		}
 		else //视觉锁到装甲板-扫描结束

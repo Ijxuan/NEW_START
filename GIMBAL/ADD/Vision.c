@@ -187,7 +187,7 @@ VisionData.RawData.Beat=1;
 	#if USE_MOTOR_angle==1
 
 //	if(DR16.rc.s_left==1)
-	PITCH_TRAGET_ANGLE_TEMP=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191;
+PITCH_TRAGET_ANGLE_TEMP=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191;
 PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191.0;
 
 #endif
