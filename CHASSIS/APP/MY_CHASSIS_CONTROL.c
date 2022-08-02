@@ -551,8 +551,8 @@ Encoder_t Chassis_Encoder;
 void Get_Encoder_Value(Encoder_t* Chassis_Encoder,TIM_HandleTypeDef* htim_ab)
 {
 	
-//	Chassis_Encoder->realValue_AB = (short)__HAL_TIM_GET_COUNTER(htim_ab);
-	Chassis_Encoder->realValue_AB+=M3508_3ms_change/50;	
+	Chassis_Encoder->realValue_AB = (short)__HAL_TIM_GET_COUNTER(htim_ab);
+//	Chassis_Encoder->realValue_AB+=M3508_3ms_change/50;	
 	if(Chassis_Encoder->realValue_AB>4096)
 		Chassis_Encoder->realValue_AB=0;
 	if(Chassis_Encoder->realValue_AB<0)

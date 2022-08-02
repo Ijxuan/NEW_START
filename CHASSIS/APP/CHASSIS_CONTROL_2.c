@@ -192,6 +192,15 @@ bool just_arrive_targe_speed(int targe_speed)
 
 void XNQ_TEXT(void)
 {
+if(Chassis_Encoder.totalLine<CHASSIS_R_XNQ_by_ENCODER)
+{
+								CHASSIS_trage_speed=-test_speed;
+}
+if(Chassis_Encoder.totalLine>CHASSIS_L_XNQ_by_ENCODER)
+{
+								CHASSIS_trage_speed=test_speed;
+}
+
 
 
 }
@@ -199,7 +208,9 @@ void XNQ_TEXT(void)
 void XNQ_CHANGE(void)
 {
 
-CHASSIS_R_XNQ_by_ENCODER=Chassis_Encoder.totalLine+100;
+//CHASSIS_R_XNQ_by_ENCODER=Chassis_Encoder.totalLine+100;
+
+	
 
 }
 
