@@ -674,7 +674,7 @@ Update_Vision_SendData();
 			{
 				VisionData.Offline_Detec=0;
 				VisionData.DataUpdate_Flag=0;//标志位置零
-//				VisionData.RawData.Beat=0;//击打置零
+				VisionData.RawData.Beat=0;//击打置零
 				VisionData.RawData.Armour=0;//识别置零
 				VisionData.RawData.Pitch_Angle=0;
 				VisionData.RawData.Yaw_Angle=0;
