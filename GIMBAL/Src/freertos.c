@@ -170,7 +170,7 @@ void MX_FREERTOS_Init(void) {
 
 	//
 	I_PID_Parameter_Init(&SHOOT_R_I_PID, 28, 0.35, 15,
-						 8700, 7000, -7000,
+						 20000, 20000, -20000,
 						 0.5,
 						 14000, -14000,
 						 16000, -16000); //摩擦轮电机28 0.35 15 
@@ -1196,8 +1196,8 @@ VisionData.RawData.Beat=1;
 		// send_to_SHOOT_R=I_PID_Regulation(&SHOOT_R_I_PID,SHOOT_L_speed,M3508s[2].realSpeed);
 		//
 
-//		shoot_control();
-	shoot_control_V2();
+		shoot_control();
+//	shoot_control_V2();
 		if (DR16.rc.s_left == 2 || DR16.rc.s_left == 0) //失能保护
 		{
 			//						send_to_chassis=0;

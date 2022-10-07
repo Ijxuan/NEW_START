@@ -144,7 +144,7 @@ if(DR16.rc.ch4_DW>=200)//拨下
 						M2006_targe_angle+=Driver_add*1;//8*3=24		
 
 //			M2006_targe_angle+=(Driver_add/4);//8*3=24
-				if(DW_DOWN%100==0&&DW_DOWN>500)
+				if(DW_DOWN%25==0&&DW_DOWN>500)
 			M2006_targe_angle+=Driver_add*1;//8*3=24		
 				
 			}
@@ -799,6 +799,39 @@ shoot_times_for_limit=0;
 	
 	
 	}
+	
+		if(DR16.rc.s_left==3)
+	{
+			if(DR16.rc.s_right==1||DR16.rc.s_right==3)
+			{
+//		
+					if(DR16.rc.ch4_DW==0)//松手
+					{
+						DW_FREE++;
+						DW_UP=0;DW_DOWN=0;
+							M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除
+					}	
+if(DR16.rc.ch4_DW>=200)//拨下
+			{	
+			DW_DOWN++;	
+		if(DW_DOWN==20)
+						M2006_targe_angle+=Driver_add*1;//8*3=24		
+
+//			M2006_targe_angle+=(Driver_add/4);//8*3=24
+				if(DW_DOWN%100==0&&DW_DOWN>500)//一秒10发
+			M2006_targe_angle+=Driver_add*1;//8*3=24		
+				
+			}
+
+			
+if(DR16.rc.ch4_DW<=-100)//拨上
+			{
+		DW_UP++;//没用到了
+		if(DW_UP==100)
+			M2006_targe_angle+=(Driver_add/10);//8*3=24			
+			}
+		}
+	}
 
 
 M2006_targe_speed=P_PID_bate(&Driver_ANGLE_pid,M2006_targe_angle,M3508s[1].totalAngle);//M2006_targe_speed应该大于0
@@ -834,7 +867,7 @@ send_to_2006=I_PID_Regulation(&Driver_I_PID,M2006_targe_speed,M3508s[1].realSpee
 					if(DR16.rc.s_left==1)//遥控器控制  左上
      	{				
 			if(DR16.rc.s_right==1||DR16.rc.s_right==3)//遥控器控制  左上
-			SHOOT_L_speed=-6800;//自瞄摩擦轮速度
+			SHOOT_L_speed=-20000;//自瞄摩擦轮速度
 			if(DR16.rc.s_right==2)//遥控器控制  左上
 			SHOOT_L_speed=0;//自瞄摩擦轮速度
 
@@ -850,9 +883,9 @@ send_to_2006=I_PID_Regulation(&Driver_I_PID,M2006_targe_speed,M3508s[1].realSpee
 		if(	SHOOT_L_speed>0)
 			SHOOT_L_speed=-SHOOT_L_speed;//左摩擦轮速度目标值应该是 值
 
-send_to_SHOOT_L=I_PID_Regulation(&SHOOT_L_I_PID,SHOOT_R_speed,M3508s[3].realSpeed);//gai//蓝线
+send_to_SHOOT_L=I_PID_Regulation(&SHOOT_L_I_PID,20000,M3508s[3].realSpeed);//gai//蓝线
 
-send_to_SHOOT_R=I_PID_Regulation(&SHOOT_R_I_PID,SHOOT_L_speed,M3508s[2].realSpeed);   //红线
+send_to_SHOOT_R=I_PID_Regulation(&SHOOT_R_I_PID,-20000,M3508s[2].realSpeed);   //红线
 	
 	
 	

@@ -27,6 +27,10 @@ Project File Date:  07/10/2022
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'GIMBAL'
+compiling MY_SHOOT_CONTROL.c...
+..\APP\MY_SHOOT_CONTROL.c(339): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  						if(VISION_Yaw_IMU_Angle_pid.Error>1.5||VISION_Yaw_IMU_Angle_pid.Error<-1.5)
+..\APP\MY_SHOOT_CONTROL.c: 1 warning, 0 errors
 compiling freertos.c...
 ..\ADD\DR16_RECIVE.h(212): warning:  #3135-D: attribute does not apply to any entity
   		__packed struct
@@ -42,9 +46,9 @@ compiling freertos.c...
   	char error_e[5]="error";
 ../Src/freertos.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=105252 RO-data=4560 RW-data=2216 ZI-data=56544  
+Program Size: Code=106484 RO-data=4560 RW-data=2216 ZI-data=56544  
 FromELF: creating hex file...
-"ins_task\GIMBAL.axf" - 0 Error(s), 6 Warning(s).
+"ins_task\GIMBAL.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 

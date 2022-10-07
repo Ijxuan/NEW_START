@@ -9,6 +9,10 @@ int last_Speed=0;
 int xunen_times=0;
 float xunen_percent=1.5;
 int test_speed=5500;
+
+int XNQ_L_TIMES=0;
+int XNQ_R_TIMES=0;
+int witch_XNQ_TIMES_can_add=0;//1左边加,2右边加
 void CHASSIS_CONTROUL_2()
 {
 				stop_CH_OP_BC_LESS=0;//这个模式用不到	
@@ -201,7 +205,13 @@ if(Chassis_Encoder.totalLine>CHASSIS_L_XNQ_by_ENCODER)
 								CHASSIS_trage_speed=test_speed;
 }
 
-
+if(Chassis_Encoder.totalLine>CHASSIS_L_XNQ_by_ENCODER)
+{
+	if(XNQ_L_TIMES<=XNQ_R_TIMES)//如果碰撞左边虚拟墙的次数小于等于右边
+	{
+	XNQ_L_TIMES++;
+	}
+}
 
 }
 
