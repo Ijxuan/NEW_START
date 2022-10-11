@@ -550,6 +550,36 @@
           <WinNumber>1</WinNumber>
           <ItemText>PITCH_Angle_pid</ItemText>
         </Ww>
+        <Ww>
+          <count>80</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>heat_in_renew</ItemText>
+        </Ww>
+        <Ww>
+          <count>81</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>DDR16_PART_THREE_TIMES</ItemText>
+        </Ww>
+        <Ww>
+          <count>82</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>DR16Buffer</ItemText>
+        </Ww>
+        <Ww>
+          <count>83</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>CAN2_RC_TIMES_2,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>84</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>DR16_times</ItemText>
+        </Ww>
+        <Ww>
+          <count>85</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>PITCH_IMU_Angle_pid</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -1039,7 +1069,7 @@
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
-        <aLwin>0</aLwin>
+        <aLwin>1</aLwin>
         <aCover>0</aCover>
         <aSer1>0</aSer1>
         <aSer2>0</aSer2>

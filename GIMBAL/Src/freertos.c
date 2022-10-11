@@ -217,7 +217,7 @@ void MX_FREERTOS_Init(void) {
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 5000, -5000, //积分限幅，也就是积分的输出范围
-						 9000, -9000);
+						 29000, -29000);
 						 
 	P_PID_Parameter_Init(&VISION_Yaw_IMU_Angle_pid, 10, 0.085, 0,//10 0 16//越大越陡峭10
 						 2.8,
@@ -1078,7 +1078,15 @@ PITCH_trage_angle_motor=GM6020s[3].totalAngle;
 			#if SHOOT_HIGH_HEAT_TEXT
 		vision_shoot_times=100;
 VisionData.RawData.Armour=1;
-VisionData.RawData.Beat=1;
+				if(controul_times%200==0)
+		{
+	VisionData.RawData.Beat=1;		
+		}
+		else
+		{
+				VisionData.RawData.Beat=0;		
+	}
+//VisionData.RawData.Beat=1;
 	Vision_RawData_Pitch_Angle=0;
 	Vision_RawData_Yaw_Angle=0;
 #endif

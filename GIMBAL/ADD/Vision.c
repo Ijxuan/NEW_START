@@ -178,7 +178,7 @@ text_times++;
 			Vision_RawData_Pitch_Angle = (float)VisionData.RawData.Pitch_Angle ;
 	#if SHOOT_HIGH_HEAT_TEXT
 VisionData.RawData.Armour=1;
-VisionData.RawData.Beat=1;
+//VisionData.RawData.Beat=1;
 	Vision_RawData_Pitch_Angle=0;
 	Vision_RawData_Yaw_Angle=0;
 #endif

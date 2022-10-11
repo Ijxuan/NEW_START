@@ -207,22 +207,22 @@ if(DR16.rc.ch4_DW>=200)//拨下
 		if(DR16.rc.s_right==1)
 		{
 			shoot_times_for_limit++;
-#if 0
-			if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<200)//热量没超过200
+#if 1
+//			if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<200)//热量没超过200
+//			{
+			if (shoot_times_for_limit<100)
 			{
-			if (shoot_times_for_limit<50)
-			{
-					if(VisionData.RawData.Beat==1)
+					if(VisionData.RawData.Beat==1&&whether_shoot_in__this_period==0)
 					{
 						SHOOT_from_V++;
-//						M2006_targe_angle+=Driver_add;//8*3=24  打一发
+						M2006_targe_angle+=Driver_add;//8*3=24  打一发
 						whether_shoot_in__this_period=1;
 						VisionData.RawData.Beat=0;
 					}
 					
 				
 			}
-			else if(shoot_times_for_limit>=50)
+			else if(shoot_times_for_limit>=100)
 			{
 			shoot_times_for_limit=0;
 			this_period_has_shoot=0;
@@ -230,35 +230,35 @@ if(DR16.rc.ch4_DW>=200)//拨下
 				M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 防连发
 
 			}
-		}
-			else if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat>=200)//热量超过200
-		{
-						if (shoot_times_for_limit<100)
-			{
-					if(VisionData.RawData.Beat==1)
-					{
-						SHOOT_from_V++;
-//						M2006_targe_angle+=Driver_add;//8*3=24  打一发
-						whether_shoot_in__this_period=1;
-						VisionData.RawData.Beat=0;
-					}
-					
-				
-			}
-			else if(shoot_times_for_limit>=110)
-			{
-			shoot_times_for_limit=0;
-			this_period_has_shoot=0;
-				whether_shoot_in__this_period=0;
-				M2006_targe_angle=M3508s[1].totalAngle;////拨盘误差消除 防连发
+//		}
+//			else if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat>=200)//热量超过200
+//		{
+//						if (shoot_times_for_limit<100)
+//			{
+//					if(VisionData.RawData.Beat==1)
+//					{
+//						SHOOT_from_V++;
+////						M2006_targe_angle+=Driver_add;//8*3=24  打一发
+//						whether_shoot_in__this_period=1;
+//						VisionData.RawData.Beat=0;
+//					}
+//					
+//				
+//			}
+//			else if(shoot_times_for_limit>=110)
+//			{
+//			shoot_times_for_limit=0;
+//			this_period_has_shoot=0;
+//				whether_shoot_in__this_period=0;
+//				M2006_targe_angle=M3508s[1].totalAngle;////拨盘误差消除 防连发
 
-			}
-		}
+//			}
+//		}
 		if(whether_shoot_in__this_period==1&&this_period_has_shoot==0)//判断一下:这个周期是否发射(如果是) 并且 这个周期是否已经发射(如果没有)
 				{
 					if(JS_RC_TIMES<targe_shoot_number)//一次打多少 还有子弹发射数允许
 					{
-						M2006_targe_angle+=Driver_add;//8*3=24  打一发
+//						M2006_targe_angle+=Driver_add;//8*3=24  打一发
 						this_period_has_shoot_number++;
 						this_period_has_shoot=1;
 					}
@@ -327,7 +327,7 @@ if(DR16.rc.ch4_DW>=200)//拨下
 			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
 			}
 #endif
-#if 1//不在末端+误差小于1度
+#if 0//不在末端+误差小于1度
 
 if(heat_in_renew==0)//热量没在回复,一秒20发
 {
@@ -673,14 +673,14 @@ void shoot_control_V2(void)
 	
 	
 	
-		if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat>=200&&heat_in_renew==0)//热量没超过200
-		{
-			heat_in_renew=1;
-		}
-		if(heat_in_renew==1&&ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<100)
-		{
+//		if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat>=200&&heat_in_renew==0)//热量没超过200
+//		{
+//			heat_in_renew=1;
+//		}
+//		if(heat_in_renew==1&&ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<100)
+//		{
 		heat_in_renew=0;
-		}	
+//		}	
 		
 		if(DR16.rc.s_left==1)//遥控器控制  左上  自动/视觉自瞄挡
 	{
@@ -695,74 +695,79 @@ void shoot_control_V2(void)
 		
 if(heat_in_renew==0)//热量没在回复,一秒20发
 {
-			if (shoot_times_for_limit<50)
+//			if (shoot_times_for_limit<500)
+//			{
+////						if(disable_for_test_CHASSIS==1)
+////						{
+//							if(VisionData.RawData.Beat==1&&whether_shoot_in__this_period==0)//单纯的热量限制
+//							{
+//							M2006_targe_angle+=Driver_add;//8*3=24  打一发  500ms一周期  一秒10发 一秒4发
+//							whether_shoot_in__this_period=1;	
+//							}	
+////						}			
+//			}
+//			else if(shoot_times_for_limit>=500)//50ms结算一次,感觉拨盘来不及到达指定角度,会一卡一卡的
+//			{
+//				whether_shoot_in__this_period=0;
+//			shoot_times_for_limit=0;
+//			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 1秒清除累计目标值一次 防止连发
+//			}
+			if(shoot_times_for_limit%100==0&shoot_times_for_limit>0)
 			{
-//						if(disable_for_test_CHASSIS==1)
-//						{
-							if(VisionData.RawData.Beat==1&&whether_shoot_in__this_period==0)//单纯的热量限制
-							{
-							M2006_targe_angle+=Driver_add;//8*3=24  打一发  500ms一周期  一秒10发 一秒4发
-							whether_shoot_in__this_period=1;	
-							}	
-//						}			
-			}
-			else if(shoot_times_for_limit>=50)//50ms结算一次,感觉拨盘来不及到达指定角度,会一卡一卡的
-			{
-				whether_shoot_in__this_period=0;
-			shoot_times_for_limit=0;
-			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 1秒清除累计目标值一次 防止连发
+				if(VisionData.RawData.Beat==1)
+				M2006_targe_angle+=Driver_add;//8*3=24  打一发  500ms一周期  一秒10发 一秒4发
 			}
 
 }		
-else if(heat_in_renew==1)//热量限制
-{
-						if (shoot_times_for_limit<100)
-			{
-//					if(VisionData.RawData.Beat==1&&vision_shoot_times>0)//击打标志位为1并且连续收到4帧
-//					{
-						SHOOT_from_V++;
-						if(VISION_Yaw_IMU_Angle_pid.Error>2||VISION_Yaw_IMU_Angle_pid.Error<-2)
-						{
-						weather_error_less_than_1=0;	
-						}
-						else//误差绝对值小于1
-						{
-						weather_error_less_than_1=1;	
-						}
-//						if(disable_for_test_CHASSIS==0)
+//else if(heat_in_renew==1)//热量限制
+//{
+//						if (shoot_times_for_limit<100)
+//			{
+////					if(VisionData.RawData.Beat==1&&vision_shoot_times>0)//击打标志位为1并且连续收到4帧
+////					{
+//						SHOOT_from_V++;
+//						if(VISION_Yaw_IMU_Angle_pid.Error>2||VISION_Yaw_IMU_Angle_pid.Error<-2)
 //						{
-						if(VisionData.RawData.Beat==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
-						{
-						M2006_targe_angle+=Driver_add;//8*3=24  打一发
-						whether_shoot_in__this_period=1;
-						}
-//					    }
-//						else if(disable_for_test_CHASSIS==1)
-//						{
-//						if(weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
-//						{
-//						M2006_targe_angle+=Driver_add*10;//8*3=24  打一发
-//						whether_shoot_in__this_period=1;
-//												VisionData.RawData.Beat=0;
-
-//						}	
+//						weather_error_less_than_1=0;	
 //						}
-//						VisionData.RawData.Beat=0;
-//					}
-//					if(SHOOT_STOP_time>30)
-//					{
-//			M2006_targe_angle=M3508s[1].totalAngle;//连续收到10次停火指令 清除拨盘目标角度累计
-//					}
-	
-			}
-			else if(shoot_times_for_limit>=100)
-			{
-				whether_shoot_in__this_period=0;
-			shoot_times_for_limit=0;
-			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
-			}
+//						else//误差绝对值小于1
+//						{
+//						weather_error_less_than_1=1;	
+//						}
+////						if(disable_for_test_CHASSIS==0)
+////						{
+//						if(VisionData.RawData.Beat==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
+//						{
+//						M2006_targe_angle+=Driver_add;//8*3=24  打一发
+//						whether_shoot_in__this_period=1;
+//						}
+////					    }
+////						else if(disable_for_test_CHASSIS==1)
+////						{
+////						if(weather_error_less_than_1==1&&whether_shoot_in__this_period==0)//不在末端in_MID==1&&
+////						{
+////						M2006_targe_angle+=Driver_add*10;//8*3=24  打一发
+////						whether_shoot_in__this_period=1;
+////												VisionData.RawData.Beat=0;
 
-}
+////						}	
+////						}
+////						VisionData.RawData.Beat=0;
+////					}
+////					if(SHOOT_STOP_time>30)
+////					{
+////			M2006_targe_angle=M3508s[1].totalAngle;//连续收到10次停火指令 清除拨盘目标角度累计
+////					}
+//	
+//			}
+//			else if(shoot_times_for_limit>=100)
+//			{
+//				whether_shoot_in__this_period=0;
+//			shoot_times_for_limit=0;
+//			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
+//			}
+
+//}
 
 
 
