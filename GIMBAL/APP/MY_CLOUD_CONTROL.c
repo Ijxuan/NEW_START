@@ -29,7 +29,13 @@ void cloud_control(void)
 	/**/
 		if(key_message.game_state_progress==3)
 		key_message.our_outpost_is_live=1;//倒计时阶段确认前哨战存活
-	key_message.game_state_progress=ext_game_status.data.game_progress;
+		
+//	key_message.game_state_progress=ext_game_status.data.game_progress;/*从裁判系统获取真实的比赛状态*/
+		/*or*/
+	key_message.game_state_progress=4;/*手动给定比赛状态*/
+		
+		
+		
 	if(key_message.game_state_progress==4)
 	{//比赛阶段为比赛中就会判断前哨站是否存活
 	
@@ -674,18 +680,18 @@ if(scan_time%scan_speed_YWA==0)//是扫描速度的整数倍  scan_percent_YAW在-500到100
 	
 }
 #if 1
-/**/
+/*新哨兵云台是5000-1300,之前是5000-7000?*/
 	if(key_message.game_state_progress==4)
 	{
 		if(key_message.our_outpost_is_live==1)
 		{
-	if(GM6020s[0].readAngle>=0&&GM6020s[0].readAngle<5000)//4700-4900
+	if(GM6020s[0].readAngle>=0&&GM6020s[0].readAngle<1300)//4700-4900
 	{
 				scan_i_YAW=1;//增大模式
 							Buzzer.mode = One_times;
 
 	}
-	if(GM6020s[0].readAngle>7000&&GM6020s[0].readAngle<=8191) //3700-4000
+	if(GM6020s[0].readAngle>5000&&GM6020s[0].readAngle<=8191) //3700-4000
 	{
 				scan_i_YAW=0;//减小模式
 							Buzzer.mode = One_times;
@@ -696,13 +702,13 @@ if(scan_time%scan_speed_YWA==0)//是扫描速度的整数倍  scan_percent_YAW在-500到100
 		{
 		if(laoliu_gjiwo_times_ago>10000)//有老六偷袭我背后,10秒内扫360度
 		{
-			if(GM6020s[0].readAngle>=0&&GM6020s[0].readAngle<5000)//4700-4900
+			if(GM6020s[0].readAngle>=0&&GM6020s[0].readAngle<2100)//4700-4900
 	{
 				scan_i_YAW=1;//增大模式
 							Buzzer.mode = One_times;
 
 	}
-	if(GM6020s[0].readAngle>7000&&GM6020s[0].readAngle<=8191) //3700-4000
+	if(GM6020s[0].readAngle>4500&&GM6020s[0].readAngle<=8191) //3700-4000
 	{
 				scan_i_YAW=0;//减小模式
 							Buzzer.mode = One_times;
@@ -863,7 +869,7 @@ yaw_trage_angle=YAW_START_ANGLE+720*(scan_percent_YAW/1000.0f);//YAW轴转一圈多一
 PITCH_trage_angle_motor=3900+1180*(scan_percent_PITCH/500.0f);
 #endif
 #if use_new_gimbal==1
-PITCH_trage_angle_motor=5500+1000*(scan_percent_PITCH/500.0f);
+PITCH_trage_angle_motor=5200+1000*(scan_percent_PITCH/500.0f);
 #endif	
 		}
 		else //视觉锁到装甲板-扫描结束

@@ -580,6 +580,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>PITCH_IMU_Angle_pid</ItemText>
         </Ww>
+        <Ww>
+          <count>86</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>can1_IT_TIMES</ItemText>
+        </Ww>
+        <Ww>
+          <count>87</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>laoliu_gjiwo_times_ago</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

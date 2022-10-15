@@ -207,10 +207,10 @@ if(DR16.rc.ch4_DW>=200)//拨下
 		if(DR16.rc.s_right==1)
 		{
 			shoot_times_for_limit++;
-#if 1
+#if 0
 //			if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<200)//热量没超过200
 //			{
-			if (shoot_times_for_limit<100)
+			if (shoot_times_for_limit<333)
 			{
 					if(VisionData.RawData.Beat==1&&whether_shoot_in__this_period==0)
 					{
@@ -221,8 +221,8 @@ if(DR16.rc.ch4_DW>=200)//拨下
 					}
 					
 				
-			}
-			else if(shoot_times_for_limit>=100)
+			} 
+			else if(shoot_times_for_limit>=333)
 			{
 			shoot_times_for_limit=0;
 			this_period_has_shoot=0;
@@ -278,10 +278,10 @@ if(DR16.rc.ch4_DW>=200)//拨下
 				}
 
 #endif
-#if 0
-						if (shoot_times_for_limit<200)
-			{
-					if(VisionData.RawData.Beat==1&&vision_shoot_times>2)//击打标志位为1并且连续收到4帧
+#if 1
+//						if (shoot_times_for_limit<200)
+//			{
+					if(VisionData.RawData.Beat==1&&vision_shoot_times>1)//击打标志位为1并且连续收到4帧 4个开火一发
 					{
 						SHOOT_from_V++;
 
@@ -289,18 +289,19 @@ if(DR16.rc.ch4_DW>=200)//拨下
 						
 						whether_shoot_in__this_period=1;
 						VisionData.RawData.Beat=0;
+						vision_shoot_times=0;
 					}
-					if(SHOOT_STOP_time>100)
+					if(SHOOT_STOP_time>10)
 					{
 			M2006_targe_angle=M3508s[1].totalAngle;//连续收到10次停火指令 清除拨盘目标角度累计
 					}
 	
-			}
-			else if(shoot_times_for_limit>=200)
-			{
-			shoot_times_for_limit=0;
-			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
-			}
+//			}
+//			else if(shoot_times_for_limit>=200)
+//			{
+//			shoot_times_for_limit=0;
+//			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
+//			}
 #endif
 #if 0//不在末端
 						if (shoot_times_for_limit<200)

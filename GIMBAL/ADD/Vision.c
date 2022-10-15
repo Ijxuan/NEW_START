@@ -385,10 +385,10 @@ void Update_Vision_SendData(void)
 		Vision_SendBuff[i][1] = 107;//107£ºÀ¶·½ÉÚ±ø»úÆ÷ÈË£»7£ººì·½ÉÚ±ø»úÆ÷ÈË
 			
 		Vision_SendBuff[i][2] = mode_v;//?
-//		if(YAW_MOTION_STATE==12)
-//		{//¼ì²âµ½Ğ¡ÍÓÂİ
-//		Vision_SendBuff[i][2] = 5;//?
-//		}
+		if(YAW_MOTION_STATE==12)
+		{//¼ì²âµ½Ğ¡ÍÓÂİ
+		Vision_SendBuff[i][2] = 5;//?
+		}
 		//2  5  ÍÓÂİ 6Ô¤²â  1»ù´¡×ÔÃé  
 //		if(stay_in_track_end_times>50&&stay_in_track_end_times<150)//ÔÚ¹ìµÀÄ©¶Ë,²¢ÇÒ²»³¬¹ı1.5Ãë,³¬¹ı1.5s¿ÉÄÜÊÇÔÚ¹ìµÀÄ©¶ËÊ§ÄÜÁË
 //		{
