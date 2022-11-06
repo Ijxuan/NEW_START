@@ -804,7 +804,7 @@ if(ext_game_robot_state.data.robot_id== 107)//自己蓝色
 		if (DR16.rc.s_right != 3) //是否上位机
 		{
 			times_i++;
-			if (times_i > 100) // 100ms发一次
+			if (times_i > 1) // 100ms发一次
 			{
 //					  	   NM_swj();
 				com_to_pc_control();
@@ -878,10 +878,10 @@ void Robot_Control(void const *argument)
 		hurt_times_ago++;//伤害计时
 
 //		break_init();		
-		break_control();		
 		switch_change();
 		star_and_new();//弹道测试后取消注释
 		CHASSIS_CONTROUL();
+		break_control();		
 		
 if(stop_CH_OP_BC_LESS==1)//!
 {

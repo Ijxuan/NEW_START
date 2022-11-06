@@ -4,7 +4,7 @@
 #include "CHASSIS_CONTROL_basic.h"
 
 
-uint8_t send_data[20];//上位机发送,最终发送
+uint8_t send_data[33];//上位机发送,最终发送
 uint16_t send_begin=0;//下一个 数据从哪一位开始填充
 uint16_t send_total_bit=0;//一共要发送多少位
 uint16_t send_err=0;//发送错误
@@ -50,26 +50,27 @@ C_T_P.XNQ_R.end='l';
 	C_T_P.CH_TOTAL.distance_next_send_ms=900;
 	
 }
-
+int i_times=0;
 //数据更新
 void com_to_pc_DATA_update(void)
 {
-		if(FPS_ALL.YKQ.FPS>=50)
-			{
-			C_T_P.YKQ.data='2';
-			}
-		else if(20<FPS_ALL.YKQ.FPS&&FPS_ALL.YKQ.FPS<50)
-			{
-			C_T_P.YKQ.data='1';
-			}
-		else if(FPS_ALL.YKQ.FPS<=20)
-			{
-			C_T_P.YKQ.data='0';
-			}
-C_T_P.CH_TOTAL.data_1=	C_T_P.YKQ.data;
-C_T_P.CH_TOTAL.data_2=	C_T_P.C_model.data;	
-C_T_P.CH_TOTAL.data_3=	C_T_P.C_motion.data;
-		
+//		if(FPS_ALL.YKQ.FPS>=50)
+//			{
+//			C_T_P.YKQ.data='2';
+//			}
+//		else if(20<FPS_ALL.YKQ.FPS&&FPS_ALL.YKQ.FPS<50)
+//			{
+//			C_T_P.YKQ.data='1';
+//			}
+//		else if(FPS_ALL.YKQ.FPS<=20)
+//			{
+//			C_T_P.YKQ.data='0';
+//			}
+	
+//C_T_P.CH_TOTAL.data_1=	C_T_P.YKQ.data;
+//C_T_P.CH_TOTAL.data_2=	C_T_P.C_model.data;	
+//C_T_P.CH_TOTAL.data_3=	C_T_P.C_motion.data;
+
 
 }
 
@@ -111,18 +112,19 @@ send_total_bit=0;//一共要发送多少位
 	if(C_T_P.CH_TOTAL.distance_next_send_ms<=100)//下一次底盘总发送发送时机已到
 	{
 		com_to_pc_DATA_update();
-	com_to_pc_CH_TOTAL();
+//	com_to_pc_CH_TOTAL();
 	C_T_P.CH_TOTAL.distance_next_send_ms=100;//默认1000ms发送一次	
 	}	
 C_T_P.CH_TOTAL.distance_next_send_ms-=100;
 	
 	
 	if(C_T_P.BMQ.distance_next_send_ms<=100)//下一次编码器发送时机已到
-	{
+	{	
+		BMQ_data_update();
+		com_to_pc_BMQ();
 				if(CHASSIS_R_MIN_new==1&&CHASSIS_L_MAX_new==1	)	//只有当边界值更新完了才会  真正开始巡航	
 				{
-	BMQ_data_update();
-		com_to_pc_BMQ();
+
 	
 	XNQ_L_data_update();
 	com_to_pc_XNQ_L();
@@ -135,7 +137,7 @@ C_T_P.CH_TOTAL.distance_next_send_ms-=100;
 	
 	if(send_total_bit!=0)//要发送的数据不为空    
 {	
-	if(send_total_bit>20)
+	if(send_total_bit>33)
 	send_err++;//数组溢出
 	
 	HAL_UART_Transmit_DMA(&huart6,&send_data[0],send_total_bit);
@@ -191,10 +193,21 @@ void BMQ_data_update(void)//编码器数据更新函数
 		ZGWZ_BMQ_BFB=999;	
 	
 	ZGWZ_BMQ_BFB=(Chassis_Encoder.totalLine-CHASSIS_R_MIN_by_ENCODER)*1000/(CHASSIS_L_MAX_by_ENCODER-CHASSIS_R_MIN_by_ENCODER);
-	C_T_P.BMQ.data_1=ZGWZ_BMQ_BFB/100+'0';
-	C_T_P.BMQ.data_2=(ZGWZ_BMQ_BFB%100)/10+'0';
-	C_T_P.BMQ.data_3=ZGWZ_BMQ_BFB%10+'0';
+//	C_T_P.BMQ.data_1=ZGWZ_BMQ_BFB/100+'0';
+//	C_T_P.BMQ.data_2=(ZGWZ_BMQ_BFB%100)/10+'0';
+//	C_T_P.BMQ.data_3=ZGWZ_BMQ_BFB%10+'0';
 	
+		i_times++;
+		if(i_times<0)
+		i_times=1;
+	if(i_times>999)
+		i_times=1;
+//	if(i_times==50)
+//		i_times=53;
+	
+		C_T_P.BMQ.data_1=i_times/100+'0';
+	C_T_P.BMQ.data_2=(i_times%100)/10+'0';
+	C_T_P.BMQ.data_3=i_times%10+'0';
 }
 
 void XNQ_L_data_update(void)//虚拟墙左数据更新函数
@@ -233,7 +246,37 @@ void com_to_pc_BMQ(void)//编码器发送控制函数
 		send_data[send_begin+1]=C_T_P.BMQ.data_1;
 		send_data[send_begin+2]=C_T_P.BMQ.data_2;
 		send_data[send_begin+3]=C_T_P.BMQ.data_3;
-		send_data[send_begin+4]=C_T_P.BMQ.end;	
+		send_data[send_begin+4]=C_T_P.BMQ.end;
+		send_data[send_begin+5]='V';
+		send_data[send_begin+6]='V';	
+
+		send_data[send_begin+7]='V';	
+		send_data[send_begin+8]='V';	
+		send_data[send_begin+9]='V';	
+		send_data[send_begin+10]='V';	
+		send_data[send_begin+11]='V';	
+		send_data[send_begin+12]='V';	
+		send_data[send_begin+13]='V';	
+		send_data[send_begin+14]='V';	
+		send_data[send_begin+15]='V';	
+			send_data[send_begin+16]='V';
+		send_data[send_begin+17]='V';	
+
+		send_data[send_begin+18]='V';	
+		send_data[send_begin+19]='V';	
+		send_data[send_begin+20]='V';	
+		send_data[send_begin+21]='V';	
+		send_data[send_begin+22]='V';	
+		send_data[send_begin+23]='V';	
+		send_data[send_begin+24]='V';	
+		send_data[send_begin+25]='V';	
+		send_data[send_begin+26]='V';
+		send_data[send_begin+27]='V';	
+		send_data[send_begin+28]='V';	
+		send_data[send_begin+29]='V';	
+		send_data[send_begin+30]='V';	
+		send_data[send_begin+31]='V';
+		
 		send_total_bit+=5;
 		send_begin+=5;
 }

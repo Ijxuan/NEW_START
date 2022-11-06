@@ -70,3 +70,4 @@ ins_task\my_shoot_control.o: ..\bsp\boards\bsp_buzzer.h
 ins_task\my_shoot_control.o: ../Inc/tim.h
 ins_task\my_shoot_control.o: ..\APP\MY_CLOUD_CONTROL.h
 ins_task\my_shoot_control.o: ..\ADD\GM6020.h
+ins_task\my_shoot_control.o: ..\Arithmetic\spinning_top_examine.h

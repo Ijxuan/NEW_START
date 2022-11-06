@@ -50,3 +50,6 @@ freertos1\break.o: ../Core/Inc/can.h
 freertos1\break.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 freertos1\break.o: ..\Arithmetic\my_positionPID_bate.h
 freertos1\break.o: ..\add\DR16_RECIVE.h
+freertos1\break.o: ..\APP\MY_CHASSIS_CONTROL.h
+freertos1\break.o: ..\Arithmetic\User_math.h
+freertos1\break.o: ..\APP\CHASSIS_CONTROL_2.h

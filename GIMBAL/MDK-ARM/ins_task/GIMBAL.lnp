@@ -1,4 +1,4 @@
---cpu=Cortex-M4.fp
+--cpu=Cortex-M4.fp.sp
 "ins_task\my_chassis_control.o"
 "ins_task\my_cloud_control.o"
 "ins_task\my_shoot_control.o"

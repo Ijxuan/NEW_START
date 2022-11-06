@@ -1,5 +1,10 @@
 {
     "files.associations": {
         "can.h": "c"
-    }
+    },
+    "KeilAssistant.Project.ExcludeList": [
+    
+        "template.uvproj",
+        "template.uvprojx"
+    ]
 }

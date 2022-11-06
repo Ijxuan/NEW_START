@@ -1,5 +1,7 @@
 #include "BREAK.h"
 #include "main.h"
+#include "MY_CHASSIS_CONTROL.h"
+#include "CHASSIS_CONTROL_2.h"
 
 BREAK_e break_basic;
 
@@ -141,6 +143,19 @@ void break_control(void) {
 	
 break_init();
 
+	if(DR16.rc.s_left == 1)//左上挡位
+	{
+		
+	if(CHASSIS_R_MIN_new==1&&CHASSIS_L_MAX_new==1	)	//只有当边界值更新完了才会  真正开始巡航	
+	{
+		if(Chassis_Encoder.totalLine>((CHASSIS_R_MIN_by_ENCODER+CHASSIS_L_MAX_by_ENCODER)/2))
+		{
+	send_to_chassis=0;	
+	CHASSIS_trage_speed=-test_speed;
+		}
+	}
+	
+	}
 	if(DR16.rc.s_left == 10)//左中挡位
 	{
 if(break_basic.STATE == 3)  //初始化全部完成

@@ -6,15 +6,16 @@ void shoot_control(void);
 void shoot_control_V2(void);
 
 void driver_plate_control(void);
+void which_is_gimbal_shoot_ID(void);
 
 typedef struct
 {
-bool vision_shoot_is_continuous;//ÊÓ¾õ·¢ÉäÖ¸ÁîÊÇÁ¬ÐøµÄ	
-bool  heat_allow;//ÈÈÁ¿ÔÊÐí
-bool  not_in_track_end;//²»ÔÚ¹ìµÀÄ©¶Ë
-bool  weather_angle_error_less_than_1;//½Ç¶ÈÎó²îÐ¡ÓÚÒ»
+bool vision_shoot_is_continuous;//ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
+bool  heat_allow;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+bool  not_in_track_end;//ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½Ä©ï¿½ï¿½
+bool  weather_angle_error_less_than_1;//ï¿½Ç¶ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Ò»
 	
-bool ALL_condition_satisfaction;//È«²¿Ìõ¼þ¶¼Âú×ã
+bool ALL_condition_satisfaction;//È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 } allow_auto_shoot;
 extern allow_auto_shoot auto_shoot_condition;
 
@@ -22,7 +23,7 @@ extern bool Driver_arrive;
 extern int if_Driver_arrive_angle;
 extern long M2006_targe_angle;
 extern bool weather_error_less_than_1;
-extern int auto_shoot_condition_show;//×Ô¶¯Éä»÷Ìõ¼þÕ¹ÏÖ
+extern int auto_shoot_condition_show;//ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½
 
 #endif
 
