@@ -480,7 +480,12 @@ PITCH_trage_angle_motor=6500;
 							if(PITCH_trage_angle_motor<5330)
 PITCH_trage_angle_motor=5330;
 	#endif								
-
+#if use_balance_gimbal==1
+							if(PITCH_trage_angle_motor>2680)
+PITCH_trage_angle_motor=2680;
+							if(PITCH_trage_angle_motor<1500)
+PITCH_trage_angle_motor=1500;
+	#endif	
 					P_PID_bate(&PITCH_Angle_pid, PITCH_trage_angle_motor,GM6020s[3].totalAngle);//GM6020s[EMID].totalAngle readAngle
 
 					#if USE_MOTOR_angle==1
@@ -495,7 +500,9 @@ PITCH_trage_angle_motor=5330;
 #if use_new_gimbal==1
 send_to_pitch_before=0;
 #endif	
-							
+#if use_balance_gimbal==1
+send_to_pitch_before=0;
+#endif								
 					#endif		
 												#if USE_MOTOR_angle==0
 					PITCH_trage_speed=PITCH_IMU_Angle_pid.result;//外环的结果给内环  二选一
@@ -546,7 +553,22 @@ void imu_angle()
 	PITCH_MIN_angle=DJIC_IMU.total_pitch+(5330-GM6020s[3].totalAngle)/8191.0f*360.0f;//3900
 			allow_angle=	PITCH_MAX_angle-PITCH_MIN_angle;	
 #endif
+#if use_balance_gimbal==1
+	PITCH_MAX_angle=DJIC_IMU.total_pitch+(GM6020s[3].totalAngle-1474)/8191.0f*360.0f;
+	PITCH_MIN_angle=DJIC_IMU.total_pitch+(GM6020s[3].totalAngle-2700)/8191.0f*360.0f;//2700
+			allow_angle=	PITCH_MAX_angle-PITCH_MIN_angle;	
+#endif	
 }
+//2023-4-17:
+//
+//上边界-下边界
+
+//
+//使劲抬头:陀螺仪值为24    6020值为1474      5170
+//从
+//   速度为负           
+//到
+//使劲低头:陀螺仪值为-30     6020值为2700    3820
 
 //2022-4-14:
 //

@@ -261,7 +261,22 @@ void MX_FREERTOS_Init(void) {
 						 29000, -29000); // Yaw_IMU_Angle_pid
 #endif
 #endif	
-		
+#if use_balance_gimbal==1
+#if PID_PITCH_MOTOR
+	P_PID_Parameter_Init(&PITCH_Angle_pid, 0.7, 0.05, 0,
+						 0, //误差大于这个值就积分分离
+						 //	float max_error, float min_error,
+						 //                          float alpha,
+						 220, -220, //积分限幅，也就是积分的输出范围
+						 220, -220);
+	P_PID_Parameter_Init(&PITCH_Speed_pid, 300, 1, 0,
+						 120,
+						 //						  float max_error, float min_error,
+						 //                          float alpha,
+						 10000, -10000,	 //积分限幅，也就是积分的输出范围
+						 29000, -29000); // Yaw_IMU_Angle_pid
+#endif
+#endif			
 
 
 
@@ -1011,13 +1026,13 @@ void CAN1_R(void const * argument)
 				GM6020_Yaw_getInfo(CAN1_Rx_Structure);
 			}
 
-			if (CAN1_Rx_Structure.CAN_RxMessage.StdId == (GM6020_READID_START + 1))
+			if (CAN1_Rx_Structure.CAN_RxMessage.StdId == (GM6020_READID_START + 1))//205
 			{
 				//云台的yaw轴
 				GM6020_Pitch_getInfo(CAN1_Rx_Structure); // 6400-7160
 			}
 
-			if (CAN1_Rx_Structure.CAN_RxMessage.StdId == GM6020_READID_START + 2)
+			if (CAN1_Rx_Structure.CAN_RxMessage.StdId == GM6020_READID_START + 2)//206
 			{
 				//云台
 				GM6020_Yaw_getInfo(CAN1_Rx_Structure);
@@ -1149,14 +1164,20 @@ VisionData.RawData.Armour=1;
 		if (GM6020s[3].totalAngle >= 5130 && send_to_pitch > 0)
 			send_to_pitch = 0;			
 #endif
-				#if use_new_gimbal==1
+#if use_new_gimbal==1
 
 		if (GM6020s[3].totalAngle <= 5150 && send_to_pitch < 0)//3860
 			send_to_pitch = 0;
 		if (GM6020s[3].totalAngle >= 6550 && send_to_pitch > 0)
 			send_to_pitch = 0;
 #endif
-			
+#if use_balance_gimbal==1
+
+		if (GM6020s[3].totalAngle <= 1450 && send_to_pitch < 0)//3860
+			send_to_pitch = 0;
+		if (GM6020s[3].totalAngle >= 2720 && send_to_pitch > 0)
+			send_to_pitch = 0;
+#endif			
 		//云台的pitch轴正直是往上的
 		////8017-7044
 //			send_to_yaw = 0;
@@ -1174,12 +1195,12 @@ VisionData.RawData.Armour=1;
 		}
 		if(disable_for_test==1)
 		{
-
 			send_to_pitch = 0;			
-				send_to_yaw = 0;
+				send_to_yaw = 0;	
+
 			
 		}
-	
+
 		GM6020_SetVoltage(send_to_yaw,0 , 0, send_to_pitch); //云台  send_to_pitch
 //		GM6020_SetVoltage(0,0 , 0, 0); //云台  send_to_pitch
 

@@ -11,7 +11,7 @@
 //#pragma anon_unions 
 
 #define GM6020_SENDID 0x1FF
-#define GM6020_READID_START 0x205
+#define GM6020_READID_START 0x205 //205 206 207 208
 #define GM6020_READID_END 0x208
 
 typedef struct

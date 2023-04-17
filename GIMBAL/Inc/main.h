@@ -109,7 +109,8 @@ void Error_Handler(void);
 //#define OLED_RST_Pin GPIO_PIN_10
 //#define OLED_RST_GPIO_Port GPIOB
 #define SHOOT_HIGH_HEAT_TEXT 0// ∏ﬂ»»¡ø 
-#define use_new_gimbal 1
+#define use_new_gimbal 2
+#define use_balance_gimbal 1
 
 extern bool ins_ok;
 extern int controul_times;
