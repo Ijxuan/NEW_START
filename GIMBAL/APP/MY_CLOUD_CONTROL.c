@@ -115,7 +115,7 @@ if(DR16.rc.s_left==3)//左中,手动取假
 	   {
 	   if(DR16.rc.ch4_DW<=-600)//拨上
 		{
-	   							Buzzer.mode = One_times;
+//	   							Buzzer.mode = One_times;
 jia_ZJ_PITCH=DJIC_IMU.total_pitch;
 	   whether_use_fake_armor=1;
 			fake_armor_init_angle_6020=GM6020s[0].readAngle;
@@ -135,7 +135,7 @@ if(DR16.rc.s_left==1)//左上,自瞄取假
 			{
 				if(fabs(Vision_RawData_Pitch_Angle)<1.0)
 				{
-	   							Buzzer.mode = One_times;
+//	   							Buzzer.mode = One_times;
 jia_ZJ_PITCH=DJIC_IMU.total_pitch;
 					
 				}
@@ -710,13 +710,13 @@ if(scan_time%scan_speed_YWA==0)//是扫描速度的整数倍  scan_percent_YAW在-500到100
 	if(GM6020s[0].readAngle>=0&&GM6020s[0].readAngle<1300)//4700-4900
 	{
 				scan_i_YAW=1;//增大模式
-							Buzzer.mode = One_times;
+//							Buzzer.mode = One_times;
 
 	}
 	if(GM6020s[0].readAngle>5000&&GM6020s[0].readAngle<=8191) //3700-4000
 	{
 				scan_i_YAW=0;//减小模式
-							Buzzer.mode = One_times;
+//							Buzzer.mode = One_times;
 
 	}	
          }
@@ -727,13 +727,13 @@ if(scan_time%scan_speed_YWA==0)//是扫描速度的整数倍  scan_percent_YAW在-500到100
 			if(GM6020s[0].readAngle>=0&&GM6020s[0].readAngle<2100)//4700-4900
 	{
 				scan_i_YAW=1;//增大模式
-							Buzzer.mode = One_times;
+//							Buzzer.mode = One_times;
 
 	}
 	if(GM6020s[0].readAngle>4500&&GM6020s[0].readAngle<=8191) //3700-4000
 	{
 				scan_i_YAW=0;//减小模式
-							Buzzer.mode = One_times;
+//							Buzzer.mode = One_times;
 
 	}	
 		
@@ -752,13 +752,13 @@ if	(in_END_L==1)
 	if(GM6020s[0].readAngle>3842&&GM6020s[0].readAngle<4900)//4700-4900
 	{
 				scan_i_YAW=1;//增大模式
-							Buzzer.mode = One_times;
+//							Buzzer.mode = One_times;
 
 	}
 	if(GM6020s[0].readAngle>2687&&GM6020s[0].readAngle<=3842) //3700-4000
 	{
 				scan_i_YAW=0;//减小模式
-							Buzzer.mode = One_times;
+//							Buzzer.mode = One_times;
 
 	}
 }
@@ -788,13 +788,13 @@ if	(in_END_R==1)
 		if(GM6020s[0].readAngle>0&&GM6020s[0].readAngle<1200)//500-1200
 	{
 				scan_i_YAW=1;//增大模式
-							Buzzer.mode = One_times;
+//							Buzzer.mode = One_times;
 
 	}
 	if(GM6020s[0].readAngle>7000&&GM6020s[0].readAngle<8191) //7000-7700
 	{
 				scan_i_YAW=0;//减小模式
-							Buzzer.mode = One_times;
+//							Buzzer.mode = One_times;
 
 	}
 }
@@ -892,6 +892,9 @@ PITCH_trage_angle_motor=3900+1180*(scan_percent_PITCH/500.0f);
 #endif
 #if use_new_gimbal==1
 PITCH_trage_angle_motor=5200+1000*(scan_percent_PITCH/500.0f);
+#endif
+#if use_balance_gimbal==1
+PITCH_trage_angle_motor=2600-1100*(scan_percent_PITCH/500.0f);
 #endif	
 		}
 		else //视觉锁到装甲板-扫描结束
