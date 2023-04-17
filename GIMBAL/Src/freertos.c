@@ -1195,9 +1195,9 @@ VisionData.RawData.Armour=1;
 		}
 		if(disable_for_test==1)
 		{
+	
 			send_to_pitch = 0;			
-				send_to_yaw = 0;	
-
+				send_to_yaw = 0;
 			
 		}
 
