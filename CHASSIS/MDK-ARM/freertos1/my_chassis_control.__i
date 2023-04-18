@@ -1,6 +1,0 @@
---c99 --gnu -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\add -I ..\BSP -I ..\Device -I ..\Arithmetic -I ..\APP -I ..\Drivers\CMSIS\DSP\Include
--I.\RTE\_CHASSIS
--IC:\Users\86189\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include
--IC:\Users\86189\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
--D__UVISION_VERSION="537" -D_RTE_ -DSTM32F427xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F427xx -D__TARGET_FPU_VFP="1" -DARM_MATH_CM4 -D__CC_ARM
--o freertos1\my_chassis_control.o --omf_browse freertos1\my_chassis_control.crf --depend freertos1\my_chassis_control.d "..\APP\MY_CHASSIS_CONTROL.c"

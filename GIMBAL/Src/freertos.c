@@ -54,6 +54,8 @@
 #include "spinning_top_examine.h"
 #include "Vision_Control.h"
 #include "MY_CLOUD_CONTROL.h"
+#include "CAN2_SEND.h"
+
 //#include "usbd_cdc_if.h"
 
 /* USER CODE END Includes */
@@ -194,14 +196,14 @@ void MX_FREERTOS_Init(void) {
 #endif
 
 #if PID_YAW_IMU
-	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -800, -4, 800,//
+	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -80, -0.8, 70,//
 						 60, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 0, -0, //积分限幅，也就是积分的输出范围
 						 29000, -29000);
 						 
-	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 8, 0, 0,//10 0 16//越大越陡峭10
+	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 5, 0, 0,//10 0 16//越大越陡峭10
 						 100,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
@@ -304,13 +306,13 @@ void MX_FREERTOS_Init(void) {
 //						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
 //						 29000, -29000);
 
-	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 130,0.55,-110,//100, 1.5, 0,
+	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 100,0.55,-90,//100, 1.5, 0,
 						 100, //误差大于这个值就积分分离  550 1.9 0   -20000
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
 						 29000, -29000);
-	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,12 //15  //0.7  12
+	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid,9 //15  //0.7  12
 	, 0.08, 0,
 						 2.5,
 						 //						  float max_error, float min_error,
@@ -656,7 +658,7 @@ void IMU_Send(void const * argument)
   /* USER CODE BEGIN IMU_Send */
 	portTickType xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
-	const TickType_t TimeIncrement = pdMS_TO_TICKS(2); //每十毫秒强制进入总控制
+	const TickType_t TimeIncrement = pdMS_TO_TICKS(1); //每十毫秒强制进入总控制
 	/* Infinite loop */
 	for (;;)
 	{
@@ -679,6 +681,9 @@ void IMU_Send(void const * argument)
 //		DR16_Send_Fun(DR16_T);
 
 #endif
+		
+	CAN_2_SEND_YAW_6020();//yaw轴6020转发函数
+
 Update_Vision_SendData();
 		VISION_Disconnect_test++;
 		if(VISION_Disconnect_test==1000)//一秒检测一次
@@ -1129,14 +1134,14 @@ VisionData.RawData.Armour=1;
 //		yaw_trage_angle=simulation_target_yaw;
 			 }
 		}
-				if (DR16.rc.s_left == 2&&DR16.rc.ch1<-600) //失能保护
-				{
-					disable_for_test=1;
-				}
-				if (DR16.rc.s_left == 2&&DR16.rc.ch1>600) //失能保护
-				{
-					disable_for_test=0;
-				}					
+//				if (DR16.rc.s_left == 2&&DR16.rc.ch1<-600) //失能保护
+//				{
+//					disable_for_test=1;
+//				}
+//				if (DR16.rc.s_left == 2&&DR16.rc.ch1>600) //失能保护
+//				{
+//					disable_for_test=0;
+//				}					
 
 		
 
@@ -1195,9 +1200,9 @@ VisionData.RawData.Armour=1;
 		}
 		if(disable_for_test==1)
 		{
-	
-			send_to_pitch = 0;			
+				send_to_pitch = 0;			
 				send_to_yaw = 0;
+
 			
 		}
 

@@ -332,7 +332,11 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 										ch0_z_f=1;
 									if(DR16.rc.ch0<0)
 										ch0_z_f=-1;
-							yaw_trage_angle-=(DR16.rc.ch0/660.0)*(DR16.rc.ch0/660.0)*ch0_z_f/0.6;//YAW轴遥控器控制
+									if(DR16.rc.ch0!=0)
+									{
+							yaw_trage_angle=DJIC_IMU.total_yaw+(DR16.rc.ch0/660.0)*100;//YAW轴遥控器控制
+									}
+//							yaw_trage_angle+=(DR16.rc.ch0/660.0)*(DR16.rc.ch0/660.0)*ch0_z_f/0.6;//YAW轴遥控器控制
 								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
 								PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch;
 									PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle;
@@ -444,7 +448,7 @@ void PITCH_PID()
 									ch1_z_f=1;
 								if(DR16.rc.ch1<0)
 									ch1_z_f=-1;
-							PITCH_trage_angle+=(DR16.rc.ch1*1.0/660.0)*(DR16.rc.ch1*1.0/660.0)*ch1_z_f*0.3;//遥控器给速度目标值 二选一
+							PITCH_trage_angle+=(DR16.rc.ch1*1.0/660.0)*(DR16.rc.ch1*1.0/660.0)*ch1_z_f*0.1;//遥控器给速度目标值 二选一
                             PITCH_trage_angle_motor+=(DR16.rc.ch1*1.0/660.0)*1.0;
  ////							if(DR16.rc.ch4_DW<=-400)//拨上
 ////							PITCH_trage_angle=PITCH_MAX_angle-10;

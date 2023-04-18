@@ -1,4 +1,4 @@
---cpu=Cortex-M4.fp
+--cpu=Cortex-M4.fp.sp
 "freertos1\chassis_control_basic.o"
 "freertos1\my_chassis_control.o"
 "freertos1\chassis_control_2.o"

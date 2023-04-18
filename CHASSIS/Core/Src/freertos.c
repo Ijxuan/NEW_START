@@ -554,7 +554,7 @@ void init_task(void const * argument)
 						 //                          float alpha,
 						 5000, -5000, //积分限幅，也就是积分的输出范围
 						 28000, -28000);
-	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid, 10, 0, 0,
+	P_PID_Parameter_Init(&PITCH_IMU_Angle_pid, 8, 0, 0,
 						 0,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,

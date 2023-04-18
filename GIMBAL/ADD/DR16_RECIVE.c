@@ -383,7 +383,7 @@ void NM_swj(void)
 			send_d_16[p++]=send_to_yaw*1111;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
-	#if 0//发送陀螺仪温度数据 YAW 陀螺仪
+	#if 1//发送陀螺仪温度数据 YAW 陀螺仪
 	p=0;
 			send_d_32[p++]=Yaw_IMU_Speed_pid.Target*10000;//当前角度		1
 			send_d_32[p++]=DJIC_IMU.total_yaw*10000;//最终目标角度		2
@@ -405,7 +405,7 @@ void NM_swj(void)
 			send_d_16[p++]=send_to_yaw;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
-#if USE_MOTOR_angle==0  //PITCH使用电机角度
+#if USE_MOTOR_angle==2  //PITCH使用电机角度
 
 //发送云台数据 YAW 陀螺仪 666
 	p=0;
@@ -738,7 +738,7 @@ send_data10=M3508s[2].realSpeed;
 }
 if(1)
 {
-	#if 1//发送自动开火数据  中
+	#if 0//发送自动开火数据  中
 	p=0;
 
 			send_d_32[p++]=M3508s[1].totalAngle;//拨盘当前角度		1

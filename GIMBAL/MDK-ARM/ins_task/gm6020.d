@@ -54,3 +54,4 @@ ins_task\gm6020.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 ins_task\gm6020.o: ..\bsp\boards\user_can.h
 ins_task\gm6020.o: ../Inc/can.h
 ins_task\gm6020.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+ins_task\gm6020.o: ..\ADD\CAN2_SEND.h

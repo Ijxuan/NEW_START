@@ -1,5 +1,6 @@
 #include "GM6020.h"
 #include "user_can.h"
+#include "CAN2_SEND.h"
 
 GM6020_t GM6020s[4];
 
@@ -61,7 +62,7 @@ void GM6020_Yaw_getInfo(CAN_Rx_TypeDef CAN_Rx_Structure)
 //	
 	int32_t EMID;
 	EMID = CAN_Rx_Structure.CAN_RxMessage.StdId - GM6020_READID_START;
-	
+
 	GM6020s[EMID].readAngle = (uint16_t)(CAN_Rx_Structure.CAN_RxMessageData[0] << 8 | CAN_Rx_Structure.CAN_RxMessageData[1]);
 	GM6020s[EMID].readSpeed = (int16_t)(CAN_Rx_Structure.CAN_RxMessageData[2] << 8 | CAN_Rx_Structure.CAN_RxMessageData[3]);
 	GM6020s[EMID].freadSpeed = (float)GM6020s[EMID].readSpeed;
@@ -80,7 +81,18 @@ void GM6020_Yaw_getInfo(CAN_Rx_TypeDef CAN_Rx_Structure)
 	GM6020s[EMID].totalAngle = GM6020s[EMID].readAngle + (8192 * GM6020s[EMID].turnCount);
 	
 	GM6020s[EMID].lastAngle = GM6020s[EMID].readAngle;
-		
+/*转发给底盘C板*/	
+
+	if(EMID==0)
+	{
+			for(int i=0;i<7;i++ )//0到6位有效,一共7位
+{
+	GM_69020_SEND_all[i]=CAN_Rx_Structure.CAN_RxMessageData[i];
+}
+send_YAW_60020=1;
+
+	}
+/*转发给底盘C板*/	
 }
 
 
