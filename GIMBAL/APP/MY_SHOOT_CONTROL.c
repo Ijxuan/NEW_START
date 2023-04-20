@@ -151,8 +151,24 @@ void shoot_control(void)
 			{
 				DW_UP++; //没用到了
 
-				if (DW_UP == 100)
-					M2006_targe_angle += (Driver_add / 10); // 8*3=24
+				if (DW_UP == 200)
+//					M2006_targe_angle += (Driver_add / 10); // 8*3=24
+				{
+				switch(SHOOT_L_speed)
+					{
+					case 0:
+					SHOOT_L_speed=	500 ;//退弹速度	
+					break;
+					
+					case 500:
+					SHOOT_L_speed=	6750;//30m/s		
+					break;
+					
+					case 6750:
+					SHOOT_L_speed=	0 ;//停转
+					break;
+					}
+				}
 			}
 		}
 	}
@@ -583,11 +599,17 @@ else if(heat_in_renew==1)//热量限制
 	if (DR16.rc.s_left == 3) //遥控器控制  左中
 	{
 
-		if (DR16.rc.s_right == 3) //中间档位
-			SHOOT_L_speed = shoot_speed_text;
-		else if (DR16.rc.s_right == 1)
-			SHOOT_L_speed = 500; //右上
-		else if (DR16.rc.s_right == 2)
+//		if (DR16.rc.s_right == 3) //中间档位
+//			SHOOT_L_speed = shoot_speed_text;
+//		else if (DR16.rc.s_right == 1)
+//			SHOOT_L_speed = 500; //右上
+//		else if (DR16.rc.s_right == 2)
+//			SHOOT_L_speed = 0;
+//				if (DR16.rc.s_right == 3) //中间档位
+//			SHOOT_L_speed = shoot_speed_text;
+//		else if (DR16.rc.s_right == 1)
+//			SHOOT_L_speed = 500; //右上
+		 if (DR16.rc.s_right == 2)
 			SHOOT_L_speed = 0;
 	}
 

@@ -178,7 +178,8 @@ else
 
 }
 fake_armor_yaw();
-							YAW_PID();//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+YAW_PID_new();
+//							YAW_PID();//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //	
 //							PITCH_trage_angle=0;//保持水平位置
 							imu_angle();//去仿真做测试！！！  已做
@@ -328,14 +329,11 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 
 								if(cloud_mode.control_mode_NOW==aoto_scan_mode)//扫描PID
 								{
-									if(DR16.rc.ch0>0)
-										ch0_z_f=1;
-									if(DR16.rc.ch0<0)
-										ch0_z_f=-1;
-									if(DR16.rc.ch0!=0)
-									{
-							yaw_trage_angle_new=DJIC_IMU.total_yaw+(DR16.rc.ch0/660.0)*100;//YAW轴遥控器控制
-									}
+//									if(DR16.rc.ch0>0)
+//										ch0_z_f=1;
+//									if(DR16.rc.ch0<0)
+//										ch0_z_f=-1;
+
 //							yaw_trage_angle+=(DR16.rc.ch0/660.0)*(DR16.rc.ch0/660.0)*ch0_z_f/0.6;//YAW轴遥控器控制
 								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
 								PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch;
@@ -421,7 +419,34 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 //	
 	
 }
+void YAW_PID_new()
+{
+if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
+{
 
+		if (abs(DR16.mouse.x) >= 1)
+		{
+			yaw_trage_angle_new = yaw_trage_angle_new + DR16.mouse.x / 700.0;
+		}
+	
+	
+	if(DR16.rc.ch0!=0)
+	{
+	yaw_trage_angle_new=DJIC_IMU.total_yaw+(DR16.rc.ch0/660.0)*100;//YAW轴遥控器控制
+	}
+	P_PID_bate(&Yaw_IMU_Angle_pid, yaw_trage_angle_new,DJIC_IMU.total_yaw);//GM6020s[EMID].totalAngle readAngle
+	yaw_trage_speed=Yaw_IMU_Angle_pid.result;//外环的结果给内环  二选一							
+	P_PID_bate(&Yaw_IMU_Speed_pid, yaw_trage_speed,DJIC_IMU.Gyro_z);
+	send_to_yaw=Yaw_IMU_Speed_pid.result;
+}
+else
+{
+	send_to_yaw=0;
+	yaw_trage_angle_new=DJIC_IMU.total_yaw;//目标=当前
+}
+
+
+}
 
 int8_t ch1_z_f=1;
 

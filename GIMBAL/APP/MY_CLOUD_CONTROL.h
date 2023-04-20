@@ -43,6 +43,7 @@ void PITCH_PID(void);
 void imu_angle(void);
 
 void scan_cloud(void);
+void YAW_PID_new(void);
 
 //ÔÆÌ¨
 typedef enum

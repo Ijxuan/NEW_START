@@ -697,6 +697,16 @@
           <WinNumber>2</WinNumber>
           <ItemText>M3508s[1].totalAngle</ItemText>
         </Ww>
+        <Ww>
+          <count>18</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>yaw_trage_angle_new</ItemText>
+        </Ww>
+        <Ww>
+          <count>19</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>send_to_pitch,0x0A</ItemText>
+        </Ww>
       </WatchWindow2>
       <Tracepoint>
         <THDelay>0</THDelay>

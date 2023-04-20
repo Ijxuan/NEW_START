@@ -415,7 +415,7 @@ void NM_swj(void)
 			send_d_32[p++]=PITCH_trage_angle_motor;//目标角度		1
 			send_d_32[p++]=GM6020s[3].totalAngle;//当前角度		2
 
-			send_d_32[p++]=DJIC_IMU.total_pitch*1000000;//视觉数据		333333333333 
+			send_d_32[p++]=DJIC_IMU.total_pitch*1000;//视觉数据		333333333333 
 //				send_d_32[p++]=PID_YES*1000;//P_OUT		3 
 
 			//DJIC_IMU.Gyro_y*1000000
