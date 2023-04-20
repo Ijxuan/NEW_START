@@ -429,7 +429,7 @@ if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 		if (abs(DR16.mouse.x) >= 1)
 		{
 			DR16_mouse_xnot0++;
-			yaw_trage_angle_new = yaw_trage_angle_new + DR16.mouse.x / 700.0;
+			yaw_trage_angle_new = yaw_trage_angle_new + DR16.mouse.x / 200.0;
 		}
 	
 	
@@ -478,7 +478,15 @@ void PITCH_PID()
 								if(DR16.rc.ch1<0)
 									ch1_z_f=-1;
 							PITCH_trage_angle+=(DR16.rc.ch1*1.0/660.0)*(DR16.rc.ch1*1.0/660.0)*ch1_z_f*0.1;//遥控器给速度目标值 二选一
-                            PITCH_trage_angle_motor+=(DR16.rc.ch1*1.0/660.0)*1.0;
+
+			if(DR16.rc.ch1!=0)
+			{
+								PITCH_trage_angle_motor-=(DR16.rc.ch1*1.0/660.0)*1.0;
+			}
+		if (abs(DR16.mouse.y) >= 1)
+		{
+			PITCH_trage_angle_motor = PITCH_trage_angle_motor + DR16.mouse.y / 50.0;
+		}			
  ////							if(DR16.rc.ch4_DW<=-400)//拨上
 ////							PITCH_trage_angle=PITCH_MAX_angle-10;
 ////							if(DR16.rc.ch4_DW>=400)//拨下
@@ -495,6 +503,7 @@ void PITCH_PID()
 //								else
 //								PITCH_trage_angle+=(DR16.rc.ch1/660.0)*0.4;//YAW轴遥控器控制
 							PITCH_trage_angle_motor=PITCH_TRAGET_ANGLE_TEMP_EM;
+							
 												}
 							}
 
