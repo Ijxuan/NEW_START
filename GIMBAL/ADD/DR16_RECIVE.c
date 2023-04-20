@@ -383,12 +383,12 @@ void NM_swj(void)
 			send_d_16[p++]=send_to_yaw*1111;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
-	#if 1//发送陀螺仪温度数据 YAW 陀螺仪
+	#if 0//发送陀螺仪温度数据 YAW 陀螺仪
 	p=0;
-			send_d_32[p++]=Yaw_IMU_Speed_pid.Target*10000;//当前角度		1
-			send_d_32[p++]=DJIC_IMU.total_yaw*10000;//最终目标角度		2
+			send_d_32[p++]=yaw_trage_angle*1000;//当前角度		1
+			send_d_32[p++]=DJIC_IMU.total_yaw*1000;//最终目标角度		2
 
-			send_d_32[p++]=Yaw_IMU_Speed_pid.Measure*10000;//视觉数据		333333333333 
+			send_d_32[p++]=DR16.rc.ch0*1000;//视觉数据		333333333333 
 //				send_d_32[p++]=PID_YES*1000;//P_OUT		3 
 
 			//DJIC_IMU.Gyro_y*1000000
@@ -405,7 +405,10 @@ void NM_swj(void)
 			send_d_16[p++]=send_to_yaw;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
-#if USE_MOTOR_angle==2  //PITCH使用电机角度
+
+#if 1  //PITCH使用电机角度
+
+#if USE_MOTOR_angle==1  //PITCH使用电机角度
 
 //发送云台数据 YAW 陀螺仪 666
 	p=0;
@@ -417,17 +420,18 @@ void NM_swj(void)
 
 			//DJIC_IMU.Gyro_y*1000000
 //DJIC_IMU.pitch  TEMPERATURE_is_OK
-			send_d_32[p++]= send_to_pitch;//发 4		4PID_YES
+			send_d_32[p++]= cloud_mode.control_mode_NOW*1000;//发 4		4PID_YES
 
-			send_d_32[p++]=GM6020s[3].realCurrent;//P_OUT		5
-			send_d_32[p++]=Yaw_IMU_Angle_pid.Error*10000;//I_OUT	666666666666
-			send_d_32[p++]=Vision_RawData_Pitch_Angle*10000;//D_OUT  	7 角度换的输出值,看有木有更大
+			send_d_32[p++]=PITCH_trage_angle*1000;//P_OUT		5
+			send_d_32[p++]=DR16.rc.s_left*1000;//I_OUT	666666666666
+			send_d_32[p++]=cloud_mode.control_mode_NOW*1000;//D_OUT  	7 角度换的输出值,看有木有更大
 	p=0;
-			send_d_16[p++]=DR16.rc.s_left;//输出电压      8
+			send_d_16[p++]=CH0_TOTAL;//输出电压      8
 
-			send_d_16[p++]=PITCH_TRAGET_ANGLE_TEMP_EM;///*热量 角度误差允许 视觉发射指令是连续 不在轨道末端 所有条件全部满足*/       	9
-			send_d_16[p++]=cloud_mode.control_mode_NOW*111111;//输出电压		10
+			send_d_16[p++]=yaw_trage_angle_new*10;///*热量 角度误差允许 视觉发射指令是连续 不在轨道末端 所有条件全部满足*/       	9
+			send_d_16[p++]=DJIC_IMU.total_yaw*10;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
+#endif
 #endif
 
 	#if 0//发送云台数据  PITCH 陀螺仪

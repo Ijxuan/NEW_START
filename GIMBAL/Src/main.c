@@ -100,6 +100,7 @@ int yaw_trage_speed=0;
 float yaw_trage_angle=0;
 float yaw_trage_angle_1s_ago=0;
 float yaw_trage_angle_add_1s=0;
+float yaw_trage_angle_new=0;
 
 int send_to_yaw=0;
 

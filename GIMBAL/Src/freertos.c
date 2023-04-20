@@ -265,13 +265,13 @@ void MX_FREERTOS_Init(void) {
 #endif	
 #if use_balance_gimbal==1
 #if PID_PITCH_MOTOR
-	P_PID_Parameter_Init(&PITCH_Angle_pid, 0.7, 0.05, 0,
+	P_PID_Parameter_Init(&PITCH_Angle_pid,1.2, 0.06, 0,
 						 0, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
 						 220, -220, //积分限幅，也就是积分的输出范围
 						 220, -220);
-	P_PID_Parameter_Init(&PITCH_Speed_pid, 300, 1, 0,
+	P_PID_Parameter_Init(&PITCH_Speed_pid, 50, 0.32, -40,
 						 120,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
@@ -306,7 +306,7 @@ void MX_FREERTOS_Init(void) {
 //						 4000, -4000, //积分限幅，也就是积分的输出范围    80    0.7        5000   -5000     28000   -28000
 //						 29000, -29000);
 
-	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 100,0.55,-90,//100, 1.5, 0,
+	P_PID_Parameter_Init(&PITCH_IMU_Speed_pid, 60,0.1,-30,//100, 1.5, 0,
 						 100, //误差大于这个值就积分分离  550 1.9 0   -20000
 						 //	float max_error, float min_error,
 						 //                          float alpha,
@@ -1078,6 +1078,7 @@ void Robot_Control(void const *argument)
     vTaskDelay(1000);
     vTaskDelay(1000);
 	yaw_trage_angle=DJIC_IMU.total_yaw;
+	yaw_trage_angle_new=DJIC_IMU.total_yaw;
 	PITCH_trage_angle = DJIC_IMU.total_pitch;
 M2006_targe_angle=M3508s[1].totalAngle;//清除拨盘目标角度累计
 
@@ -1192,7 +1193,7 @@ VisionData.RawData.Armour=1;
 		{	
 			send_to_pitch = 0;
 			send_to_yaw = 0;
-
+yaw_trage_angle_new=DJIC_IMU.total_yaw;
 			PITCH_trage_angle=DJIC_IMU.total_pitch;
 			yaw_trage_angle=DJIC_IMU.total_yaw;
 			PITCH_trage_angle_motor=GM6020s[3].totalAngle;

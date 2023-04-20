@@ -334,7 +334,7 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 										ch0_z_f=-1;
 									if(DR16.rc.ch0!=0)
 									{
-							yaw_trage_angle=DJIC_IMU.total_yaw+(DR16.rc.ch0/660.0)*100;//YAW轴遥控器控制
+							yaw_trage_angle_new=DJIC_IMU.total_yaw+(DR16.rc.ch0/660.0)*100;//YAW轴遥控器控制
 									}
 //							yaw_trage_angle+=(DR16.rc.ch0/660.0)*(DR16.rc.ch0/660.0)*ch0_z_f/0.6;//YAW轴遥控器控制
 								YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
@@ -382,7 +382,7 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 							
 				if(cloud_mode.control_mode_NOW==aoto_scan_mode)//扫描PID
 				{
-					P_PID_bate(&Yaw_IMU_Angle_pid, yaw_trage_angle,DJIC_IMU.total_yaw);//GM6020s[EMID].totalAngle readAngle
+					P_PID_bate(&Yaw_IMU_Angle_pid, yaw_trage_angle_new,DJIC_IMU.total_yaw);//GM6020s[EMID].totalAngle readAngle
 		
 
 					yaw_trage_speed=Yaw_IMU_Angle_pid.result;//外环的结果给内环  二选一

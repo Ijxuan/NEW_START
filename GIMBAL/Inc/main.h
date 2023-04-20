@@ -257,6 +257,7 @@ extern float YAW_TRAGET_ANGLE_TEMP_FAKE_MOTO;
 extern float YAW_TRAGET_ANGLE_TEMP_FAKE_IMU;
 
 extern float send_to_pitch_before;
+extern float yaw_trage_angle_new;
 
 /* USER CODE END Private defines */
 
