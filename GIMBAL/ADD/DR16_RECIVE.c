@@ -424,9 +424,9 @@ void NM_swj(void)
 
 			send_d_32[p++]=PITCH_trage_angle*1000;//P_OUT		5
 			send_d_32[p++]=DR16.rc.s_left*1000;//I_OUT	666666666666
-			send_d_32[p++]=cloud_mode.control_mode_NOW*1000;//D_OUT  	7 角度换的输出值,看有木有更大
+			send_d_32[p++]=DR16_mouse_xnot0;//D_OUT  	7 角度换的输出值,看有木有更大
 	p=0;
-			send_d_16[p++]=CH0_TOTAL;//输出电压      8
+			send_d_16[p++]=DR16_rc_ch0_not0;//输出电压      8
 
 			send_d_16[p++]=yaw_trage_angle_new*10;///*热量 角度误差允许 视觉发射指令是连续 不在轨道末端 所有条件全部满足*/       	9
 			send_d_16[p++]=DJIC_IMU.total_yaw*10;//输出电压		10

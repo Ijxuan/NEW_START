@@ -114,6 +114,8 @@ extern		 int scan_percent_YAW;//0到1000,百分比
 extern	 float YAW_START_ANGLE;//S扫描开始时YAW轴角度
 extern int arrive_targe_angle;
 extern  bool our_outpost_is_live;
+extern int DR16_rc_ch0_not0;
+extern int DR16_mouse_xnot0;
 
 #endif
 //MY_CLOUD_COUNTROUL

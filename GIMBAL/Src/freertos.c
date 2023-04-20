@@ -972,12 +972,7 @@ STATUS_complete_update_TIMES++;
 				run_DR16_jiema=1;
 			}
 			
-		if(run_DR16_jiema==1)
-		{
-							DR16.DR16_Process(DR16Buffer);
 
-			run_DR16_jiema=0;
-		}
 			
 		}
 	}
@@ -1096,6 +1091,12 @@ PITCH_trage_angle_motor=GM6020s[3].totalAngle;
 	/* Infinite loop */
 	for (;;)
 	{
+				if(run_DR16_jiema==1)
+		{
+							DR16.DR16_Process(DR16Buffer);
+
+			run_DR16_jiema=0;
+		}
 			#if SHOOT_HIGH_HEAT_TEXT
 		vision_shoot_times=100;
 VisionData.RawData.Armour=1;

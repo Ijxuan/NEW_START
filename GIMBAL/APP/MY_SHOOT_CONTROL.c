@@ -160,11 +160,11 @@ void shoot_control(void)
 					SHOOT_L_speed=	500 ;//ÍËµ¯ËÙ¶È	
 					break;
 					
-					case 500:
-					SHOOT_L_speed=	6750;//30m/s		
+					case -500:
+					SHOOT_L_speed=	-6750;//30m/s		
 					break;
 					
-					case 6750:
+					case -6750:
 					SHOOT_L_speed=	0 ;//Í£×ª
 					break;
 					}

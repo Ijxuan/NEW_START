@@ -419,6 +419,8 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 //	
 	
 }
+int DR16_rc_ch0_not0=0;
+int DR16_mouse_xnot0=0;
 void YAW_PID_new()
 {
 if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
@@ -426,12 +428,14 @@ if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 
 		if (abs(DR16.mouse.x) >= 1)
 		{
+			DR16_mouse_xnot0++;
 			yaw_trage_angle_new = yaw_trage_angle_new + DR16.mouse.x / 700.0;
 		}
 	
 	
 	if(DR16.rc.ch0!=0)
 	{
+		DR16_rc_ch0_not0++;
 	yaw_trage_angle_new=DJIC_IMU.total_yaw+(DR16.rc.ch0/660.0)*100;//YAWÖáÒ£¿ØÆ÷¿ØÖÆ
 	}
 	P_PID_bate(&Yaw_IMU_Angle_pid, yaw_trage_angle_new,DJIC_IMU.total_yaw);//GM6020s[EMID].totalAngle readAngle
