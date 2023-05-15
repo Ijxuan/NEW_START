@@ -26,6 +26,8 @@
 #define YAW_TEXT 0
 #define USE_PITCH_BC 0
 //´ò·û½Ç¶È5820    ×ó3701   7748
+
+#define gimbal_locked_up  1
 #if YAW_TEXT==1
 
 
@@ -116,6 +118,7 @@ extern int arrive_targe_angle;
 extern  bool our_outpost_is_live;
 extern int DR16_rc_ch0_not0;
 extern int DR16_mouse_xnot0;
+extern float yaw_trage_angle_change_by_gm;
 
 #endif
 //MY_CLOUD_COUNTROUL

@@ -11,7 +11,13 @@
 
 #define SHOOT_SPEED_HIGH 6700 //射速 高
 
-int shoot_speed_text = 6750; /*摩擦轮转速测试*/
+int shoot_speed_text = 6750; /*摩擦轮转速测试30m/s*/
+
+int shoot_speed_text_15m_s=4200;/*摩擦轮转速测试 15m/s*/
+
+int shoot_speed_text_18m_s=500;/*摩擦轮转速测试 18m/s*/
+
+
 int SHOOT = 0;
 int SHOOT_from_V = 0; /*来自视觉的发射指令次数*/
 bool vision_soot_last_is_same = 0;
@@ -31,6 +37,7 @@ allow_auto_shoot auto_shoot_condition;
 int auto_shoot_condition_show; //自动射击条件展现
 
 bool heat_in_renew = 0;
+int shoot_speed_mode=0;
 void shoot_control(void)
 {
 	if (in_END == 0 && in_MID == 1)
@@ -143,7 +150,7 @@ void shoot_control(void)
 					M2006_targe_angle += Driver_add * 1; // 8*3=24
 
 				//			M2006_targe_angle+=(Driver_add/4);//8*3=24
-				if (DW_DOWN % 25 == 0 && DW_DOWN > 500)
+				if (DW_DOWN % 250 == 0 && DW_DOWN > 500)
 					M2006_targe_angle += Driver_add * 1; // 8*3=24
 			}
 
@@ -154,18 +161,21 @@ void shoot_control(void)
 				if (DW_UP == 200)
 //					M2006_targe_angle += (Driver_add / 10); // 8*3=24
 				{
-				switch(SHOOT_L_speed)
+				switch(shoot_speed_mode)
 					{
 					case 0:
-					SHOOT_L_speed=	500 ;//退弹速度	
+					SHOOT_L_speed=	shoot_speed_text_15m_s ;//退弹速度
+					shoot_speed_mode=1;
 					break;
 					
-					case -500:
-					SHOOT_L_speed=	-6750;//30m/s		
+					case 1:
+					SHOOT_L_speed=	shoot_speed_text_18m_s;//30m/s
+					shoot_speed_mode=2;		
 					break;
 					
-					case -6750:
+					case 2:
 					SHOOT_L_speed=	0 ;//停转
+					shoot_speed_mode=0;
 					break;
 					}
 				}
@@ -623,9 +633,9 @@ else if(heat_in_renew==1)//热量限制
 
 	SHOOT_R_speed = SHOOT_L_speed;
 
-	if (SHOOT_R_speed < 0)
+	if (SHOOT_R_speed > 0)
 		SHOOT_R_speed = -SHOOT_R_speed; //右摩擦轮速度目标值应该是 值
-	if (SHOOT_L_speed > 0)
+	if (SHOOT_L_speed < 0)
 		SHOOT_L_speed = -SHOOT_L_speed; //左摩擦轮速度目标值应该是 值
 
 	send_to_SHOOT_L = I_PID_Regulation(&SHOOT_L_I_PID, SHOOT_R_speed, M3508s[3].realSpeed); // gai//蓝线

@@ -196,15 +196,15 @@ void MX_FREERTOS_Init(void) {
 #endif
 
 #if PID_YAW_IMU
-	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -80, -0.8, 70,//
-						 60, //误差大于这个值就积分分离
+	P_PID_Parameter_Init(&Yaw_IMU_Speed_pid, -400, -4, 100,//
+						 120, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
-						 0, -0, //积分限幅，也就是积分的输出范围
+						 2000, -2000, //积分限幅，也就是积分的输出范围
 						 29000, -29000);
 						 
-	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 5, 0, 0,//10 0 16//越大越陡峭10
-						 100,
+	P_PID_Parameter_Init(&Yaw_IMU_Angle_pid, 15, 0, -15,//10 0 16//越大越陡峭10
+						 30,
 						 //						  float max_error, float min_error,
 						 //                          float alpha,
 						 10, -10,
@@ -511,11 +511,11 @@ CAN1           	0		<1%
 		debug_times++;	
 Get_FPS(&FPS_ALL.DEBUG.WorldTimes,&FPS_ALL.DEBUG.FPS);
 		
-				if(debug_times%10==0)//上位机发送频率
+				if(debug_times%4==0)//上位机发送频率
 						{
 							NM_swj();
 
-							//10ms一次
+							//4ms一次
 //			printf("好");
 						}
 		if (DR16.rc.s_right != 2&&DR16.rc.s_right != 0) //是否上位机
@@ -590,7 +590,7 @@ Get_FPS(&FPS_ALL.DEBUG.WorldTimes,&FPS_ALL.DEBUG.FPS);
 		        //get battery voltage
         //获取电源电压
 			
-//        my_voltage = get_battery_voltage();
+        my_voltage = get_battery_voltage();
 			if(my_voltage<21&&my_voltage>20)
 			{
 			  		if(debug_times%5000==0)//5s运行一次
@@ -1180,9 +1180,9 @@ VisionData.RawData.Armour=1;
 #endif
 #if use_balance_gimbal==1
 
-		if (GM6020s[3].totalAngle <= 1450 && send_to_pitch < 0)//3860
+		if (GM6020s[3].totalAngle <= 4600 && send_to_pitch < 0)//3860
 			send_to_pitch = 0;
-		if (GM6020s[3].totalAngle >= 2720 && send_to_pitch > 0)
+		if (GM6020s[3].totalAngle >= 5850 && send_to_pitch > 0)
 			send_to_pitch = 0;
 #endif			
 		//云台的pitch轴正直是往上的
@@ -1195,6 +1195,7 @@ VisionData.RawData.Armour=1;
 			send_to_pitch = 0;
 			send_to_yaw = 0;
 yaw_trage_angle_new=DJIC_IMU.total_yaw;
+			yaw_trage_angle_new_2=yaw_trage_angle_new;
 			PITCH_trage_angle=DJIC_IMU.total_pitch;
 			yaw_trage_angle=DJIC_IMU.total_yaw;
 			PITCH_trage_angle_motor=GM6020s[3].totalAngle;
@@ -1202,13 +1203,13 @@ yaw_trage_angle_new=DJIC_IMU.total_yaw;
 		}
 		if(disable_for_test==1)
 		{
-				send_to_pitch = 0;			
 				send_to_yaw = 0;
+				send_to_pitch = 0;			
 
 			
 		}
 
-		GM6020_SetVoltage(send_to_yaw,0 , 0, send_to_pitch); //云台  send_to_pitch
+		GM6020_SetVoltage(send_to_yaw,0 , 0, send_to_pitch); //云台  send_to_pitch  下下上下
 //		GM6020_SetVoltage(0,0 , 0, 0); //云台  send_to_pitch
 
 		//	if(DR16.rc.s_left==1)//遥控器控制  左上

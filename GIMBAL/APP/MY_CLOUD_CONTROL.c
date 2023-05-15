@@ -421,32 +421,133 @@ CLOUD_enable_imu=DJIC_IMU.total_yaw;
 }
 int DR16_rc_ch0_not0=0;
 int DR16_mouse_xnot0=0;
+float yaw_trage_angle_change_by_gm;
 void YAW_PID_new()
 {
 if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 {
 
+	if(DR16.rc.s_right==3)//左中右中
+	{
+		if(DR16.rc.ch0!=0)
+	{
+		DR16_rc_ch0_not0++;
+//		yaw_trage_angle_new_motor=GM6020s[0].totalAngle-(DR16.rc.ch0/660.0)*900.0;//遥控器控制的是目标电机角度
+		
+		#if gimbal_locked_up == 0
+		//电机角度加=陀螺仪角度减  0.0439506775729459
+	yaw_trage_angle_new=yaw_trage_angle_new+(DR16.rc.ch0/660.0)/0.6;//遥控器控制的是YAW轴陀螺仪角度
+		#endif
+	}			
+		
+		
+/*      鼠标    */
 		if (abs(DR16.mouse.x) >= 1)
 		{
 			DR16_mouse_xnot0++;
+					#if gimbal_locked_up == 0
 			yaw_trage_angle_new = yaw_trage_angle_new + DR16.mouse.x / 200.0;
+			#endif
+//			yaw_trage_angle_new_motor=GM6020s[0].totalAngle-(DR16.mouse.x/40.0);//遥控器控制的是目标电机角度
+
 		}
-	
-	
-	if(DR16.rc.ch0!=0)
+	#if gimbal_locked_up == 1
+		if(GM6020s[0].readAngle>=6436&&GM6020s[0].readAngle<=8192)
+		{
+		yaw_trage_angle_new=DJIC_IMU.total_yaw-(8192-GM6020s[0].readAngle+2340)/8192.0*360;
+			yaw_trage_angle_change_by_gm=(8192-GM6020s[0].readAngle+2340)/8192.0*360;
+		}
+		else
+		{
+		yaw_trage_angle_new=DJIC_IMU.total_yaw-(2340-GM6020s[0].readAngle)/8192.0*360;
+			yaw_trage_angle_change_by_gm=(2340-GM6020s[0].readAngle)/8192.0*360;
+		}	
+   #endif		
+	}
+	else if(DR16.rc.s_right==2)//左中右下
+	{
+		if(DR16.rc.ch0!=0)
 	{
 		DR16_rc_ch0_not0++;
-	yaw_trage_angle_new=DJIC_IMU.total_yaw+(DR16.rc.ch0/660.0)*100;//YAW轴遥控器控制
+//		yaw_trage_angle_new_motor=GM6020s[0].totalAngle-(DR16.rc.ch0/660.0)*900.0;//遥控器控制的是目标电机角度
+		
+		#if gimbal_locked_up == 0
+		//电机角度加=陀螺仪角度减  0.0439506775729459
+	yaw_trage_angle_new=yaw_trage_angle_new+(DR16.rc.ch0/660.0)/0.6;//遥控器控制的是YAW轴陀螺仪角度
+		#endif
+	}	
+		//2340 
+		#if gimbal_locked_up == 1
+
+		if(GM6020s[0].readAngle>=6436&&GM6020s[0].readAngle<=8192)
+		{
+		yaw_trage_angle_new=DJIC_IMU.total_yaw-(8192-GM6020s[0].readAngle+2340)/8192.0*360;
+		yaw_trage_angle_change_by_gm=(8192-GM6020s[0].readAngle+2340)/8192.0*360;
+		}
+		else
+		{
+		yaw_trage_angle_new=DJIC_IMU.total_yaw-(2340-GM6020s[0].readAngle)/8192.0*360;
+		yaw_trage_angle_change_by_gm=(2340-GM6020s[0].readAngle)/8192.0*360;
+		}
+#endif		
+	
 	}
+
+//		yaw_trage_angle_new=DJIC_IMU.total_yaw-(yaw_trage_angle_new_motor-GM6020s[0].totalAngle)/8191.0*360;//加还是减？
+	
 	P_PID_bate(&Yaw_IMU_Angle_pid, yaw_trage_angle_new,DJIC_IMU.total_yaw);//GM6020s[EMID].totalAngle readAngle
 	yaw_trage_speed=Yaw_IMU_Angle_pid.result;//外环的结果给内环  二选一							
+	/*
+	速度环测试   二选一	
+	if(DJIC_IMU.total_yaw>(CLOUD_enable_imu+360.0))	
+	{
+		
+//TEXT_targe_SPEED		
+//		arrive_targe_angle++;
+//		if(arrive_targe_angle>20)
+//		{
+cloud_text_add=0;
+//			arrive_targe_angle=0;
+//		}
+	}	
+	
+	if(DJIC_IMU.total_yaw<(CLOUD_enable_imu-360.0))	
+	{
+		
+		
+//		arrive_targe_angle++;
+//		if(arrive_targe_angle>20)
+//		{
+cloud_text_add=1;
+//			arrive_targe_angle=0;
+//		}
+	}	
+	
+	if(cloud_text_add==1)//增加
+	{
+yaw_trage_speed=TEXT_targe_SPEED;
+	}	
+	if(cloud_text_add==0)//角度减小,速度为负
+	{
+yaw_trage_speed=-TEXT_targe_SPEED;
+	}	
+	
+	*/
+	
+	
+	
+//	yaw_trage_speed=TEXT_targe_SPEED;
 	P_PID_bate(&Yaw_IMU_Speed_pid, yaw_trage_speed,DJIC_IMU.Gyro_z);
 	send_to_yaw=Yaw_IMU_Speed_pid.result;
+//	send_to_yaw=0;
 }
 else
 {
 	send_to_yaw=0;
-	yaw_trage_angle_new=DJIC_IMU.total_yaw;//目标=当前
+	CLOUD_enable_imu=DJIC_IMU.total_yaw;
+
+//	yaw_trage_angle_new=DJIC_IMU.total_yaw;//目标=当前
+	yaw_trage_angle_new_motor=GM6020s[0].totalAngle;//目标=当前
 }
 
 
@@ -478,15 +579,22 @@ void PITCH_PID()
 								if(DR16.rc.ch1<0)
 									ch1_z_f=-1;
 							PITCH_trage_angle+=(DR16.rc.ch1*1.0/660.0)*(DR16.rc.ch1*1.0/660.0)*ch1_z_f*0.1;//遥控器给速度目标值 二选一
-
+//PITCH_trage_angle=0;
 			if(DR16.rc.ch1!=0)
 			{
-								PITCH_trage_angle_motor-=(DR16.rc.ch1*1.0/660.0)*1.0;
+				#if gimbal_locked_up == 0
+			PITCH_trage_angle_motor-=(DR16.rc.ch1*1.0/660.0)*1.0;
+				#endif
 			}
 		if (abs(DR16.mouse.y) >= 1)
 		{
-			PITCH_trage_angle_motor = PITCH_trage_angle_motor + DR16.mouse.y / 50.0;
-		}			
+			#if gimbal_locked_up == 0
+			PITCH_trage_angle_motor = PITCH_trage_angle_motor + DR16.mouse.y / 15.0;
+			#endif
+		}		
+		#if gimbal_locked_up == 1
+		PITCH_trage_angle_motor=5525;//
+		#endif
  ////							if(DR16.rc.ch4_DW<=-400)//拨上
 ////							PITCH_trage_angle=PITCH_MAX_angle-10;
 ////							if(DR16.rc.ch4_DW>=400)//拨下
@@ -523,10 +631,10 @@ PITCH_trage_angle_motor=6500;
 PITCH_trage_angle_motor=5330;
 	#endif								
 #if use_balance_gimbal==1
-							if(PITCH_trage_angle_motor>2680)
-PITCH_trage_angle_motor=2680;
-							if(PITCH_trage_angle_motor<1500)
-PITCH_trage_angle_motor=1500;
+							if(PITCH_trage_angle_motor>5850)
+PITCH_trage_angle_motor=5850;
+							if(PITCH_trage_angle_motor<4600)
+PITCH_trage_angle_motor=4600;
 	#endif	
 					P_PID_bate(&PITCH_Angle_pid, PITCH_trage_angle_motor,GM6020s[3].totalAngle);//GM6020s[EMID].totalAngle readAngle
 
@@ -596,21 +704,31 @@ void imu_angle()
 			allow_angle=	PITCH_MAX_angle-PITCH_MIN_angle;	
 #endif
 #if use_balance_gimbal==1
-	PITCH_MAX_angle=DJIC_IMU.total_pitch+(GM6020s[3].totalAngle-1474)/8191.0f*360.0f;
-	PITCH_MIN_angle=DJIC_IMU.total_pitch+(GM6020s[3].totalAngle-2700)/8191.0f*360.0f;//2700
+	PITCH_MAX_angle=DJIC_IMU.total_pitch+(GM6020s[3].totalAngle-4427)/8191.0f*360.0f;
+	PITCH_MIN_angle=DJIC_IMU.total_pitch+(GM6020s[3].totalAngle-5950)/8191.0f*360.0f;//2700
 			allow_angle=	PITCH_MAX_angle-PITCH_MIN_angle;	
 #endif	
 }
+//2023-4-27:
+//
+//上边界-下边界
+
+//
+//使劲抬头:陀螺仪值为44    6020值为4427      
+//从
+//   速度为负           
+//到
+//使劲低头:陀螺仪值为-21     6020值为5950    
 //2023-4-17:
 //
 //上边界-下边界
 
 //
-//使劲抬头:陀螺仪值为24    6020值为1474      5170
+//使劲抬头:陀螺仪值为24    6020值为1474      
 //从
 //   速度为负           
 //到
-//使劲低头:陀螺仪值为-30     6020值为2700    3820
+//使劲低头:陀螺仪值为-30     6020值为2700    
 
 //2022-4-14:
 //

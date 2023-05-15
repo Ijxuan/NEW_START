@@ -22,14 +22,91 @@ Dialog DLL:      TCM.DLL V1.56.1.0
  
 <h2>Project:</h2>
 D:\001\New_start\CHASSIS\MDK-ARM\CHASSIS.uvprojx
-Project File Date:  11/10/2022
+Project File Date:  04/30/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'CHASSIS'
 Note: source file '../Core/Src/stm32f4xx_hal_timebase_tim.c' - object file renamed from 'freertos1\stm32f4xx_hal_timebase_tim.o' to 'freertos1\stm32f4xx_hal_timebase_tim_1.o'.
 Note: source file '../Core/Src/stm32f4xx_hal_timebase_tim.c' - object file renamed from 'freertos1\stm32f4xx_hal_timebase_tim.o' to 'freertos1\stm32f4xx_hal_timebase_tim_1.o'.
-compiling stm32f4xx_hal_timebase_tim.c...
+compiling IVC.c...
+..\Arithmetic\my_positionPID_bate.h(101): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\add\IVC.c: 1 warning, 0 errors
+compiling stm32f4xx_it.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(101): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\add\Sensor.h(69): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/stm32f4xx_it.c(44): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  float lun_1_quan_m=pai*0.06;
+../Core/Src/stm32f4xx_it.c(396): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		speed_every_100_ms=angle_100_ms*lun_1_quan_m/8191.0/14.0*10;//这100m秒走过的路程 变成圈数 再经过减速比 最后根据轮径
+../Core/Src/stm32f4xx_it.c: 5 warnings, 0 errors
+compiling CAN2_SEND.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(101): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\BSP\CAN2_SEND.c: 3 warnings, 0 errors
+compiling CHASSIS_CONTROL_basic.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(101): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\CHASSIS_CONTROL_basic.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\CHASSIS_CONTROL_2.h(33): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\CHASSIS_CONTROL_basic.c(202): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*0.8;//双环	//两个传感器都是好的,速度可以快一点
+..\APP\CHASSIS_CONTROL_basic.c(216): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*0.5;//双环	//只有一个传感器都是好的,速度可以慢一点
+..\APP\CHASSIS_CONTROL_basic.c(230): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				CHASSIS_trage_speed=CHASSIS_MOTOR_ANGLE_pid.result*0.5;//双环	//只有一个传感器都是好的,速度可以慢一点
+..\APP\CHASSIS_CONTROL_basic.c: 8 warnings, 0 errors
+compiling CHASSIS_CONTROL_2.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(101): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\CHASSIS_CONTROL_2.h(33): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\add\COM_TO_PC.h(96): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\CHASSIS_CONTROL_2.c: 5 warnings, 0 errors
+compiling DR16_RECIVE.c...
+..\Arithmetic\my_positionPID_bate.h(101): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\BREAK.h(35): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\add\DR16_RECIVE.c: 4 warnings, 0 errors
+compiling MY_CHASSIS_CONTROL.c...
+..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Arithmetic\my_positionPID_bate.h(101): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.h(22): warning:  #1295-D: Deprecated declaration Power_Calculate - give arg types
+  void Power_Calculate();
+..\APP\CHASSIS_CONTROL_2.h(33): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\add\COM_TO_PC.h(96): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\APP\MY_CHASSIS_CONTROL.c(538): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				speed_change=DEBUFF*CHASSIS_trage_speed*0.7;		//最多减慢百分之70
+..\APP\MY_CHASSIS_CONTROL.c: 6 warnings, 0 errors
 compiling freertos.c...
 ..\BSP\BSP_CAN.h(41): warning:  #1-D: last line of file ends without a newline
   #endif
@@ -56,12 +133,18 @@ compiling freertos.c...
 ../Core/Src/freertos.c(457): warning:  #177-D: variable "TimeIncrement"  was declared but never referenced
   	const TickType_t TimeIncrement = pdMS_TO_TICKS(2); //每十毫秒强制进入总控制
 ../Core/Src/freertos.c: 12 warnings, 0 errors
+compiling RM_JudgeSystem.c...
+..\Arithmetic\my_positionPID_bate.h(101): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Device\RM_JudgeSystem.c(1472): warning:  #223-D: function "sprintf" declared implicitly
+  	sprintf(data, "%d", i);
+..\Device\RM_JudgeSystem.c: 2 warnings, 0 errors
 linking...
 freertos1\CHASSIS.axf: Warning: L6304W: Duplicate input file freertos1\stm32f4xx_hal_timebase_tim_1.o ignored.
 Program Size: Code=39532 RO-data=1544 RW-data=956 ZI-data=31908  
 Finished: 0 information, 1 warning and 0 error messages.
 FromELF: creating hex file...
-"freertos1\CHASSIS.axf" - 0 Error(s), 13 Warning(s).
+"freertos1\CHASSIS.axf" - 0 Error(s), 47 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -84,7 +167,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.6.0
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

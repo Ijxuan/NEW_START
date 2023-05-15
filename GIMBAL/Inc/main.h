@@ -258,6 +258,9 @@ extern float YAW_TRAGET_ANGLE_TEMP_FAKE_IMU;
 
 extern float send_to_pitch_before;
 extern float yaw_trage_angle_new;
+extern float yaw_trage_angle_new_2;
+
+extern float yaw_trage_angle_new_motor;//目标角度（电机）
 
 /* USER CODE END Private defines */
 

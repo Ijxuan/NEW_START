@@ -694,7 +694,7 @@ void Updata_Hand_Euler_Gyro_Data(void)
 		DJIC_IMU.Row	 = (float)INS_angle[2] * Angle_turn_Radian ; //(-180° ~ 180°)+ 180.0f
  DJIC_IMU.pitch= (float)INS_angle[1] * Angle_turn_Radian ;		//将弧度转为度
  */
- 	DJIC_IMU.pitch = (float)INS_angle[1] * Angle_turn_Radian *-1.0f; //(-180° ~ 180°)+ 180.0f
+ 	DJIC_IMU.pitch = (float)INS_angle[1] * Angle_turn_Radian ; //(-180° ~ 180°)+ 180.0f
 		DJIC_IMU.Row = (float)INS_angle[2] * Angle_turn_Radian ;		//将弧度转为度
 	#endif		
 //	Vision_Cloud.VisionSend_t.YawAngle_Error=DJIC_IMU.yaw;
@@ -721,7 +721,7 @@ void Updata_Hand_Euler_Gyro_Data(void)
 	DJIC_IMU.Gyro_y = INS_gyro[0] * Angle_turn_Radian;//这是pitch轴的
 	*/
 		DJIC_IMU.Gyro_z = INS_gyro[2] * Angle_turn_Radian*-1.0f;//这是yaw轴的
-	DJIC_IMU.Gyro_y = INS_gyro[1] * Angle_turn_Radian;//这是pitch轴的
+	DJIC_IMU.Gyro_y = INS_gyro[1] * Angle_turn_Radian*-1.0f;//这是pitch轴的
 #endif	
 //	Vision_Cloud.VisionSend_t.YawAngle_Error=DJIC_IMU.Gyro_z;
 //	Vision_Cloud.VisionSend_t.PitchAngle_Error=DJIC_IMU.Gyro_y;
