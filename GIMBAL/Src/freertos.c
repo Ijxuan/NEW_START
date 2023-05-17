@@ -450,7 +450,8 @@ __weak void test_task(void const * argument)
 //fp32 voltage;
 	uint8_t text_send[5];
 	char text_e[5]="A432B";
-
+int YAW_6020_RC_TIMES_100MS;
+int PITCH_6020_RC_TIMES_100MS;
 /* USER CODE END Header_Debug */
 void Debug(void const * argument)
 {
@@ -510,7 +511,13 @@ CAN1           	0		<1%
 	{
 		debug_times++;	
 Get_FPS(&FPS_ALL.DEBUG.WorldTimes,&FPS_ALL.DEBUG.FPS);
-		
+				if(debug_times%100==0)//上位机发送频率
+				{
+				YAW_6020_RC_TIMES_100MS=GM6020s[0].RC_TIMES;
+				GM6020s[0].RC_TIMES=0;
+					PITCH_6020_RC_TIMES_100MS=GM6020s[3].RC_TIMES;
+					GM6020s[3].RC_TIMES=0;
+				}
 				if(debug_times%4==0)//上位机发送频率
 						{
 							NM_swj();

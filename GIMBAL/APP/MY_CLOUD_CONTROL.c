@@ -454,13 +454,13 @@ if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 	#if gimbal_locked_up == 1
 		if(GM6020s[0].readAngle>=6436&&GM6020s[0].readAngle<=8192)
 		{
-		yaw_trage_angle_new=DJIC_IMU.total_yaw-(8192-GM6020s[0].readAngle+2340)/8192.0*360;
-			yaw_trage_angle_change_by_gm=(8192-GM6020s[0].readAngle+2340)/8192.0*360;
+		yaw_trage_angle_new=DJIC_IMU.total_yaw-(8192-GM6020s[0].readAngle+2400)/8192.0*360;
+			yaw_trage_angle_change_by_gm=(8192-GM6020s[0].readAngle+2400)/8192.0*360;
 		}
 		else
 		{
-		yaw_trage_angle_new=DJIC_IMU.total_yaw-(2340-GM6020s[0].readAngle)/8192.0*360;
-			yaw_trage_angle_change_by_gm=(2340-GM6020s[0].readAngle)/8192.0*360;
+		yaw_trage_angle_new=DJIC_IMU.total_yaw-(2400-GM6020s[0].readAngle)/8192.0*360;
+			yaw_trage_angle_change_by_gm=(2400-GM6020s[0].readAngle)/8192.0*360;
 		}	
    #endif		
 	}
@@ -481,13 +481,13 @@ if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 
 		if(GM6020s[0].readAngle>=6436&&GM6020s[0].readAngle<=8192)
 		{
-		yaw_trage_angle_new=DJIC_IMU.total_yaw-(8192-GM6020s[0].readAngle+2340)/8192.0*360;
-		yaw_trage_angle_change_by_gm=(8192-GM6020s[0].readAngle+2340)/8192.0*360;
+		yaw_trage_angle_new=DJIC_IMU.total_yaw-(8192-GM6020s[0].readAngle+2400)/8192.0*360;
+		yaw_trage_angle_change_by_gm=(8192-GM6020s[0].readAngle+2400)/8192.0*360;
 		}
 		else
 		{
-		yaw_trage_angle_new=DJIC_IMU.total_yaw-(2340-GM6020s[0].readAngle)/8192.0*360;
-		yaw_trage_angle_change_by_gm=(2340-GM6020s[0].readAngle)/8192.0*360;
+		yaw_trage_angle_new=DJIC_IMU.total_yaw-(2400-GM6020s[0].readAngle)/8192.0*360;
+		yaw_trage_angle_change_by_gm=(2400-GM6020s[0].readAngle)/8192.0*360;
 		}
 #endif		
 	

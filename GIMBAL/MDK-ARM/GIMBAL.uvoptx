@@ -852,6 +852,11 @@
           <WinNumber>2</WinNumber>
           <ItemText>yaw_trage_angle_new_2</ItemText>
         </Ww>
+        <Ww>
+          <count>49</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>GM6020s[0].readAngle,0x0A</ItemText>
+        </Ww>
       </WatchWindow2>
       <Tracepoint>
         <THDelay>0</THDelay>

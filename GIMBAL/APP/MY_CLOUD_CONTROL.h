@@ -27,7 +27,7 @@
 #define USE_PITCH_BC 0
 //´ò·û½Ç¶È5820    ×ó3701   7748
 
-#define gimbal_locked_up  1
+#define gimbal_locked_up  0
 #if YAW_TEXT==1
 
 

@@ -261,6 +261,8 @@ extern float yaw_trage_angle_new;
 extern float yaw_trage_angle_new_2;
 
 extern float yaw_trage_angle_new_motor;//目标角度（电机）
+extern int YAW_6020_RC_TIMES_100MS;
+extern int PITCH_6020_RC_TIMES_100MS;
 
 /* USER CODE END Private defines */
 

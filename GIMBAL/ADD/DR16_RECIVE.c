@@ -280,13 +280,13 @@ void NM_swj(void)
 //DJIC_IMU.pitch
 			send_d_32[p++]= DJIC_IMU.Gyro_z*100;//I_OUT 4		4PID_YES
 
-			send_d_32[p++]=send_to_yaw*100;//P_OUT		5
-			send_d_32[p++]=yaw_trage_speed*100;//I_OUT		6
-			send_d_32[p++]=DJIC_IMU.Gyro_z*100;//D_OUT  	7
+			send_d_32[p++]=send_to_yaw;//P_OUT		5
+			send_d_32[p++]=send_to_yaw;//I_OUT		6
+			send_d_32[p++]=GM6020s[0].realCurrent*100;//D_OUT  	7
 	p=0;
-			send_d_16[p++]=this_period_has_shoot_number;//输出电压      8
+			send_d_16[p++]=YAW_6020_RC_TIMES_100MS;//输出电压      8
 
-			send_d_16[p++]=yaw_trage_speed*100000;//目标角度       	9
+			send_d_16[p++]=PITCH_6020_RC_TIMES_100MS;//目标角度       	9
 			send_d_16[p++]=cali_sensor[i].cali_cmd*1111;//1在校准 0不在		10
 														//保留到小数点后四位558 320 660   bjTlta
 #endif

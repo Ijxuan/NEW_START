@@ -51,7 +51,7 @@ void GM6020_Pitch_getInfo(CAN_Rx_TypeDef CAN_Rx_Structure)
 	GM6020s[EMID].totalAngle = GM6020s[EMID].readAngle + (8192 * GM6020s[EMID].turnCount);
 	
 	GM6020s[EMID].lastAngle = GM6020s[EMID].readAngle;
-	
+	GM6020s[EMID].RC_TIMES++;
 }
 
 

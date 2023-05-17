@@ -38,6 +38,7 @@ typedef struct
 	
 	uint8_t OffLine_Detection;				//离线检测
 	uint8_t OffLine_Status;					//离线标志位
+	int16_t RC_TIMES;
 				
 	
 } GM6020_t;
