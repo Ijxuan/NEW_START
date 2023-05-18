@@ -227,6 +227,9 @@ float YAW_TRAGET_ANGLE_TEMP_FAKE_IMU;
 
 float send_to_pitch_before=0;
 /*假装甲要用到END*/
+uint16_t mag_on =  3500;
+uint16_t mag_text = 3000;
+uint16_t mag_off = 2400;
 
 /* USER CODE END 0 */
 
@@ -273,6 +276,7 @@ int main(void)
   MX_SPI2_Init();
   MX_ADC1_Init();
   MX_ADC3_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 	  delay_init();
 		Buzzer_Init();

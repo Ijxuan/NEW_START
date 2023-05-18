@@ -426,7 +426,20 @@ void YAW_PID_new()
 {
 if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 {
+	if(DR16.rc.s_right==1)//左中右上
+	{
+/*      鼠标    */
+		if (abs(DR16.mouse.x) >= 1)
+		{
+			DR16_mouse_xnot0++;
+					#if gimbal_locked_up == 0
+			yaw_trage_angle_new = yaw_trage_angle_new + DR16.mouse.x / 200.0;
+			#endif
+//			yaw_trage_angle_new_motor=GM6020s[0].totalAngle-(DR16.mouse.x/40.0);//遥控器控制的是目标电机角度
 
+		}		
+		
+	}
 	if(DR16.rc.s_right==3)//左中右中
 	{
 		if(DR16.rc.ch0!=0)
@@ -441,16 +454,7 @@ if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 	}			
 		
 		
-/*      鼠标    */
-		if (abs(DR16.mouse.x) >= 1)
-		{
-			DR16_mouse_xnot0++;
-					#if gimbal_locked_up == 0
-			yaw_trage_angle_new = yaw_trage_angle_new + DR16.mouse.x / 200.0;
-			#endif
-//			yaw_trage_angle_new_motor=GM6020s[0].totalAngle-(DR16.mouse.x/40.0);//遥控器控制的是目标电机角度
 
-		}
 	#if gimbal_locked_up == 1
 		if(GM6020s[0].readAngle>=6436&&GM6020s[0].readAngle<=8192)
 		{
@@ -574,6 +578,17 @@ void PITCH_PID()
 //	#if PID_PITCH_IMU		//PITCH轴陀螺仪
 							if(DR16.rc.s_left==3)//PITCH轴控制挡位
 							{
+							if(DR16.rc.s_right==1)//PITCH轴控制挡位
+							{
+		if (abs(DR16.mouse.y) >= 1)
+		{
+			#if gimbal_locked_up == 0
+			PITCH_trage_angle_motor = PITCH_trage_angle_motor + DR16.mouse.y / 15.0;
+			#endif
+		}								
+							}
+							if(DR16.rc.s_right==3||DR16.rc.s_right==2)//PITCH轴控制挡位
+							{
 								if(DR16.rc.ch1>0)
 									ch1_z_f=1;
 								if(DR16.rc.ch1<0)
@@ -586,20 +601,11 @@ void PITCH_PID()
 			PITCH_trage_angle_motor-=(DR16.rc.ch1*1.0/660.0)*1.0;
 				#endif
 			}
-		if (abs(DR16.mouse.y) >= 1)
-		{
-			#if gimbal_locked_up == 0
-			PITCH_trage_angle_motor = PITCH_trage_angle_motor + DR16.mouse.y / 15.0;
-			#endif
-		}		
+	
 		#if gimbal_locked_up == 1
 		PITCH_trage_angle_motor=5525;//
 		#endif
- ////							if(DR16.rc.ch4_DW<=-400)//拨上
-////							PITCH_trage_angle=PITCH_MAX_angle-10;
-////							if(DR16.rc.ch4_DW>=400)//拨下
-////							PITCH_trage_angle=PITCH_MIN_angle+10;
-//							
+	}
 							}
 														if(DR16.rc.s_left==1)//PITCH轴控制挡位
 							{

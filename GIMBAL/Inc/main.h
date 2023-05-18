@@ -99,6 +99,8 @@ void Error_Handler(void);
 #define INT1_GYRO_Pin GPIO_PIN_5
 #define INT1_GYRO_GPIO_Port GPIOC
 #define INT1_GYRO_EXTI_IRQn EXTI9_5_IRQn
+#define magazine_pwm_Pin GPIO_PIN_9
+#define magazine_pwm_GPIO_Port GPIOE
 #define CS1_GYRO_Pin GPIO_PIN_0
 #define CS1_GYRO_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
@@ -263,7 +265,9 @@ extern float yaw_trage_angle_new_2;
 extern float yaw_trage_angle_new_motor;//目标角度（电机）
 extern int YAW_6020_RC_TIMES_100MS;
 extern int PITCH_6020_RC_TIMES_100MS;
-
+extern uint16_t mag_on ;
+extern uint16_t mag_text ;
+extern uint16_t mag_off ;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
