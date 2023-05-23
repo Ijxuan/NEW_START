@@ -79,4 +79,3 @@ ins_task\main.o: ..\bsp\boards\user_can.h
 ins_task\main.o: ..\ADD\DR16_RECIVE.h
 ins_task\main.o: ..\ADD\oled.h
 ins_task\main.o: ..\bsp\boards\bsp_adc.h
-ins_task\main.o: ..\ADD\WS2812.h
