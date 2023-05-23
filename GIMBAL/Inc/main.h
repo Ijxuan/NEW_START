@@ -268,6 +268,8 @@ extern int PITCH_6020_RC_TIMES_100MS;
 extern uint16_t mag_on ;
 extern uint16_t mag_text ;
 extern uint16_t mag_off ;
+extern int ext_power_heat_data_rc_times_100ms;
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

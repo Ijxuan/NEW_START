@@ -247,7 +247,7 @@ void NM_swj(void)
 	if(1)
 	{
 		
-		#if 0//发送摩擦轮3508数据  左
+		#if 1//发送摩擦轮3508数据  左
 	p=0;
 
 
@@ -264,11 +264,11 @@ void NM_swj(void)
 	p=0;
 			send_d_16[p++]=ext_power_heat_data.data.shooter_id1_17mm_cooling_heat;//热量      8
 			send_d_16[p++]=ext_shoot_data.data.bullet_speed;//射速       	9
-			send_d_16[p++]=0;//当前角度		10
+			send_d_16[p++]=send_to_SHOOT_R;//当前角度		10
 
 #endif
 
-			#if 1//发送陀螺仪数据  YAW PITCH
+			#if 0//发送陀螺仪数据  YAW PITCH
 	p=0;
 			send_d_32[p++]=DJIC_IMU.total_yaw*100;//当前角度		1
 			send_d_32[p++]=yaw_trage_angle_new_2*100;//最终目标角度		2

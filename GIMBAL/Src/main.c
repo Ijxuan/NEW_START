@@ -44,6 +44,7 @@
 #include "oled.h"
 #include "bsp_adc.h"
 #include "stdio.h"
+#include "WS2812.h"
 
 //#include "oledfont.h"
 /* USER CODE END Includes */
@@ -289,6 +290,7 @@ int main(void)
 #endif
   oled_init(); 
   HAL_Delay(500);
+//	ws2812_init(8);
 
     oled_clear(Pen_Clear);
     oled_LOGO();

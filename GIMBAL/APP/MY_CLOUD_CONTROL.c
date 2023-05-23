@@ -449,7 +449,7 @@ if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 		
 		#if gimbal_locked_up == 0
 		//电机角度加=陀螺仪角度减  0.0439506775729459
-	yaw_trage_angle_new=yaw_trage_angle_new+(DR16.rc.ch0/660.0)/0.6;//遥控器控制的是YAW轴陀螺仪角度
+	yaw_trage_angle_new=yaw_trage_angle_new+(DR16.rc.ch0/660.0)/3;//遥控器控制的是YAW轴陀螺仪角度
 		#endif
 	}			
 		

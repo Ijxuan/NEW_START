@@ -55,6 +55,8 @@
 #include "Vision_Control.h"
 #include "MY_CLOUD_CONTROL.h"
 #include "CAN2_SEND.h"
+#include "keyBoard_to_vjoy.h"
+//#include "WS2812.h"
 
 //#include "usbd_cdc_if.h"
 
@@ -164,14 +166,14 @@ void MX_FREERTOS_Init(void) {
 						 2000, -2000,
 						 7000, -7000);
 
-	I_PID_Parameter_Init(&SHOOT_L_I_PID, 28, 0.35, 15,
+	I_PID_Parameter_Init(&SHOOT_L_I_PID, 23, 0.30, 13,
 						 8700, 7000, -7000,
 						 0.5,
 						 14000, -14000,
 						 16000, -16000); //摩擦轮电机 37 0.35 13
 
 	//
-	I_PID_Parameter_Init(&SHOOT_R_I_PID, 28, 0.35, 15,
+	I_PID_Parameter_Init(&SHOOT_R_I_PID, 20, 0.3, 28,
 						 20000, 20000, -20000,
 						 0.5,
 						 14000, -14000,
@@ -348,6 +350,10 @@ Vision_Control_Init();//卡尔曼参数初始化
     HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
     __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_text);
 	
+	
+	
+	
+	
 //DJIC_IMU.pitch_turnCounts=-1;
 	//CAN2_Filter0 初始化 使能
 //	  HAL_Delay(1000);
@@ -460,7 +466,7 @@ int mag_static=0;
 int mag_run_time=0;
 int mag_open_times=3500;
 int mag_close_times=3300;
-
+int ext_power_heat_data_rc_times_100ms=0;
 /* USER CODE END Header_Debug */
 void Debug(void const * argument)
 {
@@ -520,25 +526,31 @@ CAN1           	0		<1%
 	{
 		debug_times++;	
 Get_FPS(&FPS_ALL.DEBUG.WorldTimes,&FPS_ALL.DEBUG.FPS);
+		if(debug_times%100==0)
+		{
+		ext_power_heat_data_rc_times_100ms=HEAT_complete_update_TIMES;
+		HEAT_complete_update_TIMES=0;
+		}
+		if(debug_times%500==0)
+		{
+//		ws2812_red(8);
+		}
 						if(debug_times%100==0)//上位机发送频率
 				{
 if (DR16.rc.s_left == 2)//遥控器左下 弹仓盖测试
 {
-		    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_text);	//关弹仓开激光	
+		    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_text);	//弹仓舵机失能	
 }					
-					
-if (DR16.rc.s_left == 3&&DR16.rc.s_right== 2 )//遥控器左下 弹仓盖测试
+if (DR16.rc.s_left == 3&&DR16.rc.s_right== 1 )//左中右上 操作手开关舵机
 {
-		if (DR16.rc.ch4_DW <= -200) //拨上
-		{
-			mag_static=1;//1是开弹仓   //开弹仓关激光	
-		}
-		else if (DR16.rc.ch4_DW >= 200) //拨下
-		{
-			mag_static=2;//1是关弹仓   //关弹仓开激光	
-		}
-		else
-		{
+	if(keyBoard_Q.Press_static==Long_Press&&keyBoard_ctrl.Press_static==No_Press)//Q长按 ctrl不按 开弹仓
+	{
+				mag_static=1;//1是开弹仓   //开弹仓关激光	
+	}
+	if(keyBoard_Q.Press_static==Long_Press&&keyBoard_ctrl.Press_static==Long_Press)//Q长按 ctrl长按 关弹仓
+	{
+				mag_static=2;//2是关弹仓   //关弹仓开激光	
+	}
 			if(mag_static==1)//1是开弹仓
 			{
 					    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_on);	//开弹仓关激光	
@@ -556,11 +568,46 @@ if (DR16.rc.s_left == 3&&DR16.rc.s_right== 2 )//遥控器左下 弹仓盖测试
 				{
 				mag_static=0;mag_run_time=0;//结束流程
 				}
-			}			
+			}
 			if(mag_static==0)//0是失能
 			{
 		    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_text);	//关弹仓开激光	
-			}				
+			}
+}	
+if (DR16.rc.s_left == 3&&DR16.rc.s_right== 2 )//遥控器左下 弹仓盖测试
+{
+		if (DR16.rc.ch4_DW <= -200) //拨上
+		{
+			mag_static=1;//1是开弹仓   //开弹仓关激光	
+		}
+		else if (DR16.rc.ch4_DW >= 200) //拨下
+		{
+			mag_static=2;//2是关弹仓   //关弹仓开激光	
+		}
+		else
+		{
+//			if(mag_static==1)//1是开弹仓
+//			{
+//					    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_on);	//开弹仓关激光	
+//						mag_run_time+=100;
+//				if(mag_run_time>=mag_open_times)
+//				{
+//				mag_static=0;mag_run_time=0;//结束流程
+//				}
+//			}
+//			if(mag_static==2)//2是关弹仓
+//			{
+//					    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_off);	//开弹仓关激光	
+//						mag_run_time+=100;
+//				if(mag_run_time>=mag_close_times)
+//				{
+//				mag_static=0;mag_run_time=0;//结束流程
+//				}
+//			}			
+//			if(mag_static==0)//0是失能
+//			{
+		    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_text);	//关弹仓开激光	
+//			}				
 		}
 }
 				}
@@ -573,7 +620,7 @@ if (DR16.rc.s_left == 3&&DR16.rc.s_right== 2 )//遥控器左下 弹仓盖测试
 					GM6020s[3].RC_TIMES=0;
 					
 				}
-				if(debug_times%4==0)//上位机发送频率
+				if(debug_times%1==0)//上位机发送频率
 						{
 							NM_swj();
 
@@ -1157,7 +1204,9 @@ PITCH_trage_angle_motor=GM6020s[3].totalAngle;
 				if(run_DR16_jiema==1)
 		{
 							DR16.DR16_Process(DR16Buffer);
-
+					keyBoard_QE();
+			keyBoard_shift_ctrl();
+			mouse_Left_Right();
 			run_DR16_jiema=0;
 		}
 			#if SHOOT_HIGH_HEAT_TEXT

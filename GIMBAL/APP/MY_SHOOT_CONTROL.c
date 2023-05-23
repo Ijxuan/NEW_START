@@ -8,6 +8,7 @@
 #include "calibrate_task.h"
 #include "MY_CLOUD_CONTROL.h"
 #include "spinning_top_examine.h"
+#include "keyBoard_to_vjoy.h"
 
 #define SHOOT_SPEED_HIGH 6700 //射速 高
 
@@ -38,6 +39,7 @@ int auto_shoot_condition_show; //自动射击条件展现
 
 bool heat_in_renew = 0;
 int shoot_speed_mode=0;
+int stop_shoot_times=0;
 void shoot_control(void)
 {
 	if (in_END == 0 && in_MID == 1)
@@ -133,8 +135,63 @@ void shoot_control(void)
 
 	if (DR16.rc.s_left == 3)
 	{
-		if (DR16.rc.s_right == 1 || DR16.rc.s_right == 3)
+		if (DR16.rc.s_right == 1)
 		{
+					if (M3508s[1].totalAngle > (M2006_targe_angle * 0.8 - if_Driver_arrive_angle))
+			Driver_arrive = 1;
+					
+			if(keyBoard_E.Press_static!=No_Press)
+			{
+			SHOOT_L_speed=shoot_speed_text_15m_s;
+			}
+			if(keyBoard_E.Press_static!=No_Press&&keyBoard_ctrl.Press_static!=No_Press)
+			{
+			SHOOT_L_speed=0;
+			}	
+			#if 1	/*用于操作手模式下,鼠标手动控制开火时机,准备加入热量限制*/
+
+//		if (M3508s[1].totalAngle > (M2006_targe_angle * 0.8 - if_Driver_arrive_angle))
+//			Driver_arrive = 1;
+		
+						if (mouse_Left.Click_Press_wait_use>0)
+			{
+//						if(Driver_arrive==1)
+//						{
+				if(ext_power_heat_data_rc_times_100ms>0)//有裁判系统热量限制
+				{
+				if(ext_power_heat_data.data.shooter_id2_17mm_cooling_heat <= 20)
+				{
+					M2006_targe_angle += Driver_add * 1; // 8*3=24
+				}
+				}
+				else
+				{
+					M2006_targe_angle += Driver_add * 1; // 8*3=24
+				}
+								Driver_arrive=0;
+						mouse_Left.Click_Press_wait_use-=1;	
+//						}	
+			}
+						if (mouse_Left.Click_Press_wait_use==0)
+						{
+						stop_shoot_times++;
+						}
+						if(stop_shoot_times==2000)//一秒没开火了
+						{
+				M2006_targe_angle = M3508s[1].totalAngle; //拨盘误差消除
+						}
+
+#endif
+						
+		}
+		if ( DR16.rc.s_right == 3)
+		{
+			
+
+			
+
+						
+						
 			//
 			if (DR16.rc.ch4_DW == 0) //松手
 			{
@@ -554,6 +611,7 @@ else if(heat_in_renew==1)//热量限制
 			M2006_targe_angle=M3508s[1].totalAngle;//拨盘误差消除 半秒清除累计目标值一次 防止连发
 			}
 #endif
+
 			SHOOT_from_v_last = VisionData.RawData.Beat;
 
 			//					if(VisionData.RawData.Beat==0)
