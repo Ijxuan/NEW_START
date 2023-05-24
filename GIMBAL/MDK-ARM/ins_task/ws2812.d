@@ -52,3 +52,8 @@ ins_task\ws2812.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappe
 ins_task\ws2812.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 ins_task\ws2812.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 ins_task\ws2812.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+ins_task\ws2812.o: ..\components\devices\DJI_IMU.h
+ins_task\ws2812.o: ..\bsp\boards\user_can.h
+ins_task\ws2812.o: ../Inc/can.h
+ins_task\ws2812.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+ins_task\ws2812.o: ..\ADD\DR16_RECIVE.h

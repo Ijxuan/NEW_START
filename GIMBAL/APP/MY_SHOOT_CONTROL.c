@@ -140,11 +140,11 @@ void shoot_control(void)
 					if (M3508s[1].totalAngle > (M2006_targe_angle * 0.8 - if_Driver_arrive_angle))
 			Driver_arrive = 1;
 					
-			if(keyBoard_E.Press_static!=No_Press)
+			if(keyBoard_G.Press_static!=No_Press)
 			{
-			SHOOT_L_speed=shoot_speed_text_15m_s;
+			SHOOT_L_speed=6700;
 			}
-			if(keyBoard_E.Press_static!=No_Press&&keyBoard_ctrl.Press_static!=No_Press)
+			if(keyBoard_G.Press_static!=No_Press&&keyBoard_ctrl.Press_static!=No_Press)
 			{
 			SHOOT_L_speed=0;
 			}	
@@ -221,12 +221,12 @@ void shoot_control(void)
 				switch(shoot_speed_mode)
 					{
 					case 0:
-					SHOOT_L_speed=	shoot_speed_text_15m_s ;//退弹速度
+					SHOOT_L_speed=	6700 ;//30m/s
 					shoot_speed_mode=1;
 					break;
 					
 					case 1:
-					SHOOT_L_speed=	shoot_speed_text_18m_s;//30m/s
+					SHOOT_L_speed=	shoot_speed_text_18m_s;//退弹速度
 					shoot_speed_mode=2;		
 					break;
 					

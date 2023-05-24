@@ -44,7 +44,7 @@
 #include "oled.h"
 #include "bsp_adc.h"
 #include "stdio.h"
-//#include "WS2812.h"
+#include "WS2812.h"
 
 //#include "oledfont.h"
 /* USER CODE END Includes */
@@ -130,6 +130,9 @@ int CH2_TOTAL=0;
 int CH3_TOTAL=0;
 
 int JS_RC_TIMES=0;
+int JS_SHOOT_RC_TIMES_FOR_FPS=0;
+int JS_SHOOT_RC_TIMES_100MSms=0;
+
 bool run_JS_jiema;
 
 int STATUS_PART_ONE_TIMES=0;
@@ -278,6 +281,7 @@ int main(void)
   MX_ADC1_Init();
   MX_ADC3_Init();
   MX_TIM1_Init();
+  MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
 	  delay_init();
 		Buzzer_Init();
@@ -290,7 +294,8 @@ int main(void)
 #endif
   oled_init(); 
   HAL_Delay(500);
-//	ws2812_init(8);
+//	
+ws2812_init(8);
 
     oled_clear(Pen_Clear);
     oled_LOGO();

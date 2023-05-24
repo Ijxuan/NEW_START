@@ -10,6 +10,8 @@
 //·¢ËÍID
 #define DR16_Angle_SENDID 0x101
 
+#define rgb_send_id 0x131
+
 #define PLACE_SEND_ID 0x144
 #define ENCODER_ID 0x152
 
@@ -93,6 +95,20 @@ typedef struct
 	uint8_t last_Status;
 }IMU_CAL_t;
 extern IMU_CAL_t IMU_CAL;
+
+typedef union
+{
+	struct
+	{
+		int16_t RGB_CH0;
+		int16_t RGB_CH1;
+		int16_t RGB_CH2;
+		int16_t RGB_CH3;
+	};
+	uint8_t DR16_SEND[8];
+}RGB_Send_u;
+extern RGB_Send_u RGB_SEND;
+
 
 #if send_way == 0
 void DR16_Send_Fun(DR16_Send_u DR16_Send);

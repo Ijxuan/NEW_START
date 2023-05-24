@@ -1,6 +1,8 @@
 #include "WS2812.h"
 #include "tim.h"
 						
+#include "DJI_IMU.h"
+#include "DR16_RECIVE.h"
 
 #ifdef WS2812_new
 
@@ -82,14 +84,48 @@ void ws2812_init(uint8_t led_nums)
 	 HAL_TIM_PWM_Start_DMA(&htim8,TIM_CHANNEL_3,(uint32_t *)RGB_buffur,(num_data)); 
 }
 /*全亮蓝灯*/
+int rgb_r;
+int rgb_g;
+int rgb_b;
+
 void ws2812_blue(uint8_t led_nums)
 {
 	uint16_t num_data;
 	num_data = 80 + led_nums * 24;
-	for(uint8_t i = 0; i < led_nums; i++)
+//	for(uint8_t i = 0; i < led_nums; i++)
+//	{
+		ws2812_set_RGB(rgb_r, rgb_g, rgb_b, 4);
+	if(RGB_SEND.RGB_CH1>=90)//超电电量判断
 	{
-		ws2812_set_RGB(0x00, 0x00, 0x22, i);
+		ws2812_set_RGB(0, 255, 0, 5);//绿
 	}
+	else if(RGB_SEND.RGB_CH1>=70&&RGB_SEND.RGB_CH1<90)
+	{
+		ws2812_set_RGB(255, 255, 0, 5);	//黄
+	}
+	else if(RGB_SEND.RGB_CH1>50&&RGB_SEND.RGB_CH1<70)
+	{
+		ws2812_set_RGB(255, 0, 0, 5);	//红色的RGB值
+	}
+	else
+	{
+		ws2812_set_RGB(0,0,255,5);	//蓝色的RGB值	
+	}
+if(JS_SHOOT_RC_TIMES_100MSms==0)//发射数据离线
+{
+		ws2812_set_RGB(0,0,255,1);	//蓝色的RGB值	
+}	
+else{
+	if(ext_shoot_data.data.bullet_speed>30)
+	{
+		ws2812_set_RGB(255, 0, 0, 5);	//红色的RGB值
+	}
+	else
+	{
+		ws2812_set_RGB(0, 255, 0, 5);//绿
+	}
+}
+//	}//ws2812_blue
 	 HAL_TIM_PWM_Start_DMA(&htim8,TIM_CHANNEL_3,(uint32_t *)RGB_buffur,(num_data));
 }
 /*全亮红灯*/
@@ -132,4 +168,59 @@ void ws2812_example(void)
 
 
 #endif
+
+
+int now_speed_0_100;
+
+void get_rgb_value()
+{
+
+//# 定义颜色常量
+
+int black_r = 0, black_g = 0, black_b = 0; // 黑色的RGB值
+
+int green_r = 0, green_g = 255, green_b = 0; // 绿色的RGB值
+int yellow_r = 255, yellow_g = 255, yellow_b = 0; // 黄色的RGB值
+int red_r = 255, red_g = 0, red_b = 0; // 红色的RGB值
+int steps = 51; // 变换步数
+//int i;
+// 输出变换过程中的RGB值
+//for (i = 0; i <= steps; i++) {
+	if(now_speed_0_100<50)
+	{
+    rgb_r = (int)(black_r + (green_r - black_r) * ((float)now_speed_0_100 / steps));
+    rgb_g = (int)(black_g + (green_g - black_g) * ((float)now_speed_0_100 / steps));
+    rgb_b = (int)(black_b + (green_b - black_b) * ((float)now_speed_0_100 / steps));	
+	}
+	else if(now_speed_0_100>=50&&now_speed_0_100<=100)
+	{
+    rgb_r = (int)(green_r + (red_r - green_r) * ((float)(now_speed_0_100-50) / steps));
+    rgb_g = (int)(green_g + (red_g - green_g) * ((float)(now_speed_0_100-50) / steps));
+    rgb_b = (int)(green_b + (red_b - green_b) * ((float)(now_speed_0_100-50) / steps));	
+	}
+	rgb_r=rgb_r*now_speed_0_100/100.0;
+	rgb_g=rgb_g*now_speed_0_100/100.0;
+	rgb_b=rgb_b*now_speed_0_100/100.0;
+	if(rgb_r>255){rgb_r=255;}
+	if(rgb_g>255){rgb_g=255;}
+	if(rgb_b>255){rgb_b=255;}
+	if(rgb_r<0){rgb_r=0;}
+	if(rgb_g<0){rgb_g=0;}
+	if(rgb_b<0){rgb_b=0;}	
+//}
+}
+
+
+void ws2812_cell(void)
+{
+	uint16_t num_data;
+	num_data = 80 + 8 * 24;
+//	for(uint8_t i = 0; i < led_nums; i++)
+//	{
+		ws2812_set_RGB(rgb_r, rgb_g, rgb_b, 4);
+//	}//ws2812_blue
+	 HAL_TIM_PWM_Start_DMA(&htim8,TIM_CHANNEL_3,(uint32_t *)RGB_buffur,(num_data));
+}
+
+
 

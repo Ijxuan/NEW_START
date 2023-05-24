@@ -41,6 +41,8 @@ extern keyBoard_PRESS keyBoard_F; // D键的结构体
 
 extern keyBoard_PRESS keyBoard_Q; // Q键的结构体
 extern keyBoard_PRESS keyBoard_E; // E键的结构体
+extern keyBoard_PRESS keyBoard_B; // B键的结构体
+extern keyBoard_PRESS keyBoard_G; // G键的结构体
 
 extern keyBoard_PRESS keyBoard_shift; // Q键的结构体
 extern keyBoard_PRESS keyBoard_ctrl; // E键的结构体

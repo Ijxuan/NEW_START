@@ -56,7 +56,7 @@
 #include "MY_CLOUD_CONTROL.h"
 #include "CAN2_SEND.h"
 #include "keyBoard_to_vjoy.h"
-//#include "WS2812.h"
+#include "WS2812.h"
 
 //#include "usbd_cdc_if.h"
 
@@ -153,6 +153,11 @@ void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer, StackT
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
+	
+		  HAL_Delay(500);
+
+//		ws2812_red(8);
+	
 	I_PID_Parameter_Init(&Driver_I_PID, 4, 0.2, 5,
 						 9000,		  //积分分离
 						 9000, -9000, //最大误差
@@ -165,7 +170,7 @@ void MX_FREERTOS_Init(void) {
 						 //                           float alpha,
 						 2000, -2000,
 						 7000, -7000);
-
+#if 0 //15m/s的参数
 	I_PID_Parameter_Init(&SHOOT_L_I_PID, 23, 0.30, 13,
 						 8700, 7000, -7000,
 						 0.5,
@@ -180,7 +185,23 @@ void MX_FREERTOS_Init(void) {
 						 16000, -16000); //摩擦轮电机28 0.35 15 
 						 //23 0.5 19
 						 //22 0.35 19
+#endif
+#if 1 //30m/s的参数
+	I_PID_Parameter_Init(&SHOOT_L_I_PID, 28, 0.35, 15,
+						 8700, 7000, -7000,
+						 0.5,
+						 14000, -14000,
+						 16000, -16000); //摩擦轮电机 37 0.35 13
 
+	//
+	I_PID_Parameter_Init(&SHOOT_R_I_PID, 28,0.35, 15,
+						 8700, 7000, -7000,
+						 0.5,
+						 14000, -14000,
+						 16000, -16000); //摩擦轮电机28 0.35 15 
+						 //23 0.5 19
+						 //22 0.35 19
+#endif
 #if PID_MOTOR //是否开启电机的PID
 	P_PID_Parameter_Init(&Yaw_Speed_pid, 550, 10, 0,
 						 120, //误差大于这个值就积分分离
@@ -423,7 +444,6 @@ Vision_Control_Init();//卡尔曼参数初始化
 	osThreadDef(Task_Robot_Control, Robot_Control, RobotCtrl_Priority, 0, RobotCtrl_Size);
 	RobotCtrl_Handle = osThreadCreate(osThread(Task_Robot_Control), NULL);
 	PITCH_trage_angle = DJIC_IMU.total_pitch;
-
 	//
 
   /* USER CODE END RTOS_THREADS */
@@ -531,9 +551,12 @@ Get_FPS(&FPS_ALL.DEBUG.WorldTimes,&FPS_ALL.DEBUG.FPS);
 		ext_power_heat_data_rc_times_100ms=HEAT_complete_update_TIMES;
 		HEAT_complete_update_TIMES=0;
 		}
-		if(debug_times%500==0)
+		if(debug_times%100==0)
 		{
-//		ws2812_red(8);
+			now_speed_0_100=RGB_SEND.RGB_CH0;
+			ws2812_init(8);
+			get_rgb_value();
+			ws2812_blue(8);
 		}
 						if(debug_times%100==0)//上位机发送频率
 				{
@@ -543,11 +566,11 @@ if (DR16.rc.s_left == 2)//遥控器左下 弹仓盖测试
 }					
 if (DR16.rc.s_left == 3&&DR16.rc.s_right== 1 )//左中右上 操作手开关舵机
 {
-	if(keyBoard_Q.Press_static==Long_Press&&keyBoard_ctrl.Press_static==No_Press)//Q长按 ctrl不按 开弹仓
+	if(keyBoard_B.Press_static==Long_Press&&keyBoard_ctrl.Press_static==No_Press)//Q长按 ctrl不按 开弹仓
 	{
 				mag_static=1;//1是开弹仓   //开弹仓关激光	
 	}
-	if(keyBoard_Q.Press_static==Long_Press&&keyBoard_ctrl.Press_static==Long_Press)//Q长按 ctrl长按 关弹仓
+	if(keyBoard_B.Press_static==Long_Press&&keyBoard_ctrl.Press_static==Long_Press)//Q长按 ctrl长按 关弹仓
 	{
 				mag_static=2;//2是关弹仓   //关弹仓开激光	
 	}
@@ -618,7 +641,8 @@ if (DR16.rc.s_left == 3&&DR16.rc.s_right== 2 )//遥控器左下 弹仓盖测试
 				GM6020s[0].RC_TIMES=0;
 					PITCH_6020_RC_TIMES_100MS=GM6020s[3].RC_TIMES;
 					GM6020s[3].RC_TIMES=0;
-					
+				JS_SHOOT_RC_TIMES_100MSms=JS_SHOOT_RC_TIMES_FOR_FPS;
+JS_SHOOT_RC_TIMES_FOR_FPS=0;					
 				}
 				if(debug_times%1==0)//上位机发送频率
 						{
@@ -996,7 +1020,7 @@ HP_complete_update_TIMES++;
 				{
 				ext_shoot_data.data.dataBuff[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
 				}
-				JS_RC_TIMES++;
+				JS_RC_TIMES++;JS_SHOOT_RC_TIMES_FOR_FPS++;
 //run_JS_jiema=1;
 			}
 			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == JS_RC_HURT_ID)
@@ -1080,7 +1104,15 @@ STATUS_complete_update_TIMES++;
 				DDR16_PART_THREE_TIMES++;
 				run_DR16_jiema=1;
 			}
-			
+			if (CAN2_Rx_Structure.CAN_RxMessage.StdId == rgb_send_id)
+			{
+				//解包3
+				for(i=0;i<8;i++)
+				{
+				RGB_SEND.DR16_SEND[i]=CAN2_Rx_Structure.CAN_RxMessageData[i];
+				}
+			}
+			//rgb_send_id
 
 			
 		}

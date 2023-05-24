@@ -19,6 +19,8 @@ keyBoard_PRESS keyBoard_F; // D键的结构体
 
 keyBoard_PRESS keyBoard_Q; // Q键的结构体
 keyBoard_PRESS keyBoard_E; // E键的结构体
+keyBoard_PRESS keyBoard_B; // B键的结构体
+keyBoard_PRESS keyBoard_G; // G键的结构体
 
 keyBoard_PRESS keyBoard_shift; // shift键的结构体
 keyBoard_PRESS keyBoard_ctrl; // ctrl键的结构体
@@ -304,6 +306,60 @@ void keyBoard_QE()
 		keyBoard_E.Click_Press_wait_use += 1; // 单击次数，单击增加一，使用减少一
 	}
 		keyBoard_E.Press_static_last_time=	keyBoard_E.Press_static;
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	if (DR16.keyBoard.press_B == 1)
+	{
+		keyBoard_B.Press_TIMES++; // 按键按下的时间
+	}
+	else
+	{
+		keyBoard_B.Press_TIMES = 0;
+		keyBoard_B.Press_static = No_Press; // 松开
+	}
+	if (keyBoard_B.Press_TIMES > TIME_KeyMouse_Press)
+	{
+		keyBoard_B.Press_static = Click_Press; // 单击
+
+		if (keyBoard_B.Press_TIMES > TIME_KeyMouse_LongPress)
+		{
+			keyBoard_B.Press_static = Long_Press; // 长按
+		}
+	}
+
+	if (keyBoard_B.Press_static_last_time == Click_Press &&
+		keyBoard_B.Press_static == No_Press)//上一刻还是单击，这一刻松开，算一次点击，但是长按不算
+	{
+		keyBoard_B.Click_Press_wait_use += 1; // 单击次数，单击增加一，使用减少一
+	}
+		keyBoard_B.Press_static_last_time=	keyBoard_B.Press_static;
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	if (DR16.keyBoard.press_G == 1)
+	{
+		keyBoard_G.Press_TIMES++; // 按键按下的时间
+	}
+	else
+	{
+		keyBoard_G.Press_TIMES = 0;
+		keyBoard_G.Press_static = No_Press; // 松开
+	}
+	if (keyBoard_G.Press_TIMES > TIME_KeyMouse_Press)
+	{
+		keyBoard_G.Press_static = Click_Press; // 单击
+
+		if (keyBoard_G.Press_TIMES > TIME_KeyMouse_LongPress)
+		{
+			keyBoard_G.Press_static = Long_Press; // 长按
+		}
+	}
+
+	if (keyBoard_G.Press_static_last_time == Click_Press &&
+		keyBoard_G.Press_static == No_Press)//上一刻还是单击，这一刻松开，算一次点击，但是长按不算
+	{
+		keyBoard_G.Click_Press_wait_use += 1; // 单击次数，单击增加一，使用减少一
+	}
+		keyBoard_G.Press_static_last_time=	keyBoard_G.Press_static;	
 }
 
 void keyBoard_shift_ctrl()

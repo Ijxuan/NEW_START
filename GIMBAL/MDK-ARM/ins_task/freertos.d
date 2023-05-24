@@ -106,3 +106,4 @@ ins_task\freertos.o: ..\Arithmetic\User_math.h
 ins_task\freertos.o: ..\Arithmetic\User_typedef.h
 ins_task\freertos.o: ..\ADD\CAN2_SEND.h
 ins_task\freertos.o: ..\ADD\keyBoard_to_vjoy.h
+ins_task\freertos.o: ..\ADD\WS2812.h

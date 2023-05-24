@@ -166,6 +166,9 @@ extern int CH2_TOTAL;
 extern int CH3_TOTAL;
 
 extern int JS_RC_TIMES;
+extern int JS_SHOOT_RC_TIMES_FOR_FPS;
+extern int JS_SHOOT_RC_TIMES_100MSms;
+
 extern bool run_JS_jiema;
 
 extern int STATUS_PART_ONE_TIMES;

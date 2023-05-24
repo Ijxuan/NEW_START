@@ -9,6 +9,7 @@ Euler_Send_u Euler_Send;
 Gyro_Send_u Gyro_Send;
 //接收变量
 IMU_CAL_t IMU_CAL;
+RGB_Send_u RGB_SEND;
 
 #if send_way == 0
 /*第一种发送方式：联合体*/

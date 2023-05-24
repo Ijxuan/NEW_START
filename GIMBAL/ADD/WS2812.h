@@ -35,3 +35,12 @@ extern void ws2812_green(uint8_t led_nums);
 
 
 #endif
+
+
+void get_rgb_value(void);
+void ws2812_cell(void);
+
+extern int now_speed_0_100;
+extern int rgb_r;
+extern int rgb_g;
+extern int rgb_b;
