@@ -17,6 +17,7 @@
 #include "bmi088driver.h"
 #include "spinning_top_examine.h"
 #include "Vision_Control.h"
+#include "keyBoard_to_vjoy.h"
 
 //#include "GM6020_Motor.h"
 //#include "control.h"
@@ -259,7 +260,7 @@ void NM_swj(void)
 			send_d_32[p++]= DJIC_IMU.total_yaw*100;//×óÄ¦²ÁÂÖ 4		4PID_YES
 
 			send_d_32[p++]=yaw_trage_angle_new*100;//P_OUT		5
-			send_d_32[p++]=yaw_trage_angle_new_2*100;//I_OUT		6
+			send_d_32[p++]=keyBoard_G.Press_TIMES;//I_OUT		6
 			send_d_32[p++]=DJIC_IMU.total_yaw*100;//D_OUT  	7
 	p=0;
 			send_d_16[p++]=ext_power_heat_data.data.shooter_id1_17mm_cooling_heat;//ÈÈÁ¿      8

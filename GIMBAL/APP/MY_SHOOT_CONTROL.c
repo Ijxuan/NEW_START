@@ -140,13 +140,19 @@ void shoot_control(void)
 					if (M3508s[1].totalAngle > (M2006_targe_angle * 0.8 - if_Driver_arrive_angle))
 			Driver_arrive = 1;
 					
-			if(keyBoard_G.Press_static!=No_Press)
+			if(keyBoard_G.Press_static==Long_Press)//长按7000 30m/s
 			{
-			SHOOT_L_speed=6700;
+			SHOOT_L_speed=7000;MAX_SPEE_SHOOT=30;MAX_HOT_SHOOT=75;
+							HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
+			}
+			if(keyBoard_G.Press_static==Click_Press)//短按4200  15m/s
+			{
+			SHOOT_L_speed=4200;MAX_SPEE_SHOOT=15;MAX_HOT_SHOOT=50;
+							HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
 			}
 			if(keyBoard_G.Press_static!=No_Press&&keyBoard_ctrl.Press_static!=No_Press)
 			{
-			SHOOT_L_speed=0;
+			SHOOT_L_speed=0;			HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_RESET);
 			}	
 			#if 1	/*用于操作手模式下,鼠标手动控制开火时机,准备加入热量限制*/
 
@@ -176,7 +182,7 @@ void shoot_control(void)
 						{
 						stop_shoot_times++;
 						}
-						if(stop_shoot_times==2000)//一秒没开火了
+						if(stop_shoot_times==700)//一秒没开火了
 						{
 				M2006_targe_angle = M3508s[1].totalAngle; //拨盘误差消除
 						}
@@ -221,12 +227,12 @@ void shoot_control(void)
 				switch(shoot_speed_mode)
 					{
 					case 0:
-					SHOOT_L_speed=	6700 ;//30m/s
+					SHOOT_L_speed=	7000 ;//30m/s
 					shoot_speed_mode=1;
 					break;
 					
 					case 1:
-					SHOOT_L_speed=	shoot_speed_text_18m_s;//退弹速度
+					SHOOT_L_speed=	4200;//退弹速度
 					shoot_speed_mode=2;		
 					break;
 					

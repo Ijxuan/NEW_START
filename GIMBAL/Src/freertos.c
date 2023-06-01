@@ -170,7 +170,7 @@ void MX_FREERTOS_Init(void) {
 						 //                           float alpha,
 						 2000, -2000,
 						 7000, -7000);
-#if 0 //15m/s的参数
+#if 1 //15m/s的参数
 	I_PID_Parameter_Init(&SHOOT_L_I_PID, 23, 0.30, 13,
 						 8700, 7000, -7000,
 						 0.5,
@@ -186,7 +186,7 @@ void MX_FREERTOS_Init(void) {
 						 //23 0.5 19
 						 //22 0.35 19
 #endif
-#if 1 //30m/s的参数
+#if 0 //30m/s的参数
 	I_PID_Parameter_Init(&SHOOT_L_I_PID, 28, 0.35, 15,
 						 8700, 7000, -7000,
 						 0.5,
@@ -644,7 +644,7 @@ if (DR16.rc.s_left == 3&&DR16.rc.s_right== 2 )//遥控器左下 弹仓盖测试
 				JS_SHOOT_RC_TIMES_100MSms=JS_SHOOT_RC_TIMES_FOR_FPS;
 JS_SHOOT_RC_TIMES_FOR_FPS=0;					
 				}
-				if(debug_times%1==0)//上位机发送频率
+				if(debug_times%3==0)//上位机发送频率
 						{
 							NM_swj();
 

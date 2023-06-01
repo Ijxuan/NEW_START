@@ -344,11 +344,11 @@ void keyBoard_QE()
 		keyBoard_G.Press_TIMES = 0;
 		keyBoard_G.Press_static = No_Press; // 松开
 	}
-	if (keyBoard_G.Press_TIMES > TIME_KeyMouse_Press)
+	if (keyBoard_G.Press_TIMES > 1)//特殊判断
 	{
 		keyBoard_G.Press_static = Click_Press; // 单击
 
-		if (keyBoard_G.Press_TIMES > TIME_KeyMouse_LongPress)
+		if (keyBoard_G.Press_TIMES > 20)
 		{
 			keyBoard_G.Press_static = Long_Press; // 长按
 		}

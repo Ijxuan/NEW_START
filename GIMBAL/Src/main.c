@@ -207,6 +207,7 @@ float my_voltage;
 
 int stay_in_track_end_times=0;
 int text_times=0;
+
 bool send_to_vision_1=0;
 
 int hurt_times_ago=100000;
@@ -235,6 +236,8 @@ uint16_t mag_on =  3500;
 uint16_t mag_text = 3000;
 uint16_t mag_off = 2400;
 
+int MAX_HOT_SHOOT=50;
+int MAX_SPEE_SHOOT=15;
 /* USER CODE END 0 */
 
 /**

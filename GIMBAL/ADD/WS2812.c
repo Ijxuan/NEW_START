@@ -111,20 +111,44 @@ void ws2812_blue(uint8_t led_nums)
 	{
 		ws2812_set_RGB(0,0,255,5);	//蓝色的RGB值	
 	}
-if(JS_SHOOT_RC_TIMES_100MSms==0)//发射数据离线
+if(ext_shoot_data.data.bullet_speed==0)//发射数据离线
 {
 		ws2812_set_RGB(0,0,255,1);	//蓝色的RGB值	
 }	
 else{
-	if(ext_shoot_data.data.bullet_speed>30)
+	if(ext_shoot_data.data.bullet_speed>=MAX_SPEE_SHOOT)
 	{
-		ws2812_set_RGB(255, 0, 0, 5);	//红色的RGB值
+		ws2812_set_RGB(255, 0, 0, 1);	//红色的RGB值	
+	}
+	if(ext_shoot_data.data.bullet_speed>(MAX_SPEE_SHOOT-1))
+	{
+		ws2812_set_RGB(255, 255, 0, 1);	//黄
 	}
 	else
 	{
-		ws2812_set_RGB(0, 255, 0, 5);//绿
+		ws2812_set_RGB(0, 255, 0, 1);//绿
 	}
 }
+if(ext_power_heat_data_rc_times_100ms==0)//热量指示灯
+{
+		ws2812_set_RGB(0,0,255,2);	//蓝色的RGB值	
+}
+else
+{
+if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<(MAX_HOT_SHOOT/3.0))
+{
+		ws2812_set_RGB(0, 255, 0, 2);//绿
+}
+else if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<(MAX_HOT_SHOOT/3.0*2))
+{
+		ws2812_set_RGB(255, 255, 0, 2);	//黄
+}
+else
+{
+		ws2812_set_RGB(255, 0, 0, 2);	//红色的RGB值	
+}
+}
+
 //	}//ws2812_blue
 	 HAL_TIM_PWM_Start_DMA(&htim8,TIM_CHANNEL_3,(uint32_t *)RGB_buffur,(num_data));
 }
