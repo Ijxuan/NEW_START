@@ -32,6 +32,8 @@ typedef struct
 
   //不完全微分
   float alpha;         //不完全微分系数
+  float P_Output;      //微分输出
+  float I_Output;      //微分输出
   float D_Output;      //微分输出
   float D_Last_Output; //上一刻的微分输出
 

@@ -440,8 +440,8 @@ void mouse_Left_Right()
 		}
 	}
 
-	if (mouse_Left.Press_static_last_time == Click_Press &&
-		mouse_Left.Press_static == No_Press)//上一刻还是单击，这一刻松开，算一次点击，但是长按不算
+	if (mouse_Left.Press_static_last_time == No_Press &&
+		mouse_Left.Press_static == Click_Press)//上一刻还是松开，这一刻单击，算一次点击，但是长按不算
 	{
 		mouse_Left.Click_Press_wait_use += 1; // 单击次数，单击增加一，使用减少一
 	}
@@ -460,7 +460,7 @@ void mouse_Left_Right()
 	{
 		mouse_Right.Press_static = Click_Press; // 单击
 
-		if (mouse_Right.Press_TIMES > TIME_KeyMouse_LongPress)
+		if (mouse_Right.Press_TIMES > 100)
 		{
 			mouse_Right.Press_static = Long_Press; // 长按
 		}

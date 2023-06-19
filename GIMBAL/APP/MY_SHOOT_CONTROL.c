@@ -40,6 +40,7 @@ int auto_shoot_condition_show; //自动射击条件展现
 bool heat_in_renew = 0;
 int shoot_speed_mode=0;
 int stop_shoot_times=0;
+int aoto_shoot_flag=0;//自动开火标志位
 void shoot_control(void)
 {
 	if (in_END == 0 && in_MID == 1)
@@ -137,24 +138,27 @@ void shoot_control(void)
 	{
 		if (DR16.rc.s_right == 1)
 		{
-					if (M3508s[1].totalAngle > (M2006_targe_angle * 0.8 - if_Driver_arrive_angle))
-			Driver_arrive = 1;
-					
-			if(keyBoard_G.Press_static==Long_Press)//长按7000 30m/s
-			{
-			SHOOT_L_speed=7000;MAX_SPEE_SHOOT=30;MAX_HOT_SHOOT=75;
-							HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
-			}
-			if(keyBoard_G.Press_static==Click_Press)//短按4200  15m/s
-			{
-			SHOOT_L_speed=4200;MAX_SPEE_SHOOT=15;MAX_HOT_SHOOT=50;
-							HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
-			}
-			if(keyBoard_G.Press_static!=No_Press&&keyBoard_ctrl.Press_static!=No_Press)
-			{
-			SHOOT_L_speed=0;			HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_RESET);
-			}	
-			#if 1	/*用于操作手模式下,鼠标手动控制开火时机,准备加入热量限制*/
+
+						SHOOT_L_speed=7000;MAX_SPEE_SHOOT=30;MAX_HOT_SHOOT=75;
+//						HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
+#if 0/*键盘按键控制射速和红外*/		
+
+if(keyBoard_G.Press_static==Long_Press)//长按7000 30m/s
+{
+SHOOT_L_speed=7000;MAX_SPEE_SHOOT=30;MAX_HOT_SHOOT=75;
+				HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
+}
+if(keyBoard_G.Press_static==Click_Press)//短按4200  15m/s
+{
+SHOOT_L_speed=4200;MAX_SPEE_SHOOT=15;MAX_HOT_SHOOT=50;
+				HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
+}
+if(keyBoard_G.Press_static!=No_Press&&keyBoard_ctrl.Press_static!=No_Press)
+{
+SHOOT_L_speed=0;			HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_RESET);
+}						
+#endif		
+			#if 0	/*用于操作手模式下,鼠标手动控制开火时机,准备加入热量限制*/
 
 //		if (M3508s[1].totalAngle > (M2006_targe_angle * 0.8 - if_Driver_arrive_angle))
 //			Driver_arrive = 1;
@@ -188,16 +192,79 @@ void shoot_control(void)
 						}
 
 #endif
-						
+#if 0/*遥控器控制射速和开火*/
+			//
+			if (DR16.rc.ch4_DW == 0) //松手
+			{
+				DW_FREE++;
+				DW_UP = 0;
+				DW_DOWN = 0;
+				M2006_targe_angle = M3508s[1].totalAngle; //拨盘误差消除
+			}
+			if (DR16.rc.ch4_DW >= 200) //拨下
+			{
+				DW_DOWN++;
+				if (DW_DOWN == 20)
+					M2006_targe_angle += Driver_add * 1; // 8*3=24
+
+				//			M2006_targe_angle+=(Driver_add/4);//8*3=24
+				if (DW_DOWN % 250 == 0 && DW_DOWN > 500)  //连续开火射频 %250是一秒4发  %200是一秒5发 %100是一秒10发
+					M2006_targe_angle += Driver_add * 1; // 8*3=24
+			}
+
+			if (DR16.rc.ch4_DW <= -100) //拨上
+			{
+				DW_UP++; //没用到了
+
+				if (DW_UP == 200)
+//					M2006_targe_angle += (Driver_add / 10); // 8*3=24
+				{
+				switch(shoot_speed_mode)
+					{
+					case 0:
+					SHOOT_L_speed=	7000 ;//30m/s
+					shoot_speed_mode=1;
+					break;
+					
+					case 1:
+					SHOOT_L_speed=	4200;//退弹速度
+					shoot_speed_mode=2;		
+					break;
+					
+					case 2:
+					SHOOT_L_speed=	0 ;//停转
+					shoot_speed_mode=0;
+					break;
+					}
+				}
+			}
+#endif
+			#if 1	/*用于自瞄模式下,自动控制开火时机,准备加入热量限制*/
+//			if(aoto_shoot_flag%2==0&&aoto_shoot_flag>=2)
+			if(aoto_shoot_flag>0)
+			{
+			if (M3508s[1].totalAngle > (M2006_targe_angle  - Driver_add* 0.1))
+			Driver_arrive = 1;//发射正转是增大
+
+				if(Driver_arrive==1)
+				{
+			M2006_targe_angle += Driver_add * 1; // 8*3=24	
+											Driver_arrive=0;
+
+				}
+			aoto_shoot_flag=0;				
+			}
+			if(stop_shoot_times_new==3)
+			{
+			M2006_targe_angle = M3508s[1].totalAngle; //拨盘误差消除 			
+			}
+			SHOOT_from_v_last = aoto_shoot_flag;
+
+#endif						
 		}
 		if ( DR16.rc.s_right == 3)
 		{
-			
-
-			
-
-						
-						
+	/*左中右中 遥控器测发射	*/			
 			//
 			if (DR16.rc.ch4_DW == 0) //松手
 			{
@@ -243,13 +310,14 @@ void shoot_control(void)
 					}
 				}
 			}
+			//注释末尾	
 		}
 	}
 
 	if (DR16.rc.s_left == 1) //遥控器控制  左中或左上
 	{
-		if (M3508s[1].totalAngle > (M2006_targe_angle * 0.8 - if_Driver_arrive_angle))
-			Driver_arrive = 1;
+//		if (M3508s[1].totalAngle > (M2006_targe_angle * 0.8 - if_Driver_arrive_angle))
+//			Driver_arrive = 1;
 
 		//									if(DR16.rc.ch4_DW<=-100)//拨上
 		//			{

@@ -238,6 +238,12 @@ uint16_t mag_off = 2400;
 
 int MAX_HOT_SHOOT=50;
 int MAX_SPEE_SHOOT=15;
+
+int stop_shoot_times_new=0;
+
+int mouse_x_attenuation=1;
+int mouse_y_attenuation=1;
+
 /* USER CODE END 0 */
 
 /**

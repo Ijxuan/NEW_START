@@ -274,6 +274,9 @@ extern uint16_t mag_off ;
 extern int ext_power_heat_data_rc_times_100ms;
 extern int MAX_HOT_SHOOT;
 extern int MAX_SPEE_SHOOT;
+extern int stop_shoot_times_new;
+extern int mouse_x_attenuation;
+extern int mouse_y_attenuation;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

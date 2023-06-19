@@ -54,4 +54,6 @@ void keyBoard_WASD(void);
 void keyBoard_RF(void);
 void keyBoard_QE(void);
 void keyBoard_shift_ctrl(void);
+void mouse_Left_Right(void);
+
 #endif

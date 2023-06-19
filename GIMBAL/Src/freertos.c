@@ -159,7 +159,7 @@ void MX_FREERTOS_Init(void) {
 //		ws2812_red(8);
 	
 	I_PID_Parameter_Init(&Driver_I_PID, 4, 0.2, 5,
-						 9000,		  //积分分离
+						 20000,		  //积分分离
 						 9000, -9000, //最大误差
 						 0.5,
 						 9000, -9000,
@@ -170,8 +170,24 @@ void MX_FREERTOS_Init(void) {
 						 //                           float alpha,
 						 2000, -2000,
 						 7000, -7000);
-#if 1 //15m/s的参数
+#if 0 //15m/s的参数
 	I_PID_Parameter_Init(&SHOOT_L_I_PID, 23, 0.30, 13,
+						 8700, 7000, -7000,
+						 0.5,
+						 14000, -14000,
+						 16000, -16000); //摩擦轮电机 37 0.35 13
+
+	//
+	I_PID_Parameter_Init(&SHOOT_R_I_PID, 20, 0.3, 28,
+						 20000, 20000, -20000,
+						 0.5,
+						 14000, -14000,
+						 16000, -16000); //摩擦轮电机28 0.35 15 
+						 //23 0.5 19
+						 //22 0.35 19
+#endif
+#if 1 //15m/s的参数
+	I_PID_Parameter_Init(&SHOOT_L_I_PID, 20, 0.30, 28,
 						 8700, 7000, -7000,
 						 0.5,
 						 14000, -14000,
@@ -460,7 +476,7 @@ Vision_Control_Init();//卡尔曼参数初始化
 __weak void test_task(void const * argument)
 {
   /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
+//  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN test_task */
 	/* Infinite loop */
 	for (;;)
@@ -556,7 +572,7 @@ Get_FPS(&FPS_ALL.DEBUG.WorldTimes,&FPS_ALL.DEBUG.FPS);
 			now_speed_0_100=RGB_SEND.RGB_CH0;
 			ws2812_init(8);
 			get_rgb_value();
-			ws2812_blue(8);
+//			ws2812_blue(8);
 		}
 						if(debug_times%100==0)//上位机发送频率
 				{
@@ -817,8 +833,13 @@ void IMU_Send(void const * argument)
 		
 	CAN_2_SEND_YAW_6020();//yaw轴6020转发函数
 
-Update_Vision_SendData();
 		VISION_Disconnect_test++;
+		if(VISION_Disconnect_test%5==0)
+		{
+			
+Update_Vision_SendData();
+		
+		}
 		if(VISION_Disconnect_test==1000)//一秒检测一次
 		{
 			if(VisionData.Offline_Detec>10)//一秒接受10次不过分吧

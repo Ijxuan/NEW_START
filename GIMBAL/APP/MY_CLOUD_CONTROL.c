@@ -3,6 +3,7 @@
 #include "Vision_Control.h"
 #include "spinning_top_examine.h"
 #include "DR16_RECIVE.h"
+#include "keyBoard_to_vjoy.h"
 
 cloud_control_mode cloud_mode;
 float YAW_TRAGET_ANGLE_TEMP;
@@ -104,7 +105,7 @@ if(ext_game_robot_state.data.robot_id== 107)//自己蓝色
 
 
 cloud_control_mode_choose();
- scan_cloud();
+// scan_cloud();
 // if(DR16.rc.s_left!=3)
 //{
 //simulation_target_yaw=	DJIC_IMU.total_yaw;
@@ -428,7 +429,10 @@ if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 {
 	if(DR16.rc.s_right==1)//左中右上
 	{
-/*      鼠标    */
+/*      鼠标  	
+if(mouse_Right.Press_static!=Long_Press) //右键没有长按
+{	
+YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;//没有自瞄时更新自瞄目标值为当前值		
 		if (abs(DR16.mouse.x) >= 1)
 		{
 			DR16_mouse_xnot0++;
@@ -437,8 +441,19 @@ if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 			#endif
 //			yaw_trage_angle_new_motor=GM6020s[0].totalAngle-(DR16.mouse.x/40.0);//遥控器控制的是目标电机角度
 
+		}	
+}
+else//右键长按
+		{
+				yaw_trage_angle_new=YAW_TRAGET_ANGLE_TEMP;
 		}		
-		
+	*/
+		/*视觉自瞄测试*/
+		yaw_trage_angle_new=YAW_TRAGET_ANGLE_TEMP;
+	}
+	else
+	{
+									YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;
 	}
 	if(DR16.rc.s_right==3)//左中右中
 	{
@@ -580,12 +595,28 @@ void PITCH_PID()
 							{
 							if(DR16.rc.s_right==1)//PITCH轴控制挡位
 							{
+								/*鼠标
+if(mouse_Right.Press_static!=Long_Press) //右键没有长按
+{	PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle;//没有自瞄时更新自瞄目标值为当前值	
 		if (abs(DR16.mouse.y) >= 1)
 		{
 			#if gimbal_locked_up == 0
 			PITCH_trage_angle_motor = PITCH_trage_angle_motor + DR16.mouse.y / 15.0;
 			#endif
-		}								
+		}
+}
+else//右键长按
+{
+							PITCH_trage_angle_motor=PITCH_TRAGET_ANGLE_TEMP_EM;	
+}
+		*/						
+/*测试自瞄	*/							
+							PITCH_trage_angle_motor=PITCH_TRAGET_ANGLE_TEMP_EM;
+								
+							}
+							else
+							{		PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle;
+
 							}
 							if(DR16.rc.s_right==3||DR16.rc.s_right==2)//PITCH轴控制挡位
 							{

@@ -24,6 +24,7 @@ extern int if_Driver_arrive_angle;
 extern long M2006_targe_angle;
 extern bool weather_error_less_than_1;
 extern int auto_shoot_condition_show;//�Զ��������չ��
+extern int aoto_shoot_flag;
 
 #endif
 

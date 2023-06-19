@@ -127,10 +127,10 @@ typedef struct
 				uint8_t Armour; //是否识别到装甲板   1
 				uint8_t Beat; //是否攻击（排除工程2号）  2
 
-		float Yaw_Angle;				//Yaw轴的角度   3 4 5 6
 
 
 		float Pitch_Angle;				//Pitch轴的角度 7 8 9 10
+		float Yaw_Angle;				//Yaw轴的角度   3 4 5 6
 				
 
 //        uint16_t  Depth;                             //   12 13
@@ -177,11 +177,34 @@ typedef struct
 	uint8_t Gyro_y_low;	  //陀螺仪加速度小数点后两位低八位
 
 } VisionSend_Cloud_t;
+#define vision_Sendsize 28
 //#pragma pack()
+typedef struct
+{
+	union
+	{
+		__packed struct
+		{
+			// 0x5A
+			uint8_t ID;// 1 
+			float Gimbal_roll;//rol1轴当用 2 3 4 5
+			float Gimbal_Pitch;//6 7 8 9 
+			float Gimbal_Yaw;//10 11 12 13 
+			float Aim_x;//14 15 16 17 
+			float Aim_y;//18 19 20 21 
+			float Aim_z;//22 23 24 25  
+//			uint16_t CRC16;  //  26 27
+		};
+		uint8_t Chassis_Position[vision_Sendsize-3];
+	}Robot_Info;
+}vision_Send_t;//新哨兵发送
 
 
 extern VisionData_t VisionData;
-extern VisionSend_Cloud_t Vision_Cloud;
+extern VisionSend_Cloud_t Vision_Cloud;//旧哨兵发送
+extern vision_Send_t Vision_Cloud_send;//新哨兵发送
+
+
 extern int mode_v;
 
 void Vision_DataReceive(uint8_t *data);

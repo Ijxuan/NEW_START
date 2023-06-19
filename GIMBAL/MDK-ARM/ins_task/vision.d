@@ -82,3 +82,4 @@ ins_task\vision.o: ../Drivers/CMSIS/Include/core_cm4.h
 ins_task\vision.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 ins_task\vision.o: ..\Arithmetic\User_math.h
 ins_task\vision.o: ..\Arithmetic\User_typedef.h
+ins_task\vision.o: ..\APP\MY_SHOOT_CONTROL.h

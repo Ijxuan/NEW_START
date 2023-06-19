@@ -247,8 +247,27 @@ void NM_swj(void)
 	testdatatosend[_cnt++]=34;
 	if(1)
 	{
-		
-		#if 1//发送摩擦轮3508数据  左
+		#if 1//鼠标数据
+	p=0;
+
+
+			send_d_32[p++]=DR16.mouse.x;//目标角度		1
+			send_d_32[p++]=DR16.mouse.y;//左		2
+
+			send_d_32[p++]=DR16.mouse.x/200.0;//右	3 
+
+			send_d_32[p++]=DR16.mouse.y/15.0;//左摩擦轮 4		4PID_YES
+
+			send_d_32[p++]=DR16.mouse.x/mouse_x_attenuation;//P_OUT		5
+			send_d_32[p++]=DR16.mouse.y/mouse_y_attenuation;//I_OUT		6
+			send_d_32[p++]=0;//D_OUT  	7
+	p=0;
+			send_d_16[p++]=ext_power_heat_data.data.shooter_id1_17mm_cooling_heat;//热量      8
+			send_d_16[p++]=ext_shoot_data.data.bullet_speed;//射速       	9
+			send_d_16[p++]=send_to_SHOOT_R;//当前角度		10
+
+#endif		
+		#if 0//发送摩擦轮3508数据  左
 	p=0;
 
 
@@ -749,15 +768,15 @@ p=0;
 #if 0//发送拨盘数据
 	p=0;
 			send_d_32[p++]=Driver_I_PID.Target;//目标速度		1
-			send_d_32[p++]=M3508s[1].realSpeed;//当前速度		2
+			send_d_32[p++]=Driver_I_PID.Measure;//当前速度		2
 
-			send_d_32[p++]=M3508s[1].totalAngle;//轨道右边界值		3 
+			send_d_32[p++]=Driver_I_PID.P_Output;//轨道右边界值		3 
 
-			send_d_32[p++]=M3508s[1].realAngle;//当前速度 4		4PID_YES
+			send_d_32[p++]=Driver_I_PID.I_Output;//当前速度 4		4PID_YES
 
-			send_d_32[p++]=0;//P_OUT		5
-			send_d_32[p++]=0;//I_OUT		6
-			send_d_32[p++]=0;//D_OUT  	7
+			send_d_32[p++]=Driver_I_PID.D_Output;//P_OUT		5
+			send_d_32[p++]=Driver_I_PID.Increment_Output;//I_OUT		6
+			send_d_32[p++]=send_to_2006;//D_OUT  	7
 	p=0;
 			send_d_16[p++]=Driver_I_PID.Proportion;//输出电压      8
 
@@ -908,21 +927,21 @@ if(1)
 #if 0//视觉联调时要看的
 
 	p=0;
-			send_d_32[p++]=PITCH_trage_angle_motor;//PITCH 目标角度		1
+			send_d_32[p++]=PITCH_TRAGET_ANGLE_TEMP_EM;//PITCH 目标角度		1
 			send_d_32[p++]=GM6020s[3].totalAngle;//PITCH   当前角度		2
 
-			send_d_32[p++]=VISION_Yaw_IMU_Angle_pid.Error*10000;//YAW 角度误差		333333333333 
+			send_d_32[p++]=YAW_TRAGET_ANGLE_TEMP*100;//YAW 角度误差		333333333333 
 
-			send_d_32[p++]= VISION_Yaw_IMU_Speed_pid.Target*100;//YAW 速度目标 4		4PID_YES
+			send_d_32[p++]= DJIC_IMU.total_yaw*100;//YAW 速度目标 4		4PID_YES
 
-			send_d_32[p++]=VISION_Yaw_IMU_Speed_pid.Error*100;//YAW 速度误差           P_OUT		5
-			send_d_32[p++]=Yaw_IMU_Angle_pid.Error*10000;//I_OUT	666666666666
-			send_d_32[p++]=Vision_RawData_Pitch_Angle*10000;//D_OUT  	7 角度换的输出值,看有木有更大
+			send_d_32[p++]=Vision_RawData_Yaw_Angle*100;//YAW 速度误差           P_OUT		5
+			send_d_32[p++]=M3508s[1].totalAngle;//I_OUT	666666666666
+			send_d_32[p++]=M2006_targe_angle;//D_OUT  	7 角度换的输出值,看有木有更大
 	p=0;
 			send_d_16[p++]=VisionData.RawData.Beat*10+VisionData.RawData.Armour;//自瞄,自动开火      8
 
-			send_d_16[p++]=PITCH_TRAGET_ANGLE_TEMP_EM;///*热量 角度误差允许 视觉发射指令是连续 不在轨道末端 所有条件全部满足*/       	9
-			send_d_16[p++]=cloud_mode.control_mode_NOW*111111;//输出电压		10
+			send_d_16[p++]=aoto_shoot_flag;///*热量 角度误差允许 视觉发射指令是连续 不在轨道末端 所有条件全部满足*/       	9
+			send_d_16[p++]=Driver_arrive*11111;//输出电压		10
 														//保留到小数点后四位558 320 660   bjTlta
 
 #endif

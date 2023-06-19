@@ -100,7 +100,9 @@ float I_PID_Regulation(I_PID_t *I_PID, float target, float measure)
     I_PID->Proportion = I_PID->Error - I_PID->LastError;                         //比例项
     I_PID->Differential = I_PID->Error - 2 * I_PID->LastError + I_PID->PreError; //微分项
 
-    I_PID->D_Output = I_PID->Kd * (1 - I_PID->alpha) * I_PID->Differential + I_PID->alpha * I_PID->D_Last_Output;
+    I_PID->P_Output = I_PID->Kp * I_PID->Proportion;
+    I_PID->I_Output = I_PID->Ki * I_PID->Integral;
+    I_PID->D_Output = I_PID->Kd * I_PID->Differential;
 
     beta = I_PID_BetaGeneration(I_PID->Error, I_PID->Epsilon);
 
