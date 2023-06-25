@@ -167,7 +167,7 @@ YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;
 	//视觉离线检测位
 	VisionData.Offline_Detec++;
 	#endif
-		#if 0
+		#if 1
 			//进行CRC校验
 	uint8_t CRCBuffer = Checksum_CRC8(data+1, 15 - 5);
 text_times++;
@@ -177,9 +177,9 @@ text_times++;
 		VisionData.RawData.VisionRawData[i] = data[i];
 	}
 		//				//Yaw轴：单位 角度° 转成 机械角度(码盘值)
-			Vision_RawData_Yaw_Angle =-1.0f* (float)VisionData.RawData.Yaw_Angle ;
+			Vision_RawData_Yaw_Angle = (float)VisionData.RawData.Yaw_Angle ;
 //			//Pitch轴：
-			Vision_RawData_Pitch_Angle = (float)VisionData.RawData.Pitch_Angle ;
+			Vision_RawData_Pitch_Angle = -1.0f*(float)VisionData.RawData.Pitch_Angle ;
 	#if SHOOT_HIGH_HEAT_TEXT
 VisionData.RawData.Armour=1;
 //VisionData.RawData.Beat=1;
@@ -191,8 +191,8 @@ VisionData.RawData.Armour=1;
 	#if USE_MOTOR_angle==1
 
 //	if(DR16.rc.s_left==1)
-PITCH_TRAGET_ANGLE_TEMP=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191;
-PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191.0;
+//PITCH_TRAGET_ANGLE_TEMP=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191;
+//PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191.0;
 
 #endif
 	#if USE_MOTOR_angle==0
@@ -201,26 +201,26 @@ PITCH_TRAGET_ANGLE_TEMP=DJIC_IMU.total_pitch-Vision_RawData_Pitch_Angle;
 
 #endif
 
-if(Vision_RawData_Yaw_Angle>1.0)
-YAW_BC_now=YAW_BC_VALUE;
-if(Vision_RawData_Yaw_Angle<0.3&&Vision_RawData_Yaw_Angle>-0.3)
-{
-YAW_BC_now=0;
-}
-if(Vision_RawData_Yaw_Angle<-1.0)
-YAW_BC_now=-YAW_BC_VALUE;
+//if(Vision_RawData_Yaw_Angle>1.0)
+//YAW_BC_now=YAW_BC_VALUE;
+//if(Vision_RawData_Yaw_Angle<0.3&&Vision_RawData_Yaw_Angle>-0.3)
+//{
+//YAW_BC_now=0;
+//}
+//if(Vision_RawData_Yaw_Angle<-1.0)
+//YAW_BC_now=-YAW_BC_VALUE;
 	
-
-YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle+YAW_BC_now;
-	if(abs(Vision_RawData_Pitch_Angle)>30)//PITCH轴接收到的值 绝对值 超过30,判断为错误 归零
-{
-	Vision_RawData_Pitch_Angle=0;
-}
-    vision_beats_give_to_jia=VisionData.RawData.Beat;
-	if(VisionData.RawData.Beat==1&&shoot_last==1)//连续两帧,从第二帧开始累加
-	vision_shoot_times++;
-	else
-	vision_shoot_times=0;
+YAW_BC_now=0;
+//YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle+YAW_BC_now;
+//	if(abs(Vision_RawData_Pitch_Angle)>30)//PITCH轴接收到的值 绝对值 超过30,判断为错误 归零
+//{
+//	Vision_RawData_Pitch_Angle=0;
+//}
+//    vision_beats_give_to_jia=VisionData.RawData.Beat;
+//	if(VisionData.RawData.Beat==1&&shoot_last==1)//连续两帧,从第二帧开始累加
+//	vision_shoot_times++;
+//	else
+//	vision_shoot_times=0;
 	
 		shoot_last=VisionData.RawData.Beat;
 
@@ -228,6 +228,26 @@ YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle+YAW_BC_now;
 	crc_right=1;
 	else 
 	crc_right=0;
+	
+if(VisionData.RawData.Armour==1)//识别到装甲板
+{
+YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;
+//	PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle;
+PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle-Vision_RawData_Pitch_Angle/360.0*8191.0;
+}
+	if(VisionData.RawData.Beat==1&&VisionData.RawData.Armour==1)//连续两帧,从第二帧开始累加
+	{
+aoto_shoot_flag++;	stop_shoot_times_new=0;
+
+	}
+	else
+	{
+	aoto_shoot_flag=0;
+	}
+	if(VisionData.RawData.Beat==0||VisionData.RawData.Armour==0)
+	{
+	stop_shoot_times_new++;
+	}
 	
 		Get_FPS(&FPS_ALL.Vision.WorldTimes,   &FPS_ALL.Vision.FPS);
 
@@ -246,7 +266,7 @@ YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle+YAW_BC_now;
 	VisionData.Offline_Detec++;
 		#endif
 	
-		#if 1
+		#if 0
 			//进行CRC校验
 	uint8_t CRCBuffer = Checksum_CRC8(data+1, 15 - 5);
 text_times++;
@@ -362,8 +382,8 @@ void Vision_ID_Type_Init(void)
 //向视觉发送数据
 static void Vision_DataSend(uint8_t *data)
 {
-	if (data == NULL)
-		return;
+//	if (data == NULL)
+//		return;
 	
 //	CDC_Transmit_FS(data,18);
 //	    CDC_Transmit_FS(Buf, *Len);
@@ -379,8 +399,8 @@ static void Vision_DataSend(uint8_t *data)
 //		while ((USART6->SR & 0X40) == 0);
 //		USART6->DR = data[i];
 //	}//三PIN接口
-//		HAL_UART_Transmit_DMA(&huart6,&data[0],13);//旧
-			HAL_UART_Transmit_DMA(&huart6,&data[0],28);//新
+		HAL_UART_Transmit_DMA(&huart6,&data[0],13);//旧
+//			HAL_UART_Transmit_DMA(&huart6,&data[0],28);//新
 
 	
 //		for (uint8_t i = 0; i < 13; i++)
@@ -400,7 +420,7 @@ int mode_v=6;
 void Update_Vision_SendData(void)
 {
 	uint8_t i=3;
-#if 0
+#if 1
 	if(0)
 {	
 	Vision_ID_Type_Init();
@@ -430,38 +450,42 @@ void Update_Vision_SendData(void)
 
 	}
 }	
-	if(0)
+	if(1)
 {
 	for (uint8_t i = 0; i < 5; i++)
 	{
 						Vision_SendBuff[i][0] = 'S';
-
+		
+				if(STATUS_complete_update_TIMES>1)
+		Vision_SendBuff[i][1] = ext_game_robot_state.data.robot_id;
+		else
+		Vision_SendBuff[i][1] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
+		if(DR16.rc.ch2>600)
+		mode_v=5;
+		if(DR16.rc.ch2<-600)
+			mode_v=6;
+		Vision_SendBuff[i][2] = mode_v;//?
+				//模式：0默认 1自瞄 2大神符 3哨兵 4基地
+        //'5'哨兵专用  视频录制
 
 		//云台Yaw轴的角度偏差 float -> uint8_t
-		Vision_SendBuff[i][1] = Vision_Cloud.VisionSend_t.Angle_Error_Data[0];
-		Vision_SendBuff[i][2] = Vision_Cloud.VisionSend_t.Angle_Error_Data[1];
-		Vision_SendBuff[i][3] = Vision_Cloud.VisionSend_t.Angle_Error_Data[2];
-		Vision_SendBuff[i][4] = Vision_Cloud.VisionSend_t.Angle_Error_Data[3];
+		Vision_SendBuff[i][3] = Vision_Cloud.VisionSend_t.Angle_Error_Data[0];
+		Vision_SendBuff[i][4] = Vision_Cloud.VisionSend_t.Angle_Error_Data[1];
+		Vision_SendBuff[i][5] = Vision_Cloud.VisionSend_t.Angle_Error_Data[2];
+		Vision_SendBuff[i][6] = Vision_Cloud.VisionSend_t.Angle_Error_Data[3];
 		//云台Pitch轴的角度偏差
-		Vision_SendBuff[i][5] = Vision_Cloud.VisionSend_t.Angle_Error_Data[4];
-		Vision_SendBuff[i][6] = Vision_Cloud.VisionSend_t.Angle_Error_Data[5];
-		Vision_SendBuff[i][7] = Vision_Cloud.VisionSend_t.Angle_Error_Data[6];
-		Vision_SendBuff[i][8] = Vision_Cloud.VisionSend_t.Angle_Error_Data[7];
+		Vision_SendBuff[i][7] = Vision_Cloud.VisionSend_t.Angle_Error_Data[4];
+		Vision_SendBuff[i][8] = Vision_Cloud.VisionSend_t.Angle_Error_Data[5];
+		Vision_SendBuff[i][9] = Vision_Cloud.VisionSend_t.Angle_Error_Data[6];
+		Vision_SendBuff[i][10] = Vision_Cloud.VisionSend_t.Angle_Error_Data[7];
 
 		//首支枪管的速度限制
 		if(STATUS_complete_update_TIMES>1)
-		Vision_SendBuff[i][9] = ext_game_robot_state.data.shooter_id1_17mm_speed_limit;
+		Vision_SendBuff[i][11] = ext_game_robot_state.data.shooter_id1_17mm_speed_limit;
 		else
-		Vision_SendBuff[i][9] = 30;
+		Vision_SendBuff[i][11] = 30;
 		
-				if(STATUS_complete_update_TIMES>1)
-		Vision_SendBuff[i][10] = ext_game_robot_state.data.robot_id;
-		else
-		Vision_SendBuff[i][10] = 107;//107：蓝方哨兵机器人；7：红方哨兵机器人
-			
-		Vision_SendBuff[i][11] = 5;//?
-				//模式：0默认 1自瞄 2大神符 3哨兵 4基地
-        //'5'哨兵专用  视频录制
+
 		
 		Vision_SendBuff[i][12] = 'E';
 
@@ -469,7 +493,7 @@ void Update_Vision_SendData(void)
 }	
 #endif
 	
-	if(1)
+	if(0)
 {
 Vision_Cloud_send.Robot_Info.Aim_x=0;
 Vision_Cloud_send.Robot_Info.Aim_y=0;
@@ -513,7 +537,7 @@ Vision_SendBuff_NEW[13]=Vision_Cloud_send.Robot_Info.Chassis_Position[12];//YAW
 		}
 		Append_CRC16_Check_Sum(Vision_SendBuff_NEW,28);
 }	
-Vision_DataSend(Vision_SendBuff_NEW);//发送
+//Vision_DataSend(Vision_SendBuff_NEW);//发送
 
 		//根据攻击的模式，发给视觉
 //		switch (Robots_Control.AttackTarget)
@@ -529,7 +553,7 @@ Vision_DataSend(Vision_SendBuff_NEW);//发送
 //			break;
 //		case ShootTarget_Sentry:
 
-//			Vision_DataSend(Vision_SendBuff[3]);
+			Vision_DataSend(Vision_SendBuff[3]);
 
 //			break;
 //		case ShootTarget_base:

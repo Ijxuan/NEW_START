@@ -304,7 +304,7 @@ void MX_FREERTOS_Init(void) {
 #endif	
 #if use_balance_gimbal==1
 #if PID_PITCH_MOTOR
-	P_PID_Parameter_Init(&PITCH_Angle_pid,1.5, 0.09, 0,
+	P_PID_Parameter_Init(&PITCH_Angle_pid,1, 0.09, -1,
 						 0, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,
@@ -500,8 +500,8 @@ int PITCH_6020_RC_TIMES_100MS;
 int PITCH_6020_RC_TIMES_100MS;
 int mag_static=0;
 int mag_run_time=0;
-int mag_open_times=3500;
-int mag_close_times=3300;
+int mag_open_times=3000;
+int mag_close_times=3000;
 int ext_power_heat_data_rc_times_100ms=0;
 /* USER CODE END Header_Debug */
 void Debug(void const * argument)
@@ -572,7 +572,7 @@ Get_FPS(&FPS_ALL.DEBUG.WorldTimes,&FPS_ALL.DEBUG.FPS);
 			now_speed_0_100=RGB_SEND.RGB_CH0;
 			ws2812_init(8);
 			get_rgb_value();
-//			ws2812_blue(8);
+			ws2812_blue(8);
 		}
 						if(debug_times%100==0)//上位机发送频率
 				{
@@ -592,12 +592,12 @@ if (DR16.rc.s_left == 3&&DR16.rc.s_right== 1 )//左中右上 操作手开关舵机
 	}
 			if(mag_static==1)//1是开弹仓
 			{
-					    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_on);	//开弹仓关激光	
-						mag_run_time+=100;
-				if(mag_run_time>=mag_open_times)
-				{
-				mag_static=0;mag_run_time=0;//结束流程
-				}
+__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_on);	//开弹仓关激光	
+mag_run_time+=100;
+if(mag_run_time>=mag_open_times)
+{
+mag_static=0;mag_run_time=0;//结束流程
+}
 			}
 			if(mag_static==2)//2是关弹仓
 			{
@@ -625,28 +625,28 @@ if (DR16.rc.s_left == 3&&DR16.rc.s_right== 2 )//遥控器左下 弹仓盖测试
 		}
 		else
 		{
-//			if(mag_static==1)//1是开弹仓
-//			{
-//					    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_on);	//开弹仓关激光	
-//						mag_run_time+=100;
-//				if(mag_run_time>=mag_open_times)
-//				{
-//				mag_static=0;mag_run_time=0;//结束流程
-//				}
-//			}
-//			if(mag_static==2)//2是关弹仓
-//			{
-//					    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_off);	//开弹仓关激光	
-//						mag_run_time+=100;
-//				if(mag_run_time>=mag_close_times)
-//				{
-//				mag_static=0;mag_run_time=0;//结束流程
-//				}
-//			}			
-//			if(mag_static==0)//0是失能
-//			{
+			if(mag_static==1)//1是开弹仓
+			{
+					    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_on);	//开弹仓关激光	
+						mag_run_time+=100;
+				if(mag_run_time>=mag_open_times)
+				{
+				mag_static=0;mag_run_time=0;//结束流程
+				}
+			}
+			if(mag_static==2)//2是关弹仓
+			{
+					    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_off);	//开弹仓关激光	
+						mag_run_time+=100;
+				if(mag_run_time>=mag_close_times)
+				{
+				mag_static=0;mag_run_time=0;//结束流程
+				}
+			}			
+			if(mag_static==0)//0是失能
+			{
 		    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, mag_text);	//关弹仓开激光	
-//			}				
+			}				
 		}
 }
 				}
@@ -740,7 +740,7 @@ JS_SHOOT_RC_TIMES_FOR_FPS=0;
         //获取电源电压
 			
         my_voltage = get_battery_voltage();
-			if(my_voltage<21&&my_voltage>20)
+			if(my_voltage<21.8&&my_voltage>20)
 			{
 			  		if(debug_times%5000==0)//5s运行一次
 					{

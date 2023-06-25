@@ -154,7 +154,7 @@
           <Type>0</Type>
           <LineNumber>496</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237888</Address>
+          <Address>134237908</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -622,6 +622,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>yaw_trage_angle</ItemText>
         </Ww>
+        <Ww>
+          <count>91</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>my_voltage</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -1037,7 +1042,7 @@
         <Ww>
           <count>82</count>
           <WinNumber>2</WinNumber>
-          <ItemText>VisionData</ItemText>
+          <ItemText>VisionData,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>83</count>
@@ -1063,6 +1068,41 @@
           <count>87</count>
           <WinNumber>2</WinNumber>
           <ItemText>Vision_Cloud_send.Robot_Info.ID</ItemText>
+        </Ww>
+        <Ww>
+          <count>88</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>VISION_FROM_USART1,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>89</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Vision_SendBuff,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>90</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>PITCH_Angle_pid</ItemText>
+        </Ww>
+        <Ww>
+          <count>91</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>mag_close_times,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>92</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>mag_off,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>93</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>mag_on,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>94</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>mag_open_times,0x0A</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>

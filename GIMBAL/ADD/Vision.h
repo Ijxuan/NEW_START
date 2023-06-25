@@ -129,8 +129,8 @@ typedef struct
 
 
 
-		float Pitch_Angle;				//Pitch轴的角度 7 8 9 10
-		float Yaw_Angle;				//Yaw轴的角度   3 4 5 6
+		float Yaw_Angle;				//Pitch轴的角度 7 8 9 10
+		float Pitch_Angle;				//Yaw轴的角度   3 4 5 6
 				
 
 //        uint16_t  Depth;                             //   12 13

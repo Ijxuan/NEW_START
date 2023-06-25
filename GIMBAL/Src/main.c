@@ -232,9 +232,9 @@ float YAW_TRAGET_ANGLE_TEMP_FAKE_IMU;
 
 float send_to_pitch_before=0;
 /*假装甲要用到END*/
-uint16_t mag_on =  3500;
+uint16_t mag_on =  3700;
 uint16_t mag_text = 3000;
-uint16_t mag_off = 2400;
+uint16_t mag_off = 2200;
 
 int MAX_HOT_SHOOT=50;
 int MAX_SPEE_SHOOT=15;

@@ -139,9 +139,9 @@ void shoot_control(void)
 		if (DR16.rc.s_right == 1)
 		{
 
-						SHOOT_L_speed=7000;MAX_SPEE_SHOOT=30;MAX_HOT_SHOOT=75;
+//						SHOOT_L_speed=7000;MAX_SPEE_SHOOT=30;MAX_HOT_SHOOT=75;
 //						HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
-#if 0/*键盘按键控制射速和红外*/		
+#if 1/*键盘按键控制射速和红外*/		
 
 if(keyBoard_G.Press_static==Long_Press)//长按7000 30m/s
 {
@@ -158,7 +158,7 @@ if(keyBoard_G.Press_static!=No_Press&&keyBoard_ctrl.Press_static!=No_Press)
 SHOOT_L_speed=0;			HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_RESET);
 }						
 #endif		
-			#if 0	/*用于操作手模式下,鼠标手动控制开火时机,准备加入热量限制*/
+			#if 1	/*用于操作手模式下,鼠标手动控制开火时机,准备加入热量限制*/
 
 //		if (M3508s[1].totalAngle > (M2006_targe_angle * 0.8 - if_Driver_arrive_angle))
 //			Driver_arrive = 1;
@@ -194,6 +194,8 @@ SHOOT_L_speed=0;			HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_RESET);
 #endif
 #if 0/*遥控器控制射速和开火*/
 			//
+			if(mode_v==6)
+			{
 			if (DR16.rc.ch4_DW == 0) //松手
 			{
 				DW_FREE++;
@@ -238,33 +240,36 @@ SHOOT_L_speed=0;			HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_RESET);
 					}
 				}
 			}
+		}
 #endif
-			#if 1	/*用于自瞄模式下,自动控制开火时机,准备加入热量限制*/
+			#if 0	/*用于自瞄模式下,自动控制开火时机,准备加入热量限制*/
 //			if(aoto_shoot_flag%2==0&&aoto_shoot_flag>=2)
-			if(aoto_shoot_flag>0)
+			if(mode_v==5)
 			{
 			if (M3508s[1].totalAngle > (M2006_targe_angle  - Driver_add* 0.1))
 			Driver_arrive = 1;//发射正转是增大
-
-				if(Driver_arrive==1)
+			
+			if(aoto_shoot_flag>0)
+			{
+				if(Driver_arrive==1)//上一发推到位了
 				{
 			M2006_targe_angle += Driver_add * 1; // 8*3=24	
-											Driver_arrive=0;
-
+			Driver_arrive=0;
 				}
 			aoto_shoot_flag=0;				
 			}
-			if(stop_shoot_times_new==3)
+			if(stop_shoot_times_new==3&&Driver_arrive==1)
 			{
 			M2006_targe_angle = M3508s[1].totalAngle; //拨盘误差消除 			
 			}
 			SHOOT_from_v_last = aoto_shoot_flag;
-
+				}
 #endif						
 		}
 		if ( DR16.rc.s_right == 3)
 		{
-	/*左中右中 遥控器测发射	*/			
+	/*左中右中 遥控器测发射			*/		//注释末尾	
+		
 			//
 			if (DR16.rc.ch4_DW == 0) //松手
 			{
@@ -310,7 +315,6 @@ SHOOT_L_speed=0;			HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_RESET);
 					}
 				}
 			}
-			//注释末尾	
 		}
 	}
 

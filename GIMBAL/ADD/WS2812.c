@@ -97,55 +97,55 @@ void ws2812_blue(uint8_t led_nums)
 		ws2812_set_RGB(rgb_r, rgb_g, rgb_b, 4);
 	if(RGB_SEND.RGB_CH1>=90)//超电电量判断
 	{
-		ws2812_set_RGB(0, 255, 0, 5);//绿
+		ws2812_set_RGB(0, 0xf, 0, 5);//绿
 	}
 	else if(RGB_SEND.RGB_CH1>=70&&RGB_SEND.RGB_CH1<90)
 	{
-		ws2812_set_RGB(255, 255, 0, 5);	//黄
+		ws2812_set_RGB(0xf, 0xf, 0, 5);	//黄
 	}
 	else if(RGB_SEND.RGB_CH1>50&&RGB_SEND.RGB_CH1<70)
 	{
-		ws2812_set_RGB(255, 0, 0, 5);	//红色的RGB值
+		ws2812_set_RGB(0xf, 0, 0, 5);	//红色的RGB值
 	}
 	else
 	{
-		ws2812_set_RGB(0,0,255,5);	//蓝色的RGB值	
+		ws2812_set_RGB(0,0,0xf,5);	//蓝色的RGB值	
 	}
 if(ext_shoot_data.data.bullet_speed==0)//发射数据离线
 {
-		ws2812_set_RGB(0,0,255,1);	//蓝色的RGB值	
+		ws2812_set_RGB(0,0,0xf,1);	//蓝色的RGB值	
 }	
 else{
 	if(ext_shoot_data.data.bullet_speed>=MAX_SPEE_SHOOT)
 	{
-		ws2812_set_RGB(255, 0, 0, 1);	//红色的RGB值	
+		ws2812_set_RGB(0xf, 0, 0, 1);	//红色的RGB值	
 	}
 	if(ext_shoot_data.data.bullet_speed>(MAX_SPEE_SHOOT-1))
 	{
-		ws2812_set_RGB(255, 255, 0, 1);	//黄
+		ws2812_set_RGB(0xf, 0xf, 0, 1);	//黄
 	}
 	else
 	{
-		ws2812_set_RGB(0, 255, 0, 1);//绿
+		ws2812_set_RGB(0, 0xf, 0, 1);//绿
 	}
 }
 if(ext_power_heat_data_rc_times_100ms==0)//热量指示灯
 {
-		ws2812_set_RGB(0,0,255,2);	//蓝色的RGB值	
+		ws2812_set_RGB(0,0,0xf,2);	//蓝色的RGB值	
 }
 else
 {
 if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<(MAX_HOT_SHOOT/3.0))
 {
-		ws2812_set_RGB(0, 255, 0, 2);//绿
+		ws2812_set_RGB(0, 0xf, 0, 2);//绿
 }
 else if(ext_power_heat_data.data.shooter_id1_17mm_cooling_heat<(MAX_HOT_SHOOT/3.0*2))
 {
-		ws2812_set_RGB(255, 255, 0, 2);	//黄
+		ws2812_set_RGB(0xf, 0xf, 0, 2);	//黄
 }
 else
 {
-		ws2812_set_RGB(255, 0, 0, 2);	//红色的RGB值	
+		ws2812_set_RGB(0xf, 0, 0, 2);	//红色的RGB值	
 }
 }
 

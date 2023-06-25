@@ -429,7 +429,7 @@ if(DR16.rc.s_left==3)//||DR16.rc.s_left==1
 {
 	if(DR16.rc.s_right==1)//左中右上
 	{
-/*      鼠标  	
+/*      鼠标  	*/
 if(mouse_Right.Press_static!=Long_Press) //右键没有长按
 {	
 YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;//没有自瞄时更新自瞄目标值为当前值		
@@ -447,9 +447,9 @@ else//右键长按
 		{
 				yaw_trage_angle_new=YAW_TRAGET_ANGLE_TEMP;
 		}		
-	*/
-		/*视觉自瞄测试*/
-		yaw_trage_angle_new=YAW_TRAGET_ANGLE_TEMP;
+	
+		/*视觉自瞄测试
+		yaw_trage_angle_new=YAW_TRAGET_ANGLE_TEMP;*/
 	}
 	else
 	{
@@ -595,7 +595,7 @@ void PITCH_PID()
 							{
 							if(DR16.rc.s_right==1)//PITCH轴控制挡位
 							{
-								/*鼠标
+								/*鼠标*/
 if(mouse_Right.Press_static!=Long_Press) //右键没有长按
 {	PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle;//没有自瞄时更新自瞄目标值为当前值	
 		if (abs(DR16.mouse.y) >= 1)
@@ -609,10 +609,10 @@ else//右键长按
 {
 							PITCH_trage_angle_motor=PITCH_TRAGET_ANGLE_TEMP_EM;	
 }
-		*/						
-/*测试自瞄	*/							
-							PITCH_trage_angle_motor=PITCH_TRAGET_ANGLE_TEMP_EM;
 								
+/*测试自瞄						
+								PITCH_trage_angle_motor=PITCH_TRAGET_ANGLE_TEMP_EM;
+*/									
 							}
 							else
 							{		PITCH_TRAGET_ANGLE_TEMP_EM=GM6020s[3].totalAngle;

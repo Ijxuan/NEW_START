@@ -460,7 +460,7 @@ void mouse_Left_Right()
 	{
 		mouse_Right.Press_static = Click_Press; // µ¥»÷
 
-		if (mouse_Right.Press_TIMES > 100)
+		if (mouse_Right.Press_TIMES > 20)
 		{
 			mouse_Right.Press_static = Long_Press; // ³¤°´
 		}
