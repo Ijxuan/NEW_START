@@ -304,7 +304,7 @@ void MX_FREERTOS_Init(void) {
 #endif	
 #if use_balance_gimbal==1
 #if PID_PITCH_MOTOR
-	P_PID_Parameter_Init(&PITCH_Angle_pid,1, 0.09, -1,
+	P_PID_Parameter_Init(&PITCH_Angle_pid,1.6, 0.09, -1,
 						 0, //误差大于这个值就积分分离
 						 //	float max_error, float min_error,
 						 //                          float alpha,

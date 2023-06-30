@@ -247,7 +247,7 @@ void NM_swj(void)
 	testdatatosend[_cnt++]=34;
 	if(1)
 	{
-		#if 0//鼠标数据
+		#if 1//鼠标数据
 	p=0;
 
 
@@ -924,7 +924,7 @@ if(1)
 														//保留到小数点后四位558 320 660   bjTlta
 #endif
 
-#if 1//视觉联调时要看的
+#if 0//视觉联调时要看的
 
 	p=0;
 			send_d_32[p++]=PITCH_TRAGET_ANGLE_TEMP_EM;//PITCH 目标角度		1

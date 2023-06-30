@@ -437,7 +437,7 @@ YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw;//没有自瞄时更新自瞄目标值为当前值
 		{
 			DR16_mouse_xnot0++;
 					#if gimbal_locked_up == 0
-			yaw_trage_angle_new = yaw_trage_angle_new + DR16.mouse.x / 200.0;
+			yaw_trage_angle_new = yaw_trage_angle_new + DR16.mouse.x / mouse_x_attenuation;
 			#endif
 //			yaw_trage_angle_new_motor=GM6020s[0].totalAngle-(DR16.mouse.x/40.0);//遥控器控制的是目标电机角度
 
@@ -601,7 +601,7 @@ if(mouse_Right.Press_static!=Long_Press) //右键没有长按
 		if (abs(DR16.mouse.y) >= 1)
 		{
 			#if gimbal_locked_up == 0
-			PITCH_trage_angle_motor = PITCH_trage_angle_motor + DR16.mouse.y / 15.0;
+			PITCH_trage_angle_motor = PITCH_trage_angle_motor + DR16.mouse.y / mouse_y_attenuation;
 			#endif
 		}
 }

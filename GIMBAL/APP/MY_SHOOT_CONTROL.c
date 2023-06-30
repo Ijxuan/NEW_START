@@ -150,7 +150,7 @@ SHOOT_L_speed=7000;MAX_SPEE_SHOOT=30;MAX_HOT_SHOOT=75;
 }
 if(keyBoard_G.Press_static==Click_Press)//¶Ì°´4200  15m/s
 {
-SHOOT_L_speed=4200;MAX_SPEE_SHOOT=15;MAX_HOT_SHOOT=50;
+SHOOT_L_speed=4000;MAX_SPEE_SHOOT=15;MAX_HOT_SHOOT=50;
 				HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
 }
 if(keyBoard_G.Press_static!=No_Press&&keyBoard_ctrl.Press_static!=No_Press)

@@ -7,6 +7,7 @@
 #include "spinning_top_examine.h"
 #include "Vision_Control.h"
 #include "MY_SHOOT_CONTROL.h"
+#include "keyBoard_to_vjoy.h"
 
 
 //#include "usb_device.h"
@@ -464,6 +465,12 @@ void Update_Vision_SendData(void)
 		mode_v=5;
 		if(DR16.rc.ch2<-600)
 			mode_v=6;
+		if(keyBoard_E.Press_static!=No_Press)
+		{mode_v=5;//小陀螺模式按下E
+		}
+		if(keyBoard_E.Press_static!=No_Press&&keyBoard_ctrl.Press_static!=No_Press)
+		{mode_v=6;//自瞄预测模式  按下E加ctrl
+		}
 		Vision_SendBuff[i][2] = mode_v;//?
 				//模式：0默认 1自瞄 2大神符 3哨兵 4基地
         //'5'哨兵专用  视频录制
