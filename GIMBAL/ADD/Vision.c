@@ -168,7 +168,7 @@ YAW_TRAGET_ANGLE_TEMP=DJIC_IMU.total_yaw-Vision_RawData_Yaw_Angle;
 	//视觉离线检测位
 	VisionData.Offline_Detec++;
 	#endif
-		#if 0
+		#if 1//广城理 自瞄接收解析
 			//进行CRC校验
 	uint8_t CRCBuffer = Checksum_CRC8(data+1, 15 - 5);
 text_times++;
@@ -267,7 +267,7 @@ aoto_shoot_flag++;	stop_shoot_times_new=0;
 	VisionData.Offline_Detec++;
 		#endif
 	
-		#if 1
+		#if 0  //华师 接收解析
 			//进行CRC校验
 	uint8_t CRCBuffer = Checksum_CRC8(data+1, 15 - 5);
 text_times++;
@@ -407,8 +407,8 @@ static void Vision_DataSend(uint8_t *data)
 //		while ((USART6->SR & 0X40) == 0);
 //		USART6->DR = data[i];
 //	}//三PIN接口
-//		HAL_UART_Transmit_DMA(&huart6,&data[0],13);//旧
-			HAL_UART_Transmit_DMA(&huart6,&data[0],28);//新
+		HAL_UART_Transmit_DMA(&huart6,&data[0],13);//旧
+//			HAL_UART_Transmit_DMA(&huart6,&data[0],28);//新
 
 	
 //		for (uint8_t i = 0; i < 13; i++)
@@ -458,7 +458,7 @@ void Update_Vision_SendData(void)
 
 	}
 }	
-	if(0)
+	if(1)//广城理 自瞄
 {
 	for (uint8_t i = 0; i < 5; i++)
 	{
@@ -507,7 +507,7 @@ void Update_Vision_SendData(void)
 }	
 #endif
 	
-	if(1)
+	if(0)
 {
 Vision_Cloud_send.Robot_Info.Aim_x=0;
 Vision_Cloud_send.Robot_Info.Aim_y=0;
@@ -566,9 +566,8 @@ Vision_SendBuff_NEW[13]=Vision_Cloud_send.Robot_Info.Chassis_Position[12];//YAW
 //			Vision_DataSend(Vision_SendBuff[2]);
 //			break;
 //		case ShootTarget_Sentry:
-			Vision_DataSend(Vision_SendBuff_NEW);
-
-//			Vision_DataSend(Vision_SendBuff[3]);//广城理 发送函数
+//			Vision_DataSend(Vision_SendBuff_NEW);//华师	发送函数
+			Vision_DataSend(Vision_SendBuff[3]);//广城理 发送函数
 
 //			break;
 //		case ShootTarget_base:

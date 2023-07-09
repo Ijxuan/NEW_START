@@ -27,11 +27,30 @@ Project File Date:  06/06/2023
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'GIMBAL'
-compiling MY_SHOOT_CONTROL.c...
+compiling freertos.c...
+..\ADD\DR16_RECIVE.h(212): warning:  #3135-D: attribute does not apply to any entity
+  		__packed struct
+..\ADD\DR16_RECIVE.h(245): warning:  #3135-D: attribute does not apply to any entity
+  		__packed struct {
+..\ADD\Vision.h(212): warning:  #3135-D: attribute does not apply to any entity
+  		__packed struct
+..\APP\MY_CLOUD_CONTROL.h(76): warning:  #3135-D: attribute does not apply to any entity
+  		__packed struct {
+..\Drivers\CMSIS\DSP\Include\arm_math.h(4865): warning:  #3108-D: attribute "__packed__" does not apply here
+      __SIMD32_TYPE *vstate;
+..\Drivers\CMSIS\DSP\Include\arm_math.h(4873): warning:  #3108-D: attribute "__packed__" does not apply here
+      vstate = __SIMD32_CONST(S->state);
+..\ADD\WS2812.h(46): warning:  #1-D: last line of file ends without a newline
+  extern int rgb_b;
+../Src/freertos.c(743): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			if(my_voltage<21.8&&my_voltage>20)
+../Src/freertos.c(511): warning:  #177-D: variable "error_e"  was declared but never referenced
+  	char error_e[5]="error";
+../Src/freertos.c: 9 warnings, 0 errors
 linking...
-Program Size: Code=110592 RO-data=5076 RW-data=2488 ZI-data=57552  
+Program Size: Code=109772 RO-data=5072 RW-data=2488 ZI-data=57552  
 FromELF: creating hex file...
-"ins_task\GIMBAL.axf" - 0 Error(s), 0 Warning(s).
+"ins_task\GIMBAL.axf" - 0 Error(s), 9 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -54,7 +73,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.6.0
-Build Time Elapsed:  00:00:06
+Build Time Elapsed:  00:00:07
 </pre>
 </body>
 </html>

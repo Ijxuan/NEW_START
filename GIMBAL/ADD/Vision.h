@@ -117,7 +117,7 @@ typedef struct
 		float Pitch_Angle;				//Pitch轴的角度
 		float Depth;					//深度
 	#endif
-	#if 0//广城理 自瞄接收协议
+	#if 1//广城理 自瞄接收协议
 			union
 		{
 			struct
@@ -143,7 +143,7 @@ typedef struct
 		};
 	
 	#endif
-	#if 1//华师 自瞄接收协议
+	#if 0//华师 自瞄接收协议
 			union
 		{
 			struct

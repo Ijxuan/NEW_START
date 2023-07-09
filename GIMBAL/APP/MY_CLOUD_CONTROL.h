@@ -9,7 +9,7 @@
 #include "Vision.h"
 
 
-#define vision_test 0//视觉测试专用模式
+#define vision_test 1//视觉测试专用模式
 
 #define GM6020_border_near_big 2000
 #define GM6020_border_near_small 6000

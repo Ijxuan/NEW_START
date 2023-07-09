@@ -834,7 +834,7 @@ void IMU_Send(void const * argument)
 	CAN_2_SEND_YAW_6020();//yawÖá6020×ª·¢º¯Êý
 
 		VISION_Disconnect_test++;
-		if(VISION_Disconnect_test%5==0)
+		if(VISION_Disconnect_test%100==0)
 		{
 			
 Update_Vision_SendData();

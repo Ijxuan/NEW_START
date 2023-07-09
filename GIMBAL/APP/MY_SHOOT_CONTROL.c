@@ -149,7 +149,7 @@ vision_aoto_shoot_flag=0;
 			}
 			//						
 //						HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_SET);
-				#if	vision_test ==0 //不是视觉测试专用
+				#if	vision_test ==0 //不是视觉测试专用 照搬了下面的自动开火
 
 #if 1/*键盘按键控制射速和红外*/		
 
@@ -279,7 +279,7 @@ SHOOT_L_speed=0;			HAL_GPIO_WritePin(RED_GPIO_Port, RED_Pin, GPIO_PIN_RESET);
 		}
 #endif
 			#if 1	/*用于自瞄模式下,自动控制开火时机,准备加入热量限制*/
-				#if	vision_test ==1 //不是视觉测试专用
+				#if	vision_test ==1 //视觉测试专用
 //强制锁定射速
 			SHOOT_L_speed=7000;MAX_SPEE_SHOOT=30;MAX_HOT_SHOOT=75;
 //			if(aoto_shoot_flag%2==0&&aoto_shoot_flag>=2)
