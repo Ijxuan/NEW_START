@@ -117,7 +117,7 @@ typedef struct
 		float Pitch_Angle;				//Pitch轴的角度
 		float Depth;					//深度
 	#endif
-	#if 1
+	#if 0//广城理 自瞄接收协议
 			union
 		{
 			struct
@@ -143,6 +143,32 @@ typedef struct
 		};
 	
 	#endif
+	#if 1//华师 自瞄接收协议
+			union
+		{
+			struct
+			{
+				char Start_Tag; //帧头   0
+
+				uint8_t Armour; //是否识别到装甲板   1
+				uint8_t Beat; //是否攻击（排除工程2号）  2
+
+
+
+		float Pitch_Angle;				//Yaw轴的角度   3 4 5 6
+		float Yaw_Angle;				//Pitch轴的角度 7 8 9 10
+				
+
+//        uint16_t  Depth;                             //   12 13
+
+				uint8_t crc; //CRC校验位  uint16_t               11
+
+				char End_Tag; //帧尾                 14
+			};
+			uint8_t VisionRawData[13];
+		};
+	
+	#endif		
 	} RawData; //视觉的协议 接收一帧的数据结构体
 
 	uint32_t Offline_Detec;

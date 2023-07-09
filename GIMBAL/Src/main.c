@@ -241,7 +241,7 @@ int MAX_SPEE_SHOOT=15;
 
 int stop_shoot_times_new=0;
 
-float mouse_x_attenuation=700;
+float mouse_x_attenuation=900;
 float mouse_y_attenuation=150;
 
 /* USER CODE END 0 */
